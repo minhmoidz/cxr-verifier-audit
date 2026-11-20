@@ -49,7 +49,7 @@ python3 tools/prl_supplement.py         # supplementary tables -> outputs/genera
 python3 tools/prl_figures.py            # privacy-utility figure -> outputs/figures/
 ```
 
-The bootstrap scripts use fixed random seeds, so the first three commands rewrite the released JSON files with identical content.
+The bootstrap scripts use fixed random seeds, so the first three commands rewrite the released JSON files with identical content. They can be skipped: the last three commands read the released JSON files directly.
 
 | Manuscript item | Output |
 |-----------------|--------|
