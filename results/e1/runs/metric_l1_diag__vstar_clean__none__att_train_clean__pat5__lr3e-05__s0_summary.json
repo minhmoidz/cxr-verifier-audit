@@ -1,0 +1,169 @@
+{
+  "run_id": "metric_l1_diag__vstar_clean__none__att_train_clean__pat5__lr3e-05__s0",
+  "arch": "resnet50_metric_l1",
+  "init_name": "vstar_clean",
+  "init_ckpt_sha256": "7d5c54050e7e10c0ed6f276be91a640f6e59e8a98677f5f11f87ad36dee062f5",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "none",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 0,
+  "lr": 3e-05,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 3,
+  "epochs_ran": 8,
+  "mc_k": 1,
+  "train_losses": [
+    0.353963,
+    0.273291,
+    0.216129,
+    0.172385,
+    0.135256,
+    0.10938,
+    0.087373,
+    0.073787
+  ],
+  "val_losses": [
+    0.319786,
+    0.30693,
+    0.301021,
+    0.3289,
+    0.333319,
+    0.349459,
+    0.327515,
+    0.344974
+  ],
+  "test_metrics": {
+    "auc": 90.897,
+    "pr_auc": 88.414,
+    "tpr_at_1pct": 15.48,
+    "tpr_at_0_5pct": 9.8,
+    "tpr_at_0_1pct": 2.32
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      89.16,
+      92.53
+    ],
+    "tpr1_ci95": [
+      9.06,
+      23.16
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 92.29510204081632,
+      "pr_auc": 62.646483759512414,
+      "tpr_at_1pct": 21.683673469387756,
+      "tpr_at_0_5pct": 12.755102040816327,
+      "tpr_at_0_1pct": 2.5510204081632653,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 90.63703984819735,
+      "pr_auc": 86.17948857867009,
+      "tpr_at_1pct": 14.32637571157495,
+      "tpr_at_0_5pct": 9.250474383301707,
+      "tpr_at_0_1pct": 2.2770398481973433,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 84.01826968043649,
+      "pr_auc": 89.11306793096738,
+      "tpr_at_1pct": 9.8,
+      "tpr_at_0_5pct": 4.279999999999999,
+      "tpr_at_0_1pct": 0.88,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 94.2947,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 1.08,
+          "tpr_pct": 15.959999999999999,
+          "threshold": 0.8998225331306458,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.16,
+          "tpr_pct": 2.7199999999999998,
+          "threshold": 0.9355873465538025,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.04,
+          "tpr_pct": 0.48,
+          "threshold": 0.9449619650840759,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 93.9159,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.6799999999999999,
+          "tpr_pct": 11.4,
+          "threshold": 0.9121765494346619,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.32,
+          "tpr_pct": 5.24,
+          "threshold": 0.9276224970817566,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.08,
+          "tpr_pct": 1.96,
+          "threshold": 0.9384068250656128,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 2.89,
+    "rank1_ci95": [
+      1.96,
+      3.82
+    ],
+    "rank5": 9.51,
+    "rank5_ci95": [
+      7.83,
+      11.46
+    ],
+    "mAP": 8.27,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 682.0
+}

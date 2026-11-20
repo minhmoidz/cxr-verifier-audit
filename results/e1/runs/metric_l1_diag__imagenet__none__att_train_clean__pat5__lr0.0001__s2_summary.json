@@ -1,0 +1,175 @@
+{
+  "run_id": "metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s2",
+  "arch": "resnet50_metric_l1",
+  "init_name": "imagenet",
+  "init_ckpt_sha256": null,
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "none",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 2,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 6,
+  "epochs_ran": 11,
+  "mc_k": 1,
+  "train_losses": [
+    0.405236,
+    0.225342,
+    0.155567,
+    0.110272,
+    0.08277,
+    0.054181,
+    0.04691,
+    0.046492,
+    0.042826,
+    0.046439,
+    0.04325
+  ],
+  "val_losses": [
+    0.292318,
+    0.264357,
+    0.230157,
+    0.218603,
+    0.192957,
+    0.187719,
+    0.202231,
+    0.196709,
+    0.195371,
+    0.203864,
+    0.224575
+  ],
+  "test_metrics": {
+    "auc": 95.1698,
+    "pr_auc": 94.0621,
+    "tpr_at_1pct": 29.28,
+    "tpr_at_0_5pct": 18.96,
+    "tpr_at_0_1pct": 7.8
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      94.17,
+      96.15
+    ],
+    "tpr1_ci95": [
+      18.42,
+      46.34
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 96.76744897959183,
+      "pr_auc": 83.02803858021566,
+      "tpr_at_1pct": 44.89795918367347,
+      "tpr_at_0_5pct": 30.612244897959183,
+      "tpr_at_0_1pct": 14.540816326530612,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 94.87268500948765,
+      "pr_auc": 92.52749813491394,
+      "tpr_at_1pct": 26.37571157495256,
+      "tpr_at_0_5pct": 16.793168880455408,
+      "tpr_at_0_1pct": 6.546489563567362,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 92.58247856586127,
+      "pr_auc": 95.0089797133327,
+      "tpr_at_1pct": 19.6,
+      "tpr_at_0_5pct": 10.84,
+      "tpr_at_0_1pct": 6.52,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 97.8898,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 1.96,
+          "tpr_pct": 46.160000000000004,
+          "threshold": 0.8779828548431396,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.36,
+          "tpr_pct": 14.6,
+          "threshold": 0.9599080681800842,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.16,
+          "tpr_pct": 9.8,
+          "threshold": 0.9674798846244812,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 97.2424,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.12,
+          "tpr_pct": 8.84,
+          "threshold": 0.9697170257568359,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.04,
+          "tpr_pct": 4.88,
+          "threshold": 0.9768070578575134,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 3.16,
+          "threshold": 0.98064124584198,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 18.92,
+    "rank1_ci95": [
+      16.4,
+      21.44
+    ],
+    "rank5": 42.4,
+    "rank5_ci95": [
+      39.52,
+      45.39
+    ],
+    "mAP": 31.13,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 1048.5
+}

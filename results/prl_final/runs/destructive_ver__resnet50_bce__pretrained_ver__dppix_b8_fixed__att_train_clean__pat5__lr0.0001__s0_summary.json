@@ -1,0 +1,197 @@
+{
+  "run_id": "destructive_ver__resnet50_bce__pretrained_ver__dppix_b8_fixed__att_train_clean__pat5__lr0.0001__s0",
+  "arch": "resnet50_bce",
+  "init_name": "pretrained_ver",
+  "init_ckpt_sha256": "331efaed0c0433c69941ddc003a14a936c688d94fd4ecfbefd34e53bfa7c051a",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "dppix_b8_fixed",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 0,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 17,
+  "epochs_ran": 22,
+  "mc_k": 1,
+  "train_losses": [
+    1.175393,
+    0.456528,
+    0.257079,
+    0.135318,
+    0.085613,
+    0.046549,
+    0.030968,
+    0.017112,
+    0.017946,
+    0.01126,
+    0.013379,
+    0.010248,
+    0.01221,
+    0.089514,
+    0.033941,
+    0.014693,
+    0.009836,
+    0.007468,
+    0.017967,
+    0.008806,
+    0.00434,
+    0.002689
+  ],
+  "val_losses": [
+    2.517888,
+    2.527293,
+    2.657417,
+    2.425598,
+    2.524037,
+    2.566493,
+    2.370801,
+    2.59538,
+    2.980279,
+    2.446417,
+    2.121848,
+    1.889575,
+    2.843313,
+    1.914209,
+    2.091018,
+    1.82405,
+    1.500562,
+    1.824275,
+    1.939911,
+    2.002786,
+    2.47623,
+    1.790123
+  ],
+  "test_metrics": {
+    "auc": 60.3855,
+    "pr_auc": 58.719,
+    "tpr_at_1pct": 2.56,
+    "tpr_at_0_5pct": 1.32,
+    "tpr_at_0_1pct": 0.28
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      57.56,
+      63.46
+    ],
+    "tpr1_ci95": [
+      0.78,
+      4.23
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 61.77438775510203,
+      "pr_auc": 20.309550966610544,
+      "tpr_at_1pct": 3.316326530612245,
+      "tpr_at_0_5pct": 1.2755102040816326,
+      "tpr_at_0_1pct": 0.25510204081632654,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 60.12717267552182,
+      "pr_auc": 54.1669883016519,
+      "tpr_at_1pct": 2.4193548387096775,
+      "tpr_at_0_5pct": 1.3282732447817838,
+      "tpr_at_0_1pct": 0.2846299810246679,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 59.78247856586126,
+      "pr_auc": 73.15999576665199,
+      "tpr_at_1pct": 2.56,
+      "tpr_at_0_5pct": 1.32,
+      "tpr_at_0_1pct": 0.52,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 62.3959,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 2.08,
+          "tpr_pct": 4.64,
+          "threshold": 0.9958091974258423,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.32,
+          "tpr_pct": 0.64,
+          "threshold": 0.9997336268424988,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.08,
+          "tpr_pct": 0.24,
+          "threshold": 0.9999150037765503,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 62.9363,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 1.5599999999999998,
+          "tpr_pct": 3.1199999999999997,
+          "threshold": 0.9976704716682434,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 1.1199999999999999,
+          "tpr_pct": 2.68,
+          "threshold": 0.9983395338058472,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 0.0,
+          "threshold": Infinity,
+          "fallback_inf": true,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 0.28,
+    "rank1_ci95": [
+      0.0,
+      0.65
+    ],
+    "rank5": 0.93,
+    "rank5_ci95": [
+      0.37,
+      1.58
+    ],
+    "mAP": 1.24,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 2757.5
+}

@@ -1,0 +1,750 @@
+--- a/agents/AgentSiameseNetwork.py
++++ b/agents/AgentSiameseNetwork.py
+@@ -1,3 +1,4 @@
++import os
+ import time
+ import copy
+ from sklearn import metrics
+@@ -34,9 +35,41 @@
+ 
+         # Set all the important variables
+         self.perturbation_type = self.config['perturbation_type']
++        self.blur_sigma = self.config.get('blur_sigma', None)
++        self.elastic_mu = self.config.get('elastic_mu', None)
+         self.perturbation_model_file = self.config['perturbation_model_file']
+         self.mu = self.config['mu']
+ 
++        # P1 2x2 attacker-pairing audit (added; both default to the released protocol so every
++        # existing config is unaffected unless it opts in explicitly).
++        #
++        # snn_init: which checkpoint the attacker starts from.
++        #   'imagenet'      (default) -- SiameseNetwork()'s own ImageNet-pretrained ResNet-50.
++        #   'pretrained_ver' -- overwritten below with networks/pretrained_verification_model.pth.
++        # train_pairing: whether the SECOND training/validation endpoint is sanitized.
++        #   'sanitized_sanitized' (default) -- reproduces the released protocol exactly.
++        #   'sanitized_raw'       -- only the query side is sanitized in training/validation too,
++        #                            matching the fixed test-time asymmetry (test_snn is always
++        #                            query-sanitized / reference-raw and is never controlled by
++        #                            this flag).
++        # Explicit string enums, not booleans: 'sanitized=true' would not say relative to what.
++        self.snn_init = self.config.get('snn_init', 'imagenet')
++        if self.snn_init not in ('imagenet', 'pretrained_ver', 'vstar'):
++            raise ValueError("snn_init must be 'imagenet', 'pretrained_ver' or 'vstar', got "
++                             + repr(self.snn_init))
++        self.train_pairing = self.config.get('train_pairing', 'sanitized_sanitized')
++        if self.train_pairing not in ('sanitized_sanitized', 'sanitized_raw'):
++            raise ValueError("train_pairing must be 'sanitized_sanitized' or 'sanitized_raw', got "
++                             + repr(self.train_pairing))
++        # val_pairing: pairing of the checkpoint-selection (validation) loader and validation
++        # loss. Defaults to train_pairing, so every pre-existing run is unchanged. Setting it
++        # differently from train_pairing separates the training effect from the checkpoint-
++        # selection effect in the SS/SR comparison.
++        self.val_pairing = self.config.get('val_pairing', self.train_pairing)
++        if self.val_pairing not in ('sanitized_sanitized', 'sanitized_raw'):
++            raise ValueError("val_pairing must be 'sanitized_sanitized' or 'sanitized_raw', got "
++                             + repr(self.val_pairing))
++
+         self.b = self.config['b']
+         self.m = self.config['m']
+         self.eps = self.config['eps']
+@@ -57,7 +90,7 @@
+             grid_identity = torch.stack((mesh_y, mesh_x), 2)
+             self.grid_identity = grid_identity.unsqueeze(0).permute(0, 3, 1, 2).cuda()
+             self.gauss_filter = GaussianSmoothing(channels=2, kernel_size=9, sigma=2).cuda()
+-        elif self.perturbation_type in ['privacy_net', 'dp_pix', 'none']:
++        elif self.perturbation_type in ['privacy_net', 'dp_pix', 'none', 'blur', 'elastic']:
+             self.grid_identity = None
+             self.gauss_filter = None
+         else:
+@@ -81,7 +114,8 @@
+             elif self.perturbation_type == 'privacy_net':
+                 self.perturbation_net = Unet2D_encoder(self.n_channels, self.n_channels, 16).cuda()
+                 self.perturbation_net.load_state_dict(torch.load(self.perturbation_model_file))
+-            elif self.perturbation_type == 'dp_pix':
++            elif self.perturbation_type in ['dp_pix', 'blur', 'elastic']:
++                # Both are applied inside the dataset, so there is no perturbation network.
+                 self.perturbation_net = None
+             else:
+                 raise Exception('Invalid argument: ' + self.perturbation_type)
+@@ -89,6 +123,16 @@
+ 
+         # Define the siamese neural network architecture
+         self.net = SiameseNetwork().cuda()
++        if self.snn_init == 'pretrained_ver':
++            # networks/pretrained_verification_model.pth is the SAME checkpoint file used by the
++            # frozen/verifier-init arms elsewhere in this audit (Table 1's 'verifier' column);
++            # loaded here strictly, so any architecture drift raises rather than silently
++            # partial-loading.
++            state = torch.load('./networks/pretrained_verification_model.pth')
++            self.net.load_state_dict(state, strict=True)
++        elif self.snn_init == 'vstar':
++            state = torch.load('./networks/vstar_verifier.pth')
++            self.net.load_state_dict(state, strict=True)
+         self.best_net = copy.deepcopy(self.net)
+ 
+         # Choose loss function
+@@ -98,33 +142,47 @@
+         self.optimizer = optim.Adam(self.net.parameters(), lr=self.learning_rate)
+ 
+         # Initialize data loaders
++        # train_pairing only ever governs the training/validation loaders -- the test loader is
++        # ALWAYS the released, fixed query-sanitized/reference-raw threat model, never a variable
++        # under this study, so it does not take train_pairing at all (SiameseDataset defaults it
++        # to 'sanitized_sanitized' for the testing phase, where that default is inert: the dataset
++        # only reads self.train_pairing inside `self.phase in ('training', 'validation')` guards).
+         self.training_loader = utils.get_data_loader(phase='training', experimental_step='retrainSNN', 
+                                                      image_size=self.image_size, n_channels=self.n_channels, 
+                                                      batch_size=self.batch_size, shuffle=True, 
+                                                      num_workers=self.num_workers, pin_memory=self.pin_memory, 
+-                                                     b=self.b, m=self.m, eps=self.eps, image_path=self.IMAGE_PATH)
++                                                     b=self.b, m=self.m, eps=self.eps, image_path=self.IMAGE_PATH,
++                                                     blur_sigma=self.blur_sigma,
++                                                     elastic_mu=self.elastic_mu,
++                                                     train_pairing=self.train_pairing)
+         self.validation_loader = utils.get_data_loader(phase='validation', experimental_step='retrainSNN',
+                                                        image_size=self.image_size, n_channels=self.n_channels, 
+                                                        batch_size=self.batch_size, shuffle=False, 
+                                                        num_workers=self.num_workers, pin_memory=self.pin_memory, 
+-                                                       b=self.b, m=self.m, eps=self.eps, image_path=self.IMAGE_PATH)
++                                                       b=self.b, m=self.m, eps=self.eps, image_path=self.IMAGE_PATH,
++                                                     blur_sigma=self.blur_sigma,
++                                                     elastic_mu=self.elastic_mu,
++                                                     train_pairing=self.val_pairing)
+         self.test_loader = utils.get_data_loader(phase='testing', experimental_step='retrainSNN', 
+                                                  image_size=self.image_size, n_channels=self.n_channels, 
+                                                  batch_size=self.batch_size, shuffle=False, 
+                                                  num_workers=self.num_workers, pin_memory=self.pin_memory,
+-                                                 b=self.b, m=self.m, eps=self.eps, image_path=self.IMAGE_PATH)
++                                                 b=self.b, m=self.m, eps=self.eps, image_path=self.IMAGE_PATH,
++                                                     blur_sigma=self.blur_sigma,
++                                                     elastic_mu=self.elastic_mu)
+ 
+     def training_validation(self):
++        os.makedirs(self.SAVINGS_PATH, exist_ok=True)
+         # Training and validation loop
+         for epoch in range(self.start_epoch, self.max_epochs):
+             start_time = time.time()
+ 
+             training_loss = utils.train_snn(self.perturbation_type, self.net, self.perturbation_net, self.grid_identity, 
+                                             self.gauss_filter, self.mu, self.training_loader, self.loss, self.optimizer, 
+-                                            epoch, self.max_epochs)
++                                            epoch, self.max_epochs, train_pairing=self.train_pairing)
+             validation_loss = utils.validate_snn(self.perturbation_type, self.net, self.perturbation_net, 
+                                                  self.grid_identity, self.gauss_filter, self.mu, self.validation_loader, 
+-                                                 self.loss, epoch, self.max_epochs)
++                                                 self.loss, epoch, self.max_epochs, train_pairing=self.val_pairing)
+ 
+             self.loss_dict['training'].append(training_loss)
+             self.loss_dict['validation'].append(validation_loss)
+@@ -149,6 +207,7 @@
+         print('Finished Training!')
+     
+     def testing_evaluation(self):
++        os.makedirs(self.SAVINGS_PATH, exist_ok=True)
+         # Testing phase
+         y_true, y_pred = utils.test_snn(self.perturbation_type, self.best_net, self.perturbation_net, 
+                                         self.grid_identity, self.gauss_filter, self.mu, self.test_loader)
+--- a/chexnet/cxr_dataset.py
++++ b/chexnet/cxr_dataset.py
+@@ -30,7 +30,7 @@
+         self.transform = transform
+         self.perturbation_type = perturbation_type
+ 
+-        if self.perturbation_type in ['flow_field', 'privacy_net', 'dp_pix']:
++        if self.perturbation_type in ['flow_field', 'privacy_net', 'dp_pix', 'identity', 'blur', 'elastic']:
+             self.trans = transforms.Compose([
+                 transforms.Resize((256, 256)),
+                 transforms.ToTensor()
+@@ -68,7 +68,7 @@
+             if self.df[self.PRED_LABEL[i].strip()].iloc[idx].astype('int') > 0:
+                 label[i] = self.df[self.PRED_LABEL[i].strip()].iloc[idx].astype('int')
+ 
+-        if self.perturbation_type in ['flow_field', 'privacy_net', 'dp_pix']:
++        if self.perturbation_type in ['flow_field', 'privacy_net', 'dp_pix', 'identity', 'blur', 'elastic']:
+             image = self.trans(image)
+         else:
+             image = image.convert('RGB')
+--- a/chexnet/eval_model.py
++++ b/chexnet/eval_model.py
+@@ -16,8 +16,15 @@
+ import chexnet.cxr_dataset as CXR
+ 
+ 
+-def make_pred_multilabel(data_transforms, model, image_path, save_path, perturbation_type='none', 
+-                         perturbation_checkpoint=None, mu=None, b=None, m=None, eps=None):
++# @torch.no_grad(): this function never calls backward, but without it autograd retains a
++# graph for every batch and the DenseNet evaluation peaks above 4 GiB -- which is what OOM'd
++# it on a shared GPU. Disabling grad cannot change a prediction: BatchNorm and dropout
++# behaviour is governed by module.training, which is untouched (the checkpoint is saved in
++# eval mode and the architecture has no dropout). Verified equal to the stored results.
++@torch.no_grad()
++def make_pred_multilabel(data_transforms, model, image_path, save_path, perturbation_type='none',
++                         perturbation_checkpoint=None, mu=None, b=None, m=None, eps=None,
++                         blur_sigma=None, elastic_mu=None):
+     """Gives predictions for test fold and calculates AUCs using pre-trained classifier model.
+ 
+     :param data_transforms: torchvision.transforms
+@@ -85,7 +92,13 @@
+         perturbation_model.load_state_dict(perturbation_checkpoint)
+         perturbation_model.eval()
+ 
+-    if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix']:
++    if perturbation_type == 'blur':
++        # Gaussian blur, added by this audit as a tunable non-learned sanitizer so that a
++        # comparison can be made at utility matched to the deformation family.
++        k = int(2 * np.ceil(3 * blur_sigma) + 1)
++        blur = transforms.GaussianBlur(kernel_size=k, sigma=float(blur_sigma))
++
++    if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix', 'identity', 'blur', 'elastic']:
+         trans = transforms.Compose([
+             transforms.Resize((224, 224)),
+             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+@@ -94,7 +107,7 @@
+     # Iterate over dataloader
+     for i, data in enumerate(dataloader):
+ 
+-        inputs, labels, _ = data
++        inputs, labels, _names = data
+         inputs, labels = Variable(inputs.cuda()), Variable(labels.cuda())
+ 
+         if perturbation_type == 'flow_field':
+@@ -110,7 +123,14 @@
+         if perturbation_type == 'dp_pix':
+             inputs = utils.dp_pix(inputs, b, m, eps, plot=False)
+ 
+-        if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix']:
++        if perturbation_type == 'blur':
++            inputs = blur(inputs)
++
++        if perturbation_type == 'elastic':
++            # Random elastic deformation, seeded per record (PROTOCOL_ADDENDUM section C).
++            inputs = utils.elastic_warp(inputs, elastic_mu, list(_names))
++
++        if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix', 'identity', 'blur', 'elastic']:
+             inputs = inputs.expand(-1, 3, -1, -1)
+             inputs = trans(inputs)
+ 
+--- a/config_files/config_eval_classifier.json
++++ b/config_files/config_eval_classifier.json
+@@ -1,13 +1,14 @@
+ {
+-	"image_path": "/path/to/images/",
+-	"save_path": "./chexnet/results/test/",
++	"image_path": "images/",
++	"save_path": "./chexnet/results/test_flow_field/",
+ 	"classifier_checkpoint": "./networks/pretrained_classifier.pth",
+ 
+-	"perturbation_type": "flow_field",
+-	"perturbation_model_file": "./networks/generator_lowest_total_loss_mu_0.01.pth",
+-	"mu": 0.01,
++    "perturbation_type": "flow_field",
++    "perturbation_model_file": "./networks/generator_lowest_total_loss_mu_0.01.pth",
++    "mu": 0.01,
++
++    "b": null,
++    "m": null,
++    "eps": null
+ 
+-	"b": null,
+-	"m": null,
+-	"eps": null
+ }
+\ No newline at end of file
+--- a/config_files/config_retrainSNN.json
++++ b/config_files/config_retrainSNN.json
+@@ -1,6 +1,6 @@
+ {
+-	"experiment_description": "EXPERIMENT_DESCRIPTION",
+-	"image_path": "/path/to/images/",
++	"experiment_description": "retrainSNN_flow_field_mu_0.01",
++	"image_path": "images/",
+ 
+ 	"perturbation_type": "flow_field",
+ 	"perturbation_model_file": "./networks/generator_lowest_total_loss_mu_0.01.pth",
+--- a/datasets/Dataset.py
++++ b/datasets/Dataset.py
+@@ -1,3 +1,4 @@
++import os
+ import numpy as np
+ import pandas as pd
+ from PIL import Image
+@@ -29,7 +30,8 @@
+ 
+         # Load the image pairs (filenames)
+         if self.phase == 'training':
+-            self.image_pairs = np.loadtxt('./image_pairs/image_pairs_training_10000.txt', dtype=str)
++            train_pair_file = os.environ.get('TRAIN_PAIRS_FILE', './image_pairs/image_pairs_training_10000.txt')
++            self.image_pairs = np.loadtxt(train_pair_file, dtype=str)
+         elif self.phase == 'validation':
+             self.image_pairs = np.loadtxt('./image_pairs/image_pairs_validation_2000.txt', dtype=str)
+         elif self.phase == 'testing':
+--- a/datasets/SiameseDataset.py
++++ b/datasets/SiameseDataset.py
+@@ -1,3 +1,4 @@
++import os
+ import numpy as np
+ from PIL import Image
+ from utils import utils
+@@ -6,7 +7,8 @@
+ 
+ 
+ class SiameseDataset(data.Dataset):
+-    def __init__(self, phase='training', n_channels=3, image_size=256, b=None, m=None, eps=None, image_path='./'):
++    def __init__(self, phase='training', n_channels=3, image_size=256, b=None, m=None, eps=None, image_path='./',
++                 blur_sigma=None, elastic_mu=None, train_pairing='sanitized_sanitized'):
+         """The dataset that is used for the patient verification experiments.
+ 
+         :param phase: str
+@@ -26,18 +28,47 @@
+             Specifies the DP privacy budget (smaller values indicate greater privacy).
+         :param image_path: str
+             The path to the folder where the images are stored.
++        :param blur_sigma: float
++            Standard deviation of a Gaussian blur, in pixels at `image_size`. Added by this
++            audit as a non-learned, monotonically tunable sanitizer, so that a comparison can be
++            made at utility matched to the deformation family rather than only against controls
++            that have destroyed most of the image. Wired exactly like DP-Pix: applied to side A
++            in every phase and to side B only during training and validation (subject to
++            `train_pairing`), which preserves the test-time asymmetry between a released record
++            and a real one.
++        :param train_pairing: str
++            Controls whether side B (the second endpoint of a pair) is sanitized during
++            training/validation, for every perturbation type applied inside this dataset
++            (DP-Pix, Gaussian blur, random elastic). It has no effect at test time, which is
++            always query-sanitized / reference-raw by construction, independent of this flag.
++
++            'sanitized_sanitized' (default): side B is sanitized during training and validation,
++            reproducing the released protocol's train/validation pairing exactly.
++
++            'sanitized_raw': side B is left untouched during training and validation too, so the
++            attacker trains on the same query-sanitized / reference-raw pairing it is tested on.
++
++            An explicit two-value enum rather than a boolean, so a config cannot silently mean
++            'sanitize side B always' vs 'never' without saying which regime it names.
+         """
+ 
++        if train_pairing not in ('sanitized_sanitized', 'sanitized_raw'):
++            raise ValueError(
++                "train_pairing must be 'sanitized_sanitized' or 'sanitized_raw', got "
++                + repr(train_pairing))
++
+         self.phase = phase
+         self.n_channels = n_channels
+         self.image_size = image_size
+         self.PATH = image_path
++        self.train_pairing = train_pairing
+ 
+         # Load the image pairs (filenames)
+         if self.phase == 'training':
+-            self.image_pairs = np.loadtxt('./image_pairs/image_pairs_training_10000.txt', dtype=str)
++            train_pair_file = os.environ.get('TRAIN_PAIRS_FILE', './image_pairs/image_pairs_training_10000.txt')
++            self.image_pairs = np.loadtxt(train_pair_file, dtype=str)
+         elif self.phase == 'validation':
+-            self.image_pairs = np.loadtxt('./image_pairs/image_pairs_validation_2000.txt', dtype=str)
++            self.image_pairs = np.loadtxt(os.environ.get('VAL_PAIRS_FILE', './image_pairs/image_pairs_validation_2000.txt'), dtype=str)
+         elif self.phase == 'testing':
+             self.image_pairs = np.loadtxt('./image_pairs/image_pairs_testing_5000.txt', dtype=str)
+         else:
+@@ -45,6 +76,11 @@
+ 
+         # Parameters that are used for the DP-Pix experiments (if self.use_dp_pix is True)
+         self.use_dp_pix = b is not None and m is not None and eps is not None
++        self.elastic_mu = elastic_mu
++        self.blur_sigma = blur_sigma
++        if blur_sigma is not None:
++            k = int(2 * np.ceil(3 * blur_sigma) + 1)
++            self.blur = transforms.GaussianBlur(kernel_size=k, sigma=float(blur_sigma))
+         self.b = b
+         self.m = m
+         self.eps = eps
+@@ -80,16 +116,48 @@
+                 image1 = utils.dp_pix(image_tensor=image1, b=self.b, m=self.m, eps=self.eps, plot=False).squeeze(0)
+                 image1 = self.to_pil(image1)
+ 
+-                if self.phase == 'training' or self.phase == 'validation':
++                if (self.phase == 'training' or self.phase == 'validation') and self.train_pairing == 'sanitized_sanitized':
+                     image2 = self.transform(image2).unsqueeze(0)
+                     image2 = utils.dp_pix(image_tensor=image2, b=self.b, m=self.m, eps=self.eps, plot=False).squeeze(0)
+                     image2 = self.to_pil(image2)
+ 
++            # Apply Gaussian blur if requested, with the same side asymmetry as DP-Pix
++            if self.blur_sigma is not None:
++                image1 = self.blur(image1)
++                if (self.phase == 'training' or self.phase == 'validation') and self.train_pairing == 'sanitized_sanitized':
++                    image2 = self.blur(image2)
++
++
+             # Append images to respective lists
+             self.images_1.append(image1)
+             self.images_2.append(image2)
+             self.labels.append(float(self.image_pairs[i][2]))
+ 
++        # Random elastic deformation (PROTOCOL_ADDENDUM section C), same side asymmetry as
++        # DP-Pix and blur. Applied here in batches rather than per image inside the loop: the
++        # 9x9 smoothing convolution dominates, and batching it is ~30x faster over 17k images.
++        # The field is still seeded per filename, so the result is identical either way.
++        if self.elastic_mu is not None:
++            names1 = [self.image_pairs[i][0] for i in range(len(self.image_pairs))]
++            self.images_1 = self._elastic_batch(self.images_1, names1)
++            if (self.phase == 'training' or self.phase == 'validation') and self.train_pairing == 'sanitized_sanitized':
++                names2 = [self.image_pairs[i][1] for i in range(len(self.image_pairs))]
++                self.images_2 = self._elastic_batch(self.images_2, names2)
++
++    def _elastic(self, pil_image, filename):
++        t = self.transform(pil_image).unsqueeze(0)
++        t = utils.elastic_warp(t, self.elastic_mu, [filename])
++        return self.to_pil(t.squeeze(0).clamp(0, 1))
++
++    def _elastic_batch(self, images, names, chunk=64):
++        import torch as _t
++        out = []
++        for i in range(0, len(images), chunk):
++            batch = _t.stack([self.transform(im) for im in images[i:i + chunk]])
++            warped = utils.elastic_warp(batch, self.elastic_mu, names[i:i + chunk])
++            out += [self.to_pil(w.clamp(0, 1)) for w in warped]
++        return out
++
+     def __len__(self):
+         return len(self.image_pairs)
+ 
+--- a/eval_classifier.py
++++ b/eval_classifier.py
+@@ -32,6 +32,8 @@
+     perturbation_model_file = config['perturbation_model_file']
+     mu = config['mu']
+ 
++    blur_sigma = config.get('blur_sigma', None)
++    elastic_mu = config.get('elastic_mu', None)
+     b = config['b']
+     m = config['m']
+     eps = config['eps']
+@@ -52,7 +54,7 @@
+             ]),
+     }
+ 
+-    checkpoint_best = torch.load(classifier_checkpoint)
++    checkpoint_best = torch.load(classifier_checkpoint, weights_only=False)
+     model = checkpoint_best['model']
+ 
+     if perturbation_model_file is not None:
+@@ -60,5 +62,6 @@
+     else:
+         perturbation_checkpoint = None
+ 
+-    preds, aucs = E.make_pred_multilabel(data_transforms, model, image_path, save_path, perturbation_type, 
+-                                         perturbation_checkpoint, mu, b, m, eps)
++    preds, aucs = E.make_pred_multilabel(data_transforms, model, image_path, save_path, perturbation_type,
++                                         perturbation_checkpoint, mu, b, m, eps, blur_sigma,
++                                         elastic_mu)
+--- a/networks/SiameseNetwork.py
++++ b/networks/SiameseNetwork.py
+@@ -4,7 +4,7 @@
+ 
+ 
+ class SiameseNetwork(nn.Module):
+-    def __init__(self):
++    def __init__(self, pretrained=True):
+         """
+         This class represents the Siamese Neural Network (patient verification model) incorporated into PriCheXy-Net. 
+         It takes two chest X-ray images and yields a similarity score, indicating the probability of whether or not the 
+@@ -14,7 +14,8 @@
+         super(SiameseNetwork, self).__init__()
+ 
+         # Model: Use ResNet-50 architecture in both network branches
+-        self.model = models.resnet50(pretrained=True)
++        # Full-checkpoint inference can skip downloading redundant ImageNet weights.
++        self.model = models.resnet50(pretrained=pretrained)
+ 
+         # Adjust the ResNet classification layer to produce 128-dimensional feature vectors
+         self.model.fc = nn.Linear(in_features=2048, out_features=128, bias=True)
+--- a/utils/utils.py
++++ b/utils/utils.py
+@@ -26,6 +26,7 @@
+         The seed that is used.
+     """
+ 
++    seed = int(os.environ.get('PRICHEXY_SEED', seed))
+     print("[ Using Seed : ", seed, " ]")
+     torch.manual_seed(seed)
+     torch.cuda.manual_seed_all(seed)
+@@ -36,8 +37,76 @@
+     torch.backends.cudnn.benchmark = False
+ 
+ 
+-def get_data_loader(phase='training', experimental_step='pretrain', image_size=256, n_channels=1, batch_size=32, 
+-                    shuffle=True, num_workers=8, pin_memory=True, b=None, m=None, eps=None, image_path='./'):
++# --------------------------------------------------------------------------- elastic warp
++
++_ELASTIC_GAUSS = None
++
++
++def elastic_seed(key):
++    """A stable 31-bit seed from a filename, so a record always gets the same deformation.
++
++    ELASTIC_SALT re-draws every field for a realization-sensitivity check. Unset or "0"
++    reproduces the reported runs byte for byte, so the salt cannot silently perturb them.
++    """
++    import hashlib, os
++    salt = os.environ.get("ELASTIC_SALT", "0")
++    k = str(key) if salt in ("", "0") else f"{salt}:{key}"
++    return int(hashlib.blake2b(k.encode(), digest_size=8).hexdigest(), 16) % (2 ** 31)
++
++
++def elastic_warp(images, mu, keys):
++    """A non-learned deformation of the same form as PriCheXy-Net's warp.
++
++    PriCheXy-Net computes ``grid = identity - mu * G(x)``, smooths the grid with a 9x9
++    Gaussian (sigma=2) and resamples with border padding. This replaces the *learned*
++    field ``G(x)`` with a fixed random field and changes nothing else, so the comparison
++    isolates the learning rather than the deformation.
++
++    The field is drawn from a generator seeded by the record's filename, so a given record
++    always receives the same deformation. That matters: a released dataset is produced
++    once, and PriCheXy-Net's own warp is likewise deterministic given the image. Re-drawing
++    the field per access would hand the attacker an averaging-out opportunity that no real
++    release offers.
++
++    Smoothing the grid rather than the field reproduces the source implementation exactly,
++    border artefact included, so both arms inherit the same edge behaviour.
++
++    :param images: (N, 1, H, W) tensor in [0, 1] on the same device as the output
++    :param mu: float, deformation degree, the same knob the source work sweeps
++    :param keys: sequence of N filenames, one per image
++    """
++    global _ELASTIC_GAUSS
++    import torch as _t
++    import torch.nn.functional as _F
++    from utils.GaussianSmoothing import GaussianSmoothing
++
++    n, _, h, w = images.shape
++    if len(keys) != n:
++        raise ValueError(f"elastic_warp: {len(keys)} keys for {n} images")
++
++    if _ELASTIC_GAUSS is None or _ELASTIC_GAUSS[1] != images.device:
++        _ELASTIC_GAUSS = (GaussianSmoothing(channels=2, kernel_size=9, sigma=2).to(images.device),
++                          images.device)
++    gauss = _ELASTIC_GAUSS[0]
++
++    d = _t.linspace(-1, 1, h)
++    mesh_x, mesh_y = _t.meshgrid((d, d), indexing='ij')
++    identity = _t.stack((mesh_y, mesh_x), 2).unsqueeze(0).permute(0, 3, 1, 2).to(images.device)
++
++    fields = []
++    for k in keys:
++        g = _t.Generator().manual_seed(elastic_seed(k))
++        fields.append(_t.randn(2, h, w, generator=g))
++    field = _t.stack(fields).to(images.device)
++
++    grid = identity - mu * field
++    grid = gauss(grid).permute(0, 2, 3, 1)
++    return _F.grid_sample(images, grid, padding_mode='border', align_corners=True)
++
++
++def get_data_loader(phase='training', experimental_step='pretrain', image_size=256, n_channels=1, batch_size=32,
++                    shuffle=True, num_workers=8, pin_memory=True, b=None, m=None, eps=None, image_path='./',
++                    blur_sigma=None, elastic_mu=None, train_pairing='sanitized_sanitized'):
+     """This function returns a data loader either for the 'training', 'validation', or 'testing' phase for the chest
+     X-ray anonymization experiments.
+ 
+@@ -80,8 +149,9 @@
+     elif experimental_step == 'anonymization':
+         data_set = Dataset(phase=phase, image_size=image_size, n_channels=n_channels, image_path=image_path)
+     elif experimental_step == 'retrainSNN':
+-        data_set = SiameseDataset(phase=phase, n_channels=n_channels, image_size=image_size, b=b, m=m, eps=eps, 
+-                                  image_path=image_path)
++        data_set = SiameseDataset(phase=phase, n_channels=n_channels, image_size=image_size, b=b, m=m, eps=eps,
++                                  blur_sigma=blur_sigma, elastic_mu=elastic_mu,
++                                  image_path=image_path, train_pairing=train_pairing)
+     data_loader = DataLoader(data_set, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers,
+                              pin_memory=pin_memory)
+     return data_loader
+@@ -499,7 +569,7 @@
+ 
+ 
+ def train_snn(perturbation_type, net, perturbation_net, grid_identity, gauss_filter, mu, training_loader, criterion,
+-              optimizer, epoch, n_epochs):
++              optimizer, epoch, n_epochs, train_pairing='sanitized_sanitized'):
+     """This function is used to re-train the incorporated patient verification architecture with 
+     deformed/perturbed/anonymized images.
+ 
+@@ -526,6 +596,11 @@
+         The current epoch. Only needed for printing purposes.
+     :param n_epochs: int
+         The maximum number of epochs for the training/validation loop. Only needed for printing purposes.
++    :param train_pairing: str
++        'sanitized_sanitized' (default, matches the released protocol): both training endpoints are
++        sanitized. 'sanitized_raw': only inputs1 (the query side) is sanitized during training,
++        matching the test-time threat model, where inputs2 is an untouched reference. This never
++        changes test_snn, which is always query-sanitized / reference-raw.
+     :return training_loss: float
+         Epoch-wise training loss for the patient verification task.
+     """
+@@ -540,27 +615,33 @@
+         inputs1, inputs2, labels = batch
+         inputs1, inputs2, labels = inputs1.cuda(), inputs2.cuda(), labels.cuda()
+ 
++        sanitize_side_b = train_pairing == 'sanitized_sanitized'
++
+         if perturbation_type == 'flow_field':
+-            # Generate grids, impose constraints, and compute the deformed images
+-            grid1 = perturbation_net(inputs1)
+-            grid1 = grid_identity - mu * grid1
+-            grid1 = gauss_filter(grid1)
+-            grid1 = grid1.permute(0, 2, 3, 1)
+-            inputs1 = torch.nn.functional.grid_sample(inputs1, grid1, padding_mode='border', align_corners=True)
+-
+-            # Generate grids, impose constraints, and compute the deformed images
+-            grid2 = perturbation_net(inputs2)
+-            grid2 = grid_identity - mu * grid2
+-            grid2 = gauss_filter(grid2)
+-            grid2 = grid2.permute(0, 2, 3, 1)
+-            inputs2 = torch.nn.functional.grid_sample(inputs2, grid2, padding_mode='border', align_corners=True)
++            with torch.no_grad():
++                # Generate grids, impose constraints, and compute the deformed images
++                grid1 = perturbation_net(inputs1)
++                grid1 = grid_identity - mu * grid1
++                grid1 = gauss_filter(grid1)
++                grid1 = grid1.permute(0, 2, 3, 1)
++                inputs1 = torch.nn.functional.grid_sample(inputs1, grid1, padding_mode='border', align_corners=True)
++
++                if sanitize_side_b:
++                    # Generate grids, impose constraints, and compute the deformed images
++                    grid2 = perturbation_net(inputs2)
++                    grid2 = grid_identity - mu * grid2
++                    grid2 = gauss_filter(grid2)
++                    grid2 = grid2.permute(0, 2, 3, 1)
++                    inputs2 = torch.nn.functional.grid_sample(inputs2, grid2, padding_mode='border', align_corners=True)
+ 
+         if perturbation_type == 'privacy_net':
+-            # Compute Privacy-Net output
+-            inputs1 = perturbation_net(inputs1)
+-            inputs2 = perturbation_net(inputs2)
++            with torch.no_grad():
++                # Compute Privacy-Net output
++                inputs1 = perturbation_net(inputs1)
++                if sanitize_side_b:
++                    inputs2 = perturbation_net(inputs2)
+ 
+-        if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix']:
++        if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix', 'blur', 'elastic']:
+             # Expand the input tensors
+             inputs1 = inputs1.expand(-1, 3, -1, -1)
+             inputs2 = inputs2.expand(-1, 3, -1, -1)
+@@ -570,16 +651,21 @@
+             inputs1 = normalize(inputs1)
+             inputs2 = normalize(inputs2)
+ 
+-        # Zero the parameter gradients
+-        optimizer.zero_grad()
++        accum_steps = int(os.environ.get('GRADIENT_ACCUMULATION_STEPS', '1'))
++        if i == 0:
++            optimizer.zero_grad()
+ 
+         # Forward + backward + optimize
+         outputs = net(inputs1, inputs2)
+         outputs = outputs.squeeze()
+         labels = labels.type_as(outputs)
+         loss = criterion(outputs, labels)
+-        loss.backward()
+-        optimizer.step()
++        loss_scaled = loss / accum_steps
++        loss_scaled.backward()
++
++        if (i + 1) % accum_steps == 0 or (i + 1) == len(training_loader):
++            optimizer.step()
++            optimizer.zero_grad()
+ 
+         running_loss += loss.item()
+ 
+@@ -592,7 +678,7 @@
+ 
+ 
+ def validate_snn(perturbation_type, net, perturbation_net, grid_identity, gauss_filter, mu, validation_loader,
+-                 criterion, epoch, n_epochs):
++                 criterion, epoch, n_epochs, train_pairing='sanitized_sanitized'):
+     """This function is used to validate the incorporated patient verification architecture with
+     deformed/perturbed/anonymized images.
+ 
+@@ -617,6 +703,10 @@
+         The current epoch. Only needed for printing purposes.
+     :param n_epochs: int
+         The maximum number of epochs for the training/validation loop. Only needed for printing purposes.
++    :param train_pairing: str
++        Same semantics as in train_snn: 'sanitized_sanitized' (default) or 'sanitized_raw'.
++        Model selection (early stopping) is driven by this validation loss, so this must match
++        the pairing used for training or the two would be inconsistent by construction.
+     :return validation_loss: float
+         Epoch-wise validation loss for the patient verification task.
+     """
+@@ -632,6 +722,8 @@
+             inputs1, inputs2, labels = batch
+             inputs1, inputs2, labels = inputs1.cuda(), inputs2.cuda(), labels.cuda()
+ 
++            sanitize_side_b = train_pairing == 'sanitized_sanitized'
++
+             if perturbation_type == 'flow_field':
+                 # Generate grids, impose constraints, and compute the deformed images
+                 grid1 = perturbation_net(inputs1)
+@@ -640,19 +732,21 @@
+                 grid1 = grid1.permute(0, 2, 3, 1)
+                 inputs1 = torch.nn.functional.grid_sample(inputs1, grid1, padding_mode='border', align_corners=True)
+ 
+-                # Generate grids, impose constraints, and compute the deformed images
+-                grid2 = perturbation_net(inputs2)
+-                grid2 = grid_identity - mu * grid2
+-                grid2 = gauss_filter(grid2)
+-                grid2 = grid2.permute(0, 2, 3, 1)
+-                inputs2 = torch.nn.functional.grid_sample(inputs2, grid2, padding_mode='border', align_corners=True)
++                if sanitize_side_b:
++                    # Generate grids, impose constraints, and compute the deformed images
++                    grid2 = perturbation_net(inputs2)
++                    grid2 = grid_identity - mu * grid2
++                    grid2 = gauss_filter(grid2)
++                    grid2 = grid2.permute(0, 2, 3, 1)
++                    inputs2 = torch.nn.functional.grid_sample(inputs2, grid2, padding_mode='border', align_corners=True)
+ 
+             if perturbation_type == 'privacy_net':
+                 # Compute Privacy-Net output
+                 inputs1 = perturbation_net(inputs1)
+-                inputs2 = perturbation_net(inputs2)
++                if sanitize_side_b:
++                    inputs2 = perturbation_net(inputs2)
+ 
+-            if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix']:
++            if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix', 'blur', 'elastic']:
+                 # Expand the input tensors
+                 inputs1 = inputs1.expand(-1, 3, -1, -1)
+                 inputs2 = inputs2.expand(-1, 3, -1, -1)
+@@ -737,7 +831,7 @@
+                 # Compute Privacy-Net output
+                 inputs1 = perturbation_net(inputs1)
+ 
+-            if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix']:
++            if perturbation_type in ['flow_field', 'privacy_net', 'dp_pix', 'blur', 'elastic']:
+                 # Expand the input tensors
+                 inputs1 = inputs1.expand(-1, 3, -1, -1)
+                 inputs2 = inputs2.expand(-1, 3, -1, -1)
+@@ -776,7 +870,7 @@
+ 
+     rel_root = os.path.abspath(os.path.join(source_dir, os.pardir))
+     # exclude specific folders from .zip file generation
+-    exclude_dirs = {'.git', '.idea', '__pycache__'}
++    exclude_dirs = {'.git', '.idea', '__pycache__', 'images', 'networks', 'cache'}
+     # exclude specific files from .zip file generation
+     exclude_files = {output_filename, '.gitignore'}
+     with zipfile.ZipFile(output_filename, "w", zipfile.ZIP_DEFLATED) as zip_f:
+@@ -1269,7 +1363,13 @@
+ 
+     # add laplace noise
+     laplace = torch.distributions.laplace.Laplace(0, m / (b * b * eps))
+-    noise = laplace.sample((patches.shape[0], kc, 1, 1)).cuda()
++    # The released code hard-codes .cuda() here, which works only when the caller already
++    # moved the batch to the GPU (chexnet/eval_model.py does). SiameseDataset calls dp_pix
++    # while building the dataset, when the tensor is still on the CPU, so the DP-Pix
++    # verification experiments of Table 1 crash as shipped. Following the input's device
++    # fixes that and leaves the CUDA path bit-identical: Laplace.sample() draws on the CPU
++    # RNG either way and is only moved afterwards.
++    noise = laplace.sample((patches.shape[0], kc, 1, 1)).to(patches.device)
+     patches = torch.add(patches, noise).expand(patches.shape[0], kc, b, b)
+     patches = torch.clip(patches, min=0, max=1)
+ 

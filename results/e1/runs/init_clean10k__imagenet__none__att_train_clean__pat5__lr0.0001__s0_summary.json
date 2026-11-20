@@ -1,0 +1,175 @@
+{
+  "run_id": "init_clean10k__imagenet__none__att_train_clean__pat5__lr0.0001__s0",
+  "arch": "resnet50_bce",
+  "init_name": "imagenet",
+  "init_ckpt_sha256": null,
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "none",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 0,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 6,
+  "epochs_ran": 11,
+  "mc_k": 1,
+  "train_losses": [
+    0.617283,
+    0.56399,
+    0.512748,
+    0.481155,
+    0.443291,
+    0.418305,
+    0.382064,
+    0.336532,
+    0.304759,
+    0.267528,
+    0.237339
+  ],
+  "val_losses": [
+    0.585907,
+    0.55282,
+    0.542502,
+    0.53111,
+    0.540165,
+    0.529364,
+    0.532795,
+    0.531238,
+    0.550526,
+    0.566002,
+    0.538945
+  ],
+  "test_metrics": {
+    "auc": 75.344,
+    "pr_auc": 68.7284,
+    "tpr_at_1pct": 2.44,
+    "tpr_at_0_5pct": 1.16,
+    "tpr_at_0_1pct": 0.0
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      72.92,
+      77.81
+    ],
+    "tpr1_ci95": [
+      0.97,
+      5.05
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 76.6095918367347,
+      "pr_auc": 25.72013132957701,
+      "tpr_at_1pct": 1.7857142857142856,
+      "tpr_at_0_5pct": 0.5102040816326531,
+      "tpr_at_0_1pct": 0.0,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 75.10861480075901,
+      "pr_auc": 65.02038016422583,
+      "tpr_at_1pct": 2.5616698292220113,
+      "tpr_at_0_5pct": 1.2808349146110056,
+      "tpr_at_0_1pct": 0.0,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 74.02862042088853,
+      "pr_auc": 80.80858162667303,
+      "tpr_at_1pct": 3.64,
+      "tpr_at_0_5pct": 1.16,
+      "tpr_at_0_1pct": 0.0,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 81.3788,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 1.04,
+          "tpr_pct": 2.48,
+          "threshold": 0.8931041955947876,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.32,
+          "tpr_pct": 0.96,
+          "threshold": 0.9144082069396973,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 0.0,
+          "threshold": Infinity,
+          "fallback_inf": true,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 76.9665,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 3.1199999999999997,
+          "tpr_pct": 8.0,
+          "threshold": 0.848732590675354,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 1.48,
+          "tpr_pct": 4.08,
+          "threshold": 0.8783397078514099,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.84,
+          "tpr_pct": 2.04,
+          "threshold": 0.8987087607383728,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 0.0,
+    "rank1_ci95": [
+      0.0,
+      0.0
+    ],
+    "rank5": 1.21,
+    "rank5_ci95": [
+      0.56,
+      1.86
+    ],
+    "mAP": 1.41,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": "results/e1/runs/init_clean10k__imagenet__none__att_train_clean__pat5__lr0.0001__s0_best.pth",
+  "runtime_sec": 1367.3
+}

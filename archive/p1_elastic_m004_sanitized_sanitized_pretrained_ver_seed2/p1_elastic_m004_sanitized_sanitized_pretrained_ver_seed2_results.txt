@@ -1,0 +1,16 @@
+AUC: 0.98195008
+Accuracy: 0.8908
+F1-Score: 0.8808900523560209
+Precision: 0.968809980806142
+Recall: 0.8076
+Classification report:               precision    recall  f1-score   support
+
+         0.0       0.84      0.97      0.90      2500
+         1.0       0.97      0.81      0.88      2500
+
+    accuracy                           0.89      5000
+   macro avg       0.90      0.89      0.89      5000
+weighted avg       0.90      0.89      0.89      5000
+
+Confusion matrix: [[2435   65]
+ [ 481 2019]]

@@ -1,0 +1,165 @@
+{
+  "run_id": "destructive_ver__resnet50_bce__pretrained_ver__privacy_net__att_train_clean__pat5__lr0.0001__s2",
+  "arch": "resnet50_bce",
+  "init_name": "pretrained_ver",
+  "init_ckpt_sha256": "331efaed0c0433c69941ddc003a14a936c688d94fd4ecfbefd34e53bfa7c051a",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "privacy_net",
+  "sanitizer_ckpt_sha256": "50766e0607711f101fa25f0d1fe1858933683727c84a49919614ff1f4ca3ee4d",
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 2,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 1,
+  "epochs_ran": 6,
+  "mc_k": 1,
+  "train_losses": [
+    0.91865,
+    0.275242,
+    0.144404,
+    0.077297,
+    0.042415,
+    0.022606
+  ],
+  "val_losses": [
+    1.782345,
+    2.391572,
+    2.856574,
+    3.119134,
+    2.733648,
+    2.783606
+  ],
+  "test_metrics": {
+    "auc": 57.2755,
+    "pr_auc": 53.3461,
+    "tpr_at_1pct": 0.96,
+    "tpr_at_0_5pct": 0.4,
+    "tpr_at_0_1pct": 0.0
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      54.57,
+      60.0
+    ],
+    "tpr1_ci95": [
+      0.13,
+      1.95
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 59.52234693877551,
+      "pr_auc": 16.537923414035152,
+      "tpr_at_1pct": 1.7857142857142856,
+      "tpr_at_0_5pct": 0.7653061224489796,
+      "tpr_at_0_1pct": 0.0,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 56.857647058823524,
+      "pr_auc": 48.69178425725287,
+      "tpr_at_1pct": 0.8064516129032258,
+      "tpr_at_0_5pct": 0.33206831119544594,
+      "tpr_at_0_1pct": 0.0,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 57.95847233047545,
+      "pr_auc": 69.75077297552636,
+      "tpr_at_1pct": 1.08,
+      "tpr_at_0_5pct": 0.5599999999999999,
+      "tpr_at_0_1pct": 0.16,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 61.0963,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.96,
+          "tpr_pct": 0.84,
+          "threshold": 0.9664838314056396,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.64,
+          "tpr_pct": 0.5599999999999999,
+          "threshold": 0.9763249158859253,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.36,
+          "tpr_pct": 0.24,
+          "threshold": 0.9838201999664307,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 60.0873,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 1.32,
+          "tpr_pct": 1.08,
+          "threshold": 0.9609387516975403,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.48,
+          "tpr_pct": 0.36,
+          "threshold": 0.9792478084564209,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 0.0,
+          "threshold": Infinity,
+          "fallback_inf": true,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 0.19,
+    "rank1_ci95": [
+      0.0,
+      0.47
+    ],
+    "rank5": 1.12,
+    "rank5_ci95": [
+      0.56,
+      1.77
+    ],
+    "mAP": 1.14,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 837.01
+}

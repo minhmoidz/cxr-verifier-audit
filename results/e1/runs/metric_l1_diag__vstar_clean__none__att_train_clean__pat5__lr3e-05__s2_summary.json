@@ -1,0 +1,169 @@
+{
+  "run_id": "metric_l1_diag__vstar_clean__none__att_train_clean__pat5__lr3e-05__s2",
+  "arch": "resnet50_metric_l1",
+  "init_name": "vstar_clean",
+  "init_ckpt_sha256": "7d5c54050e7e10c0ed6f276be91a640f6e59e8a98677f5f11f87ad36dee062f5",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "none",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 2,
+  "lr": 3e-05,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 3,
+  "epochs_ran": 8,
+  "mc_k": 1,
+  "train_losses": [
+    0.3549,
+    0.273521,
+    0.218487,
+    0.171385,
+    0.139879,
+    0.109602,
+    0.088024,
+    0.070958
+  ],
+  "val_losses": [
+    0.328195,
+    0.309525,
+    0.303457,
+    0.310599,
+    0.325927,
+    0.332381,
+    0.320499,
+    0.341711
+  ],
+  "test_metrics": {
+    "auc": 91.0193,
+    "pr_auc": 88.7664,
+    "tpr_at_1pct": 17.96,
+    "tpr_at_0_5pct": 11.76,
+    "tpr_at_0_1pct": 1.84
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      89.26,
+      92.57
+    ],
+    "tpr1_ci95": [
+      10.09,
+      26.44
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 92.92316326530612,
+      "pr_auc": 64.65914822890608,
+      "tpr_at_1pct": 20.918367346938776,
+      "tpr_at_0_5pct": 15.051020408163266,
+      "tpr_at_0_1pct": 3.061224489795918,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 90.66529411764705,
+      "pr_auc": 86.50777933249971,
+      "tpr_at_1pct": 17.409867172675522,
+      "tpr_at_0_5pct": 11.148007590132828,
+      "tpr_at_0_1pct": 1.6129032258064515,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 84.41465315666407,
+      "pr_auc": 89.5551268827587,
+      "tpr_at_1pct": 11.76,
+      "tpr_at_0_5pct": 8.44,
+      "tpr_at_0_1pct": 1.3599999999999999,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 94.6694,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.72,
+          "tpr_pct": 14.44,
+          "threshold": 0.9039172530174255,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.12,
+          "tpr_pct": 2.16,
+          "threshold": 0.9364196062088013,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 0.27999999999999997,
+          "threshold": 0.9453355669975281,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 92.9551,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.24,
+          "tpr_pct": 8.12,
+          "threshold": 0.919608473777771,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.16,
+          "tpr_pct": 4.64,
+          "threshold": 0.9284495115280151,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 0.0,
+          "threshold": 0.9492611289024353,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 1.86,
+    "rank1_ci95": [
+      1.12,
+      2.7
+    ],
+    "rank5": 10.62,
+    "rank5_ci95": [
+      8.85,
+      12.4
+    ],
+    "mAP": 8.16,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 758.09
+}

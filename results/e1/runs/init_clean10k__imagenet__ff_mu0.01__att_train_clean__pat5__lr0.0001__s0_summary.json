@@ -1,0 +1,169 @@
+{
+  "run_id": "init_clean10k__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0",
+  "arch": "resnet50_bce",
+  "init_name": "imagenet",
+  "init_ckpt_sha256": null,
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "ff_mu0.01",
+  "sanitizer_ckpt_sha256": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153",
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 0,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 3,
+  "epochs_ran": 8,
+  "mc_k": 1,
+  "train_losses": [
+    0.625592,
+    0.546182,
+    0.493616,
+    0.447643,
+    0.400268,
+    0.367886,
+    0.324595,
+    0.266383
+  ],
+  "val_losses": [
+    0.595219,
+    0.573876,
+    0.517469,
+    0.570362,
+    0.595239,
+    0.543105,
+    0.551067,
+    0.634185
+  ],
+  "test_metrics": {
+    "auc": 72.7622,
+    "pr_auc": 66.3344,
+    "tpr_at_1pct": 2.12,
+    "tpr_at_0_5pct": 0.48,
+    "tpr_at_0_1pct": 0.12
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      70.26,
+      75.14
+    ],
+    "tpr1_ci95": [
+      0.35,
+      3.7
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 76.17561224489796,
+      "pr_auc": 27.44139868100617,
+      "tpr_at_1pct": 3.571428571428571,
+      "tpr_at_0_5pct": 1.7857142857142856,
+      "tpr_at_0_1pct": 0.0,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 72.12740037950664,
+      "pr_auc": 61.678935481900375,
+      "tpr_at_1pct": 1.8500948766603416,
+      "tpr_at_0_5pct": 0.23719165085388993,
+      "tpr_at_0_1pct": 0.14231499051233396,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 73.1952299298519,
+      "pr_auc": 79.38424914747355,
+      "tpr_at_1pct": 1.04,
+      "tpr_at_0_5pct": 0.36,
+      "tpr_at_0_1pct": 0.04,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 82.302,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.84,
+          "tpr_pct": 1.48,
+          "threshold": 0.853661298751831,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.52,
+          "tpr_pct": 0.52,
+          "threshold": 0.8783273100852966,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 0.0,
+          "threshold": Infinity,
+          "fallback_inf": true,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 78.7078,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.6799999999999999,
+          "tpr_pct": 1.0,
+          "threshold": 0.8674371242523193,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.04,
+          "tpr_pct": 0.0,
+          "threshold": 0.9100085496902466,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.04,
+          "tpr_pct": 0.0,
+          "threshold": 0.9100085496902466,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 0.28,
+    "rank1_ci95": [
+      0.0,
+      0.65
+    ],
+    "rank5": 1.49,
+    "rank5_ci95": [
+      0.84,
+      2.24
+    ],
+    "mAP": 1.8,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": "results/e1/runs/init_clean10k__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0_best.pth",
+  "runtime_sec": 1035.12
+}

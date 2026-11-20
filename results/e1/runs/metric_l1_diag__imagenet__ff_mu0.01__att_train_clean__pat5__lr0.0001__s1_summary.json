@@ -1,0 +1,183 @@
+{
+  "run_id": "metric_l1_diag__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1",
+  "arch": "resnet50_metric_l1",
+  "init_name": "imagenet",
+  "init_ckpt_sha256": null,
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "ff_mu0.01",
+  "sanitizer_ckpt_sha256": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153",
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 1,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 10,
+  "epochs_ran": 15,
+  "mc_k": 1,
+  "train_losses": [
+    0.43744,
+    0.258675,
+    0.173976,
+    0.121411,
+    0.110522,
+    0.070857,
+    0.071822,
+    0.053854,
+    0.032672,
+    0.027513,
+    0.046985,
+    0.049936,
+    0.056653,
+    0.026465,
+    0.017589
+  ],
+  "val_losses": [
+    0.361442,
+    0.350076,
+    0.355726,
+    0.362641,
+    0.443079,
+    0.369021,
+    0.297845,
+    0.388561,
+    0.306272,
+    0.288948,
+    0.318649,
+    0.380275,
+    0.425978,
+    0.311238,
+    0.327684
+  ],
+  "test_metrics": {
+    "auc": 91.5012,
+    "pr_auc": 89.6595,
+    "tpr_at_1pct": 16.84,
+    "tpr_at_0_5pct": 11.92,
+    "tpr_at_0_1pct": 6.2
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      89.93,
+      92.9
+    ],
+    "tpr1_ci95": [
+      11.31,
+      27.46
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 94.44020408163266,
+      "pr_auc": 72.78924963811573,
+      "tpr_at_1pct": 28.8265306122449,
+      "tpr_at_0_5pct": 21.428571428571427,
+      "tpr_at_0_1pct": 11.479591836734695,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 90.95472485768501,
+      "pr_auc": 87.1254148019021,
+      "tpr_at_1pct": 14.61100569259962,
+      "tpr_at_0_5pct": 10.15180265654649,
+      "tpr_at_0_1pct": 5.218216318785579,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 88.55819173811379,
+      "pr_auc": 92.35926998688088,
+      "tpr_at_1pct": 13.36,
+      "tpr_at_0_5pct": 7.920000000000001,
+      "tpr_at_0_1pct": 6.0,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 95.9845,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.4,
+          "tpr_pct": 9.879999999999999,
+          "threshold": 0.9673401117324829,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.2,
+          "tpr_pct": 7.000000000000001,
+          "threshold": 0.9742984175682068,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 5.52,
+          "threshold": 0.9776240587234497,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 95.7902,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 2.2399999999999998,
+          "tpr_pct": 31.080000000000002,
+          "threshold": 0.8928720355033875,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.88,
+          "tpr_pct": 16.400000000000002,
+          "threshold": 0.9495159387588501,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.84,
+          "tpr_pct": 16.16,
+          "threshold": 0.9506857991218567,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 5.5,
+    "rank1_ci95": [
+      4.19,
+      6.9
+    ],
+    "rank5": 20.13,
+    "rank5_ci95": [
+      17.8,
+      22.46
+    ],
+    "mAP": 13.89,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 1505.08
+}

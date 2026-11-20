@@ -1,0 +1,13 @@
+run_id,sanitizer,seed,best_epoch_val_san,best_epoch_val_raw,best_val_macro_auc,best_val_raw_macro_auc,test_raw_macro_auc,test_san_macro_auc,test_raw_t5k_8062_auc,val_raw_sel_test_raw_macro_auc,val_raw_sel_test_raw_t5k_8062_auc,peak_vram_mib,runtime_sec
+u_retrain__blur_s2__s0,blur_s2,0,4,5,76.69,74.96,71.24,74.15,69.39,71.52,68.92,4188.8,1396.5
+u_retrain__blur_s2__s1,blur_s2,1,4,2,76.51,74.87,70.83,74.38,68.06,72.43,70.26,4186.3,1359.1
+u_retrain__blur_s2__s2,blur_s2,2,4,4,77.09,75.85,71.29,73.97,68.3,71.29,68.3,4187.7,1332.1
+u_retrain__elastic_m0.04_keyed__s0,elastic_m0.04_keyed,0,6,5,76.15,77.79,73.9,73.91,71.88,75.32,73.39,4187.7,2040.3
+u_retrain__elastic_m0.04_keyed__s1,elastic_m0.04_keyed,1,7,7,76.26,77.48,74.48,74.44,73.16,74.48,73.16,4188.0,1958.9
+u_retrain__elastic_m0.04_keyed__s2,elastic_m0.04_keyed,2,4,6,76.34,77.65,75.39,74.74,72.88,74.89,72.77,4188.7,2003.7
+u_retrain__ff_mu0.01__s0,ff_mu0.01,0,4,6,77.55,77.29,74.29,75.23,72.7,74.4,72.31,4180.5,1803.4
+u_retrain__ff_mu0.01__s1,ff_mu0.01,1,4,4,76.68,76.94,73.91,74.83,71.96,73.91,71.96,4197.8,1368.2
+u_retrain__ff_mu0.01__s2,ff_mu0.01,2,5,5,76.38,76.86,73.85,75.05,71.6,73.85,71.6,4219.0,1388.6
+u_retrain__none__s0,none,0,4,4,79.05,79.05,76.7,76.7,75.14,76.7,75.14,4150.3,2066.5
+u_retrain__none__s1,none,1,5,5,77.71,77.71,76.57,76.57,75.32,76.57,75.32,4188.9,1374.0
+u_retrain__none__s2,none,2,4,4,78.35,78.35,76.02,76.02,73.75,76.02,73.75,4188.8,1392.2

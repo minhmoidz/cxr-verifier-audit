@@ -1,0 +1,197 @@
+{
+  "run_id": "frontier_ver__resnet50_bce__pretrained_ver__blur_s1.5__att_train_clean__pat5__lr0.0001__s0",
+  "arch": "resnet50_bce",
+  "init_name": "pretrained_ver",
+  "init_ckpt_sha256": "331efaed0c0433c69941ddc003a14a936c688d94fd4ecfbefd34e53bfa7c051a",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "blur_s1.5",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 0,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 17,
+  "epochs_ran": 22,
+  "mc_k": 1,
+  "train_losses": [
+    0.049321,
+    0.010259,
+    0.004022,
+    0.002322,
+    0.001645,
+    0.001225,
+    0.001062,
+    0.00133,
+    0.000863,
+    0.000865,
+    0.000597,
+    0.019682,
+    0.013597,
+    0.002367,
+    0.000978,
+    0.000755,
+    0.000593,
+    0.000514,
+    0.000394,
+    0.000322,
+    0.000282,
+    0.000246
+  ],
+  "val_losses": [
+    0.238407,
+    0.286353,
+    0.226584,
+    0.241642,
+    0.217705,
+    0.256579,
+    0.221925,
+    0.220936,
+    0.208749,
+    0.239388,
+    0.247255,
+    0.254209,
+    0.199644,
+    0.204736,
+    0.202765,
+    0.198774,
+    0.190335,
+    0.200628,
+    0.200332,
+    0.200336,
+    0.209642,
+    0.208248
+  ],
+  "test_metrics": {
+    "auc": 97.4523,
+    "pr_auc": 97.0838,
+    "tpr_at_1pct": 57.36,
+    "tpr_at_0_5pct": 34.32,
+    "tpr_at_0_1pct": 18.4
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      96.71,
+      98.12
+    ],
+    "tpr1_ci95": [
+      33.95,
+      71.31
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 97.82275510204082,
+      "pr_auc": 88.74487052470546,
+      "tpr_at_1pct": 64.28571428571429,
+      "tpr_at_0_5pct": 41.3265306122449,
+      "tpr_at_0_1pct": 21.1734693877551,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 97.38345351043642,
+      "pr_auc": 96.47500349377151,
+      "tpr_at_1pct": 56.07210626185958,
+      "tpr_at_0_5pct": 33.017077798861486,
+      "tpr_at_0_1pct": 17.8842504743833,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 96.0308339828527,
+      "pr_auc": 97.59253261084375,
+      "tpr_at_1pct": 43.36,
+      "tpr_at_0_5pct": 28.799999999999997,
+      "tpr_at_0_1pct": 18.4,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 98.5306,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.84,
+          "tpr_pct": 52.35999999999999,
+          "threshold": 0.9836959838867188,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.16,
+          "tpr_pct": 22.0,
+          "threshold": 0.999220609664917,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.08,
+          "tpr_pct": 17.0,
+          "threshold": 0.9995635151863098,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 98.8931,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 2.12,
+          "tpr_pct": 72.64,
+          "threshold": 0.871732771396637,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.8,
+          "tpr_pct": 51.35999999999999,
+          "threshold": 0.9856389164924622,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.32,
+          "tpr_pct": 28.48,
+          "threshold": 0.9982966780662537,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 23.67,
+    "rank1_ci95": [
+      21.34,
+      26.28
+    ],
+    "rank5": 54.8,
+    "rank5_ci95": [
+      51.91,
+      57.6
+    ],
+    "mAP": 38.07,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 1592.85
+}

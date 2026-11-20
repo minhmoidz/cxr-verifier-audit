@@ -1,0 +1,223 @@
+{
+ "status": "exploratory, chosen after Table 2 rank changes were observed; not preregistered",
+ "metric": "TPR at 1% FPR on the test ROC (percentage points), threshold recomputed in every replicate",
+ "direction": "MIMIC full recipe minus ImageNet monotone head; change = d_san - d_raw",
+ "test_pairs": "image_pairs/image_pairs_testing_5000.txt",
+ "n_pairs": 5000,
+ "n_pos": 2500,
+ "n_patients": 1307,
+ "resampling": "patients with replacement, dyadic weights (positive m_p, negative m_a*m_b), same resample for all four arms in each replicate",
+ "seed_handling": {
+  "patient": "three seeds averaged within each arm; models treated as fixed",
+  "patient+seed": "three seeds resampled with replacement independently per arm, then averaged"
+ },
+ "n_boot": 2000,
+ "rng_seed": 20261120,
+ "dropped_replicates": {
+  "patient": 0,
+  "patient+seed": 0
+ },
+ "per_seed_tpr1": {
+  "mimic_raw": [
+   38.6,
+   38.080000000000005,
+   45.12
+  ],
+  "inmono_raw": [
+   28.52,
+   35.199999999999996,
+   35.68
+  ],
+  "mimic_san": [
+   7.28,
+   5.04,
+   9.44
+  ],
+  "inmono_san": [
+   25.080000000000002,
+   11.84,
+   21.0
+  ]
+ },
+ "arm_mean_tpr1": {
+  "mimic_raw": 40.6,
+  "inmono_raw": 33.13333333333333,
+  "mimic_san": 7.253333333333333,
+  "inmono_san": 19.30666666666667
+ },
+ "point": {
+  "d_raw": 7.466666666666669,
+  "d_san": -12.053333333333335,
+  "change": -19.520000000000003
+ },
+ "arm_ci_patient": {
+  "mimic_raw": {
+   "ci95": [
+    25.67163715090495,
+    49.5764982909229
+   ],
+   "median": 38.951236616211595,
+   "n_boot": 2000
+  },
+  "inmono_raw": {
+   "ci95": [
+    24.288231148696266,
+    42.19986946314562
+   ],
+   "median": 33.14729527284593,
+   "n_boot": 2000
+  },
+  "mimic_san": {
+   "ci95": [
+    4.30121897955132,
+    10.262126037444506
+   ],
+   "median": 7.110473091882897,
+   "n_boot": 2000
+  },
+  "inmono_san": {
+   "ci95": [
+    14.499771461769132,
+    26.02016455391522
+   ],
+   "median": 19.77711328114345,
+   "n_boot": 2000
+  }
+ },
+ "ci": {
+  "patient": {
+   "d_raw": {
+    "ci95": [
+     -8.581229169034208,
+     17.140202398966753
+    ],
+    "median": 5.614611338054123,
+    "n_boot": 2000
+   },
+   "d_san": {
+    "ci95": [
+     -18.580075559235482,
+     -7.306713420890962
+    ],
+    "median": -12.758222103478092,
+    "n_boot": 2000
+   },
+   "change": {
+    "ci95": [
+     -30.735683571843893,
+     -4.283784346851952
+    ],
+    "median": -18.32747338996264,
+    "n_boot": 2000
+   }
+  },
+  "patient+seed": {
+   "d_raw": {
+    "ci95": [
+     -11.842332194156466,
+     20.5285775100232
+    ],
+    "median": 5.544930133033091,
+    "n_boot": 2000
+   },
+   "d_san": {
+    "ci95": [
+     -21.97915482820018,
+     -3.053916470691611
+    ],
+    "median": -12.836217578200074,
+    "n_boot": 2000
+   },
+   "change": {
+    "ci95": [
+     -36.23895515356766,
+     1.5072716795016607
+    ],
+    "median": -17.860482543933465,
+    "n_boot": 2000
+   }
+  }
+ },
+ "share_of_replicates": {
+  "patient": {
+   "d_raw_gt_0": 0.805,
+   "d_san_lt_0": 1.0,
+   "both": 0.805
+  },
+  "patient+seed": {
+   "d_raw_gt_0": 0.7505,
+   "d_san_lt_0": 0.996,
+   "both": 0.748
+  }
+ },
+ "inputs": {
+  "mimic_raw": [
+   {
+    "seed": 0,
+    "file": "results/prl_final/runs/lr_match__resnet50_metric_l1__chexgenbench__none__att_train_clean__pat5__lr0.0001__s0_preds.npz",
+    "sha256": "1725af705f2c0966669c58f408aca88f202baf22cd3528255fcfe1d531e259d9"
+   },
+   {
+    "seed": 1,
+    "file": "results/prl_final/runs/lr_match__resnet50_metric_l1__chexgenbench__none__att_train_clean__pat5__lr0.0001__s1_preds.npz",
+    "sha256": "b2e946c68a860efd89651422e0c07d80cabfd923e56aad654af9c4c70715048a"
+   },
+   {
+    "seed": 2,
+    "file": "results/prl_final/runs/lr_match__resnet50_metric_l1__chexgenbench__none__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+    "sha256": "44ab8bb65cf0022b4949c331374f2b5a3f8ef863dc1a2c2d216767de931aabd2"
+   }
+  ],
+  "inmono_raw": [
+   {
+    "seed": 0,
+    "file": "results/prl_final/runs/recipe__resnet50_monohead__imagenet__none__att_train_clean__pat5__lr0.0001__s0_preds.npz",
+    "sha256": "54932b4c3f6056525a723405bbbef2541431e307e179f03568687c29253bd857"
+   },
+   {
+    "seed": 1,
+    "file": "results/prl_final/runs/recipe__resnet50_monohead__imagenet__none__att_train_clean__pat5__lr0.0001__s1_preds.npz",
+    "sha256": "05f85332beb9056d9f699c127eaaa28c3a88b49a1be822d43a0f2fa428021d0b"
+   },
+   {
+    "seed": 2,
+    "file": "results/prl_final/runs/recipe__resnet50_monohead__imagenet__none__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+    "sha256": "c120d5bf09a17da313b78d296b2c3f4bc4daf721a1927e7a98f816e52a0abbac"
+   }
+  ],
+  "mimic_san": [
+   {
+    "seed": 0,
+    "file": "results/prl_final/runs/lr_match__resnet50_metric_l1__chexgenbench__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0_preds.npz",
+    "sha256": "57168454454bd3686cb629b3198c9e16158ff43a4ca1dbf69121e57bc7545efd"
+   },
+   {
+    "seed": 1,
+    "file": "results/prl_final/runs/lr_match__resnet50_metric_l1__chexgenbench__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1_preds.npz",
+    "sha256": "5b4e168891ab9aeeec012f5989ac4a0caafb042eaa322f16a86f694f2095707d"
+   },
+   {
+    "seed": 2,
+    "file": "results/prl_final/runs/lr_match__resnet50_metric_l1__chexgenbench__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+    "sha256": "f5e60743d2a35b28de04f329efd4a55b59e7ddf40632981573942017bd990450"
+   }
+  ],
+  "inmono_san": [
+   {
+    "seed": 0,
+    "file": "results/prl_final/runs/recipe__resnet50_monohead__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0_preds.npz",
+    "sha256": "5faeccea5262f4ff680ce384ebdb65d6f8afe5c5ee9550e594a8491fc85440d3"
+   },
+   {
+    "seed": 1,
+    "file": "results/prl_final/runs/recipe__resnet50_monohead__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1_preds.npz",
+    "sha256": "66438b50f359e0509cb8a4dfec817691132e94d7b065325a9d9f495ea51336e9"
+   },
+   {
+    "seed": 2,
+    "file": "results/prl_final/runs/recipe__resnet50_monohead__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+    "sha256": "cc5908bbab6bd044fac4e8b60a41c5f9b1adaafc5b88eff4601379645b80c2d3"
+   }
+  ]
+ }
+}

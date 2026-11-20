@@ -1,0 +1,191 @@
+{
+  "run_id": "frontier_ver__resnet50_bce__pretrained_ver__blur_s2__att_train_clean__pat5__lr0.0001__s2",
+  "arch": "resnet50_bce",
+  "init_name": "pretrained_ver",
+  "init_ckpt_sha256": "331efaed0c0433c69941ddc003a14a936c688d94fd4ecfbefd34e53bfa7c051a",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "blur_s2",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 2,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 14,
+  "epochs_ran": 19,
+  "mc_k": 1,
+  "train_losses": [
+    0.078848,
+    0.014174,
+    0.005872,
+    0.003227,
+    0.002179,
+    0.001566,
+    0.001227,
+    0.000995,
+    0.000791,
+    0.00077,
+    0.002359,
+    0.028707,
+    0.008086,
+    0.003239,
+    0.001234,
+    0.000764,
+    0.000608,
+    0.000644,
+    0.000913
+  ],
+  "val_losses": [
+    0.366011,
+    0.265428,
+    0.227246,
+    0.205085,
+    0.215698,
+    0.21126,
+    0.201795,
+    0.19907,
+    0.204121,
+    0.217046,
+    0.270252,
+    0.196684,
+    0.170222,
+    0.168682,
+    0.168713,
+    0.172124,
+    0.174147,
+    0.172564,
+    0.187567
+  ],
+  "test_metrics": {
+    "auc": 97.327,
+    "pr_auc": 96.8365,
+    "tpr_at_1pct": 53.32,
+    "tpr_at_0_5pct": 35.08,
+    "tpr_at_0_1pct": 18.52
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      96.58,
+      97.95
+    ],
+    "tpr1_ci95": [
+      35.35,
+      65.44
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 97.63051020408163,
+      "pr_auc": 86.43809745070398,
+      "tpr_at_1pct": 56.88775510204081,
+      "tpr_at_0_5pct": 35.714285714285715,
+      "tpr_at_0_1pct": 17.857142857142858,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 97.2705028462998,
+      "pr_auc": 96.220708579506,
+      "tpr_at_1pct": 52.656546489563574,
+      "tpr_at_0_5pct": 34.96204933586338,
+      "tpr_at_0_1pct": 18.64326375711575,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 95.84282151208106,
+      "pr_auc": 97.42825877899412,
+      "tpr_at_1pct": 36.96,
+      "tpr_at_0_5pct": 28.599999999999998,
+      "tpr_at_0_1pct": 18.52,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 98.4759,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 2.2399999999999998,
+          "tpr_pct": 68.44,
+          "threshold": 0.9655725955963135,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.16,
+          "tpr_pct": 19.16,
+          "threshold": 0.9996614456176758,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.04,
+          "tpr_pct": 2.6,
+          "threshold": 0.999980092048645,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 98.3878,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 1.4000000000000001,
+          "tpr_pct": 61.28,
+          "threshold": 0.9844691157341003,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.27999999999999997,
+          "tpr_pct": 28.439999999999998,
+          "threshold": 0.9991903901100159,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.16,
+          "tpr_pct": 20.4,
+          "threshold": 0.9996232986450195,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 18.36,
+    "rank1_ci95": [
+      16.21,
+      20.69
+    ],
+    "rank5": 49.21,
+    "rank5_ci95": [
+      46.6,
+      52.56
+    ],
+    "mAP": 33.13,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 1193.8
+}

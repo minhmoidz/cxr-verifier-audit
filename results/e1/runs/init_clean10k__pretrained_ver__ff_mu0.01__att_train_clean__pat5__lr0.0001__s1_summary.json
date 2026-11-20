@@ -1,0 +1,179 @@
+{
+  "run_id": "init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1",
+  "arch": "resnet50_bce",
+  "init_name": "pretrained_ver",
+  "init_ckpt_sha256": "331efaed0c0433c69941ddc003a14a936c688d94fd4ecfbefd34e53bfa7c051a",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "ff_mu0.01",
+  "sanitizer_ckpt_sha256": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153",
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 1,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 8,
+  "epochs_ran": 13,
+  "mc_k": 1,
+  "train_losses": [
+    0.140298,
+    0.029406,
+    0.012231,
+    0.006375,
+    0.004839,
+    0.002969,
+    0.00198,
+    0.001502,
+    0.001269,
+    0.001772,
+    0.001486,
+    0.000729,
+    0.002959
+  ],
+  "val_losses": [
+    1.211168,
+    0.938019,
+    0.91555,
+    0.878986,
+    0.826503,
+    0.781796,
+    0.782181,
+    0.714951,
+    0.776922,
+    0.924107,
+    0.839299,
+    0.793687,
+    0.790251
+  ],
+  "test_metrics": {
+    "auc": 95.1866,
+    "pr_auc": 93.8752,
+    "tpr_at_1pct": 28.44,
+    "tpr_at_0_5pct": 18.96,
+    "tpr_at_0_1pct": 7.48
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      94.12,
+      96.19
+    ],
+    "tpr1_ci95": [
+      18.02,
+      43.44
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 95.58714285714287,
+      "pr_auc": 74.01973823063067,
+      "tpr_at_1pct": 29.591836734693878,
+      "tpr_at_0_5pct": 17.346938775510203,
+      "tpr_at_0_1pct": 7.3979591836734695,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 95.1120872865275,
+      "pr_auc": 92.78816493864159,
+      "tpr_at_1pct": 28.225806451612907,
+      "tpr_at_0_5pct": 19.25996204933586,
+      "tpr_at_0_1pct": 7.495256166982922,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 93.11959469992206,
+      "pr_auc": 95.23049762997364,
+      "tpr_at_1pct": 21.44,
+      "tpr_at_0_5pct": 16.56,
+      "tpr_at_0_1pct": 2.7199999999999998,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 96.3135,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.32,
+          "tpr_pct": 15.2,
+          "threshold": 0.9790705442428589,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.08,
+          "tpr_pct": 6.52,
+          "threshold": 0.9964095950126648,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.08,
+          "tpr_pct": 5.16,
+          "threshold": 0.9976032376289368,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 96.7437,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 1.28,
+          "tpr_pct": 33.160000000000004,
+          "threshold": 0.8363929390907288,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.44,
+          "tpr_pct": 18.04,
+          "threshold": 0.9657760262489319,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.36,
+          "tpr_pct": 17.44,
+          "threshold": 0.9680559039115906,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 7.92,
+    "rank1_ci95": [
+      6.43,
+      9.51
+    ],
+    "rank5": 30.48,
+    "rank5_ci95": [
+      27.87,
+      32.9
+    ],
+    "mAP": 19.95,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 969.5
+}

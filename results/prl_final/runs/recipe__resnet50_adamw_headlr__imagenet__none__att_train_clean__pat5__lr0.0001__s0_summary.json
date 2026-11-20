@@ -1,0 +1,175 @@
+{
+  "run_id": "recipe__resnet50_adamw_headlr__imagenet__none__att_train_clean__pat5__lr0.0001__s0",
+  "arch": "resnet50_adamw_headlr",
+  "init_name": "imagenet",
+  "init_ckpt_sha256": null,
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "none",
+  "sanitizer_ckpt_sha256": null,
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 0,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 6,
+  "epochs_ran": 11,
+  "mc_k": 1,
+  "train_losses": [
+    0.56921,
+    0.415032,
+    0.330106,
+    0.27025,
+    0.230369,
+    0.177893,
+    0.152932,
+    0.129505,
+    0.104892,
+    0.091009,
+    0.068113
+  ],
+  "val_losses": [
+    0.490823,
+    0.430857,
+    0.379882,
+    0.419644,
+    0.409748,
+    0.375721,
+    0.408762,
+    0.381208,
+    0.407393,
+    0.419904,
+    0.409977
+  ],
+  "test_metrics": {
+    "auc": 88.6452,
+    "pr_auc": 84.8798,
+    "tpr_at_1pct": 11.16,
+    "tpr_at_0_5pct": 4.68,
+    "tpr_at_0_1pct": 0.44
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      87.02,
+      90.24
+    ],
+    "tpr1_ci95": [
+      4.38,
+      17.33
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 89.15183673469387,
+      "pr_auc": 48.82669525580619,
+      "tpr_at_1pct": 9.438775510204081,
+      "tpr_at_0_5pct": 3.826530612244898,
+      "tpr_at_0_1pct": 0.25510204081632654,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 88.55104364326377,
+      "pr_auc": 82.57625481048392,
+      "tpr_at_1pct": 11.480075901328274,
+      "tpr_at_0_5pct": 4.838709677419355,
+      "tpr_at_0_1pct": 0.47438330170777987,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 82.84483242400623,
+      "pr_auc": 87.38955914851356,
+      "tpr_at_1pct": 6.52,
+      "tpr_at_0_5pct": 2.96,
+      "tpr_at_0_1pct": 0.2,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 93.0155,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 2.7199999999999998,
+          "tpr_pct": 22.16,
+          "threshold": 0.9464654922485352,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 1.72,
+          "tpr_pct": 16.520000000000003,
+          "threshold": 0.9633471965789795,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 1.32,
+          "tpr_pct": 14.680000000000001,
+          "threshold": 0.9680936336517334,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 91.5894,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 2.0,
+          "tpr_pct": 18.32,
+          "threshold": 0.9581629037857056,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 1.44,
+          "tpr_pct": 16.2,
+          "threshold": 0.964424729347229,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 1.28,
+          "tpr_pct": 14.280000000000001,
+          "threshold": 0.9688451290130615,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 1.58,
+    "rank1_ci95": [
+      0.93,
+      2.33
+    ],
+    "rank5": 7.74,
+    "rank5_ci95": [
+      6.15,
+      9.41
+    ],
+    "mAP": 6.11,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 874.68
+}

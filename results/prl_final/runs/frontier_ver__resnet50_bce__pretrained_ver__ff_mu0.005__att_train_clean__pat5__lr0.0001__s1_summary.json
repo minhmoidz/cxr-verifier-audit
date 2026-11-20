@@ -1,0 +1,181 @@
+{
+  "run_id": "frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.005__att_train_clean__pat5__lr0.0001__s1",
+  "arch": "resnet50_bce",
+  "init_name": "pretrained_ver",
+  "init_ckpt_sha256": "331efaed0c0433c69941ddc003a14a936c688d94fd4ecfbefd34e53bfa7c051a",
+  "input_size": 256,
+  "use_imagenet_norm": true,
+  "sanitizer": "ff_mu0.005",
+  "sanitizer_ckpt_sha256": "4d368637426e0c33606090d37d3338e472ff0f6a64a5791b9f22e25c3aceae3b",
+  "train_path": "results/clean_splits/d_att_train_clean.txt",
+  "train_path_sha256": "a8cdc2827685b7592dcd4076ee630e17f97e36cdd41c010aaefaed89f9dbf657",
+  "val_path": "image_pairs/image_pairs_validation_2000.txt",
+  "test_path": "image_pairs/image_pairs_testing_5000.txt",
+  "train_pairing": "SR",
+  "val_pairing": "SR",
+  "test_pairing": "SR",
+  "seed": 1,
+  "lr": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 100,
+  "patience": 5,
+  "fixed_epochs": null,
+  "selected_epoch": 9,
+  "epochs_ran": 14,
+  "mc_k": 1,
+  "train_losses": [
+    0.087242,
+    0.018346,
+    0.007817,
+    0.004204,
+    0.003012,
+    0.001938,
+    0.001451,
+    0.001105,
+    0.001313,
+    0.014881,
+    0.007482,
+    0.002784,
+    0.001382,
+    0.000769
+  ],
+  "val_losses": [
+    0.652392,
+    0.43956,
+    0.4518,
+    0.447815,
+    0.444446,
+    0.430956,
+    0.432853,
+    0.419521,
+    0.415146,
+    0.711886,
+    0.555122,
+    0.571158,
+    0.543189,
+    0.529679
+  ],
+  "test_metrics": {
+    "auc": 97.3537,
+    "pr_auc": 96.7723,
+    "tpr_at_1pct": 49.92,
+    "tpr_at_0_5pct": 36.52,
+    "tpr_at_0_1pct": 8.64
+  },
+  "test_bootstrap_single_seed": {
+    "auc_ci95": [
+      96.61,
+      98.0
+    ],
+    "tpr1_ci95": [
+      34.06,
+      59.56
+    ]
+  },
+  "subgroups": {
+    "fu1_4": {
+      "auc": 97.74397959183673,
+      "pr_auc": 86.3252207718702,
+      "tpr_at_1pct": 54.33673469387755,
+      "tpr_at_0_5pct": 38.265306122448976,
+      "tpr_at_0_1pct": 7.908163265306123,
+      "n_pos": 392,
+      "n_neg": 2500
+    },
+    "fu_ge5": {
+      "auc": 97.28111954459202,
+      "pr_auc": 96.11636081410747,
+      "tpr_at_1pct": 49.098671726755214,
+      "tpr_at_0_5pct": 36.195445920303605,
+      "tpr_at_0_1pct": 8.776091081593927,
+      "n_pos": 2108,
+      "n_neg": 2500
+    },
+    "same_sex": {
+      "auc": 95.98491036632892,
+      "pr_auc": 97.42318073964641,
+      "tpr_at_1pct": 41.0,
+      "tpr_at_0_5pct": 30.080000000000002,
+      "tpr_at_0_1pct": 8.64,
+      "n_pos": 2500,
+      "n_neg": 1283
+    }
+  },
+  "calibration": {
+    "disjoint700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 97.4596,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 0.2,
+          "tpr_pct": 22.56,
+          "threshold": 0.9864742159843445,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 7.3999999999999995,
+          "threshold": 0.9987836480140686,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.0,
+          "tpr_pct": 0.16,
+          "threshold": 0.9999899864196777,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    },
+    "val2k_sub700_SR": {
+      "pairing": "SR",
+      "n_pairs": 700,
+      "cal_auc": 98.129,
+      "operating_points": {
+        "fpr_1pct": {
+          "fpr_pct": 2.16,
+          "tpr_pct": 62.32,
+          "threshold": 0.6257531046867371,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.5pct": {
+          "fpr_pct": 0.8,
+          "tpr_pct": 45.36,
+          "threshold": 0.8928371667861938,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        },
+        "fpr_0.1pct": {
+          "fpr_pct": 0.12,
+          "tpr_pct": 9.64,
+          "threshold": 0.9980408549308777,
+          "fallback_inf": false,
+          "n_cal_neg": 350
+        }
+      }
+    }
+  },
+  "extra_evals": {},
+  "mc_evals": {},
+  "sr_gallery": {
+    "n_identities": 1073,
+    "rank1": 12.86,
+    "rank1_ci95": [
+      10.72,
+      14.82
+    ],
+    "rank5": 41.1,
+    "rank5_ci95": [
+      38.12,
+      43.99
+    ],
+    "mAP": 26.76,
+    "mean_ties_per_query": 0.0
+  },
+  "ckpt_saved_path": null,
+  "runtime_sec": 1013.34
+}
