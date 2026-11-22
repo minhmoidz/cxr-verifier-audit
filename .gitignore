@@ -1,5 +1,6 @@
 # Data and weights are not redistributed (see README).
 images/
+images_256_extra/
 cache/
 *.pth
 extensions/

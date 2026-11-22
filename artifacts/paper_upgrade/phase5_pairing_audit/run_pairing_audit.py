@@ -65,7 +65,7 @@ import recover_p1_validation as RPV  # noqa: E402  (reuse its select_threshold; 
 sys.path.insert(0, os.path.join(ROOT, "artifacts/paper_upgrade/phase1_patient_bootstrap"))
 import phase1_bootstrap as B  # noqa: E402  (reuse weighted_operating_point; do not reimplement)
 
-OUT_ROOT = os.path.join(ROOT, "artifacts", "pairing_audit")
+OUT_ROOT = os.environ.get("PAIRING_OUT_ROOT") or os.path.join(ROOT, "artifacts", "pairing_audit")
 PRETRAINED_VER_MODEL = R.PRETRAINED_VER_MODEL
 
 RUNTIME_CODE_FILES = (
@@ -508,7 +508,7 @@ def main():
                         "or 'all' for the full planned design (locked before running; not "
                         "pre-registered in any timestamped external registry)")
     p.add_argument("--seeds", default="0", help="comma-separated seeds, e.g. 0,1,2")
-    p.add_argument("--design", choices=("pilot", "factorial"), default="pilot",
+    p.add_argument("--design", choices=("pilot", "factorial", "imagenet_factorial"), default="pilot",
                    help="'factorial' runs the locked DEC-2026-11-02-001 design (verifier-init; "
                         "--config/--seeds are ignored)")
     p.add_argument("--only", default="", help="factorial only: substring filter on run_id")
@@ -525,9 +525,10 @@ def main():
                          "see pairing_resolver.py for the CPU-only config-resolution surface, "
                          "which is fully testable without one.")
 
-    if args.design == "factorial":
+    if args.design in ("factorial", "imagenet_factorial"):
         i, n = (int(x) for x in args.shard.split("/"))
-        cells = [c for c in R.factorial_cells() if args.only in R.cell_id(c[0], c[1], c[2], c[3], c[4], c[5])]
+        design = R.factorial_cells() if args.design == "factorial" else R.imagenet_factorial_cells()
+        cells = [c for c in design if args.only in R.cell_id(c[0], c[1], c[2], c[3], c[4], c[5])]
         cells = cells[i::n]
     else:
         cells = [(*c, None, "orig") for c in R.all_cells(config_names=config_names, seeds=seeds)]

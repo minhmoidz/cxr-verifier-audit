@@ -43,6 +43,9 @@ from utils.GaussianSmoothing import GaussianSmoothing  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 IMAGE_DIR = ROOT / "images"
+# 256 x 256 copies of NIH train/val images not in images/ (tools/fetch_nih_trainval_256.py, E5).
+# Loading one gives the same pixels as loading the original: a 256 x 256 image is not resized again.
+EXTRA_IMAGE_DIR = ROOT / "images_256_extra"
 CACHE_NPY = ROOT / "cache" / "images_256.npy"
 CACHE_IDX = ROOT / "cache" / "index.json"
 
@@ -124,7 +127,10 @@ class RAMImageStore:
             self.cache_arr = np.load(CACHE_NPY)
 
     def _load_pil_uint8(self, filename: str) -> np.ndarray:
-        with Image.open(self.image_dir / filename) as im:
+        path = self.image_dir / filename
+        if not path.is_file() and (EXTRA_IMAGE_DIR / filename).is_file():
+            path = EXTRA_IMAGE_DIR / filename
+        with Image.open(path) as im:
             g = im.convert("L")
             if g.size != (256, 256):
                 g = transforms.Resize((256, 256))(g)

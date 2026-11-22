@@ -25,6 +25,7 @@ import subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 CONFIG_DIR = os.path.join(ROOT, "config_files")
+# Cell outputs go to archive/<run_id>/: agents/AgentSiameseNetwork.py writes there unconditionally.
 ARCHIVE_DIR = os.path.join(ROOT, "archive")
 
 SNN_INIT_CHOICES = ("imagenet", "pretrained_ver", "vstar")
@@ -276,6 +277,23 @@ def all_cells(config_names=None, seeds=(0, 1, 2)):
             for init in SNN_INIT_CHOICES:
                 for seed in seeds:
                     yield name, init, pairing, seed
+
+
+def imagenet_factorial_cells(seeds=(0, 1, 2, 3, 4), existing_seeds=(0, 1, 2)):
+    """E3: the 2x2 train x validation pairing design for the learned field (mu=0.01) under
+    ImageNet initialization, with the released recipe and the released 10,000/2,000 pair lists.
+    The SS/SS cell is the released PriCheXy-Net evaluation protocol.
+
+    The SS/SS and SR/SR cells at `existing_seeds` were trained earlier by the pilot design
+    (all_cells) and are not yielded again; their outputs are copied into results/E3/cells/.
+    Yields (config, init, train_pairing, seed, val_pairing, val_list)."""
+    SS, SR = TRAIN_PAIRING_CHOICES
+    for seed in seeds:
+        for tp in (SS, SR):
+            for vp in (SS, SR):
+                if tp == vp and seed in existing_seeds:
+                    continue
+                yield "ff_mu0.01", "imagenet", tp, seed, vp, "orig"
 
 
 def factorial_cells(seeds_ff=(0, 1, 2, 3, 4), seeds_ctrl=(0, 1, 2)):
