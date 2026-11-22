@@ -47,7 +47,7 @@ def calibrated(runs):
     L = [r"\begin{tabular}{llccccc}", r"\toprule",
          r" & & & \multicolumn{2}{c}{Test-ROC} & \multicolumn{2}{c}{Calibration-list threshold} \\",
          r"\cmidrule(lr){4-5}\cmidrule(lr){6-7}",
-         r"Attacker & Sanitizer & Utility & FPR & TPR & realized FPR & TPR \\", r"\midrule"]
+         r"Verifier & Sanitizer & Utility & FPR & TPR & realized FPR & TPR \\", r"\midrule"]
     import csv
     frozen = {r["sanitizer"]: float(r["test_macro_auc"]) for r in
               csv.DictReader(open(os.path.join(T.ROOT, "results", "e4", "e4_frozen_summary.csv")))}
@@ -70,12 +70,16 @@ def factorial():
              ("SR", "SS", "sanitized_raw/sanitized_sanitized/orig"), ("SR", "SR", "sanitized_raw/sanitized_raw/orig"),
              ("SS", "SS, disjoint", "sanitized_sanitized/sanitized_sanitized/disjoint"),
              ("SR", "SR, disjoint", "sanitized_raw/sanitized_raw/disjoint")]
-    f = lambda e: f"{e['point']:.2f} [{e['ci'][0]:.2f}, {e['ci'][1]:.2f}]"
+    def f(e, bold=False):
+        pt = f"{e['point']:.2f}"
+        return T.neg((f"\\textbf{{{pt}}}" if bold else pt) + f" [{e['ci'][0]:.2f}, {e['ci'][1]:.2f}]")
     L = [r"\begin{tabular}{lllcc}", r"\toprule", r"Sanitizer ($n$ seeds) & Train & Validation & AUC & TPR@1\% \\", r"\midrule"]
     for cfg, v in d["results"].items():
+        # Bold: highest point estimate among the four main pairing cells, per sanitizer and metric.
+        best = {m: max((k for _, _, k in cellk[:4]), key=lambda k: v[m][k]["point"]) for m in ("auc", "tpr")}
         for i, (tp, vp, k) in enumerate(cellk):
             lab = f"{names[cfg]} ({v['n_seeds']})" if i == 0 else ""
-            L.append(f"{lab} & {tp} & {vp} & {f(v['auc'][k])} & {f(v['tpr'][k])} \\\\")
+            L.append(f"{lab} & {tp} & {vp} & {f(v['auc'][k], k == best['auc'])} & {f(v['tpr'][k], k == best['tpr'])} \\\\")
         for nm, k in (("train effect", "train_effect"), ("validation effect", "val_effect"), ("interaction", "interaction")):
             L.append(f" & \\multicolumn{{2}}{{l}}{{{nm}}} & {f(v['auc'][k])} & {f(v['tpr'][k])} \\\\")
         L.append(r"\midrule")
@@ -88,8 +92,8 @@ def exposure():
     def pts(path):
         return {pid(x) for l in open(path) for x in l.split()[:2]}
     ref = {pid(l.split()[0]) for l in open(os.path.join(T.ROOT, "image_pairs", "train_val_list.txt"))}
-    S = [("Attacker training (clean)", "results/clean_splits/d_att_train_clean.txt"),
-         ("$V^*$ pretraining", "results/clean_splits/d_pretrain_clean.txt"),
+    S = [("Verifier training", "results/clean_splits/d_att_train_clean.txt"),
+         ("Local-verifier pretraining", "results/clean_splits/d_pretrain_clean.txt"),
          ("Validation (released)", "image_pairs/image_pairs_validation_2000.txt"),
          ("Calibration (disjoint)", "image_pairs/image_pairs_validation_disjoint_700.txt"),
          ("Test (released)", "image_pairs/image_pairs_testing_5000.txt"),
@@ -112,14 +116,22 @@ def exposure():
 def paired():
     P = json.load(open(os.path.join(T.ROOT, "results", "prl_final", "paired_ci.json")))
     nm = {"blur_s2": "Gaussian blur $\\sigma{=}2$", "elastic_m0.045_keyed": "Elastic 0.045"}
-    f = lambda v: f"{v:.2f}"
-    ci = lambda c: f"[{c[0]:.2f}, {c[1]:.2f}]"
+    ci = lambda c: T.neg(f"[{c[0]:.2f}, {c[1]:.2f}]")
+    side = lambda c: c[0] > 0 or c[1] < 0
+
+    def f(v, cis=()):
+        """Bold an estimate when both of its intervals lie on the same side of zero."""
+        txt = T.neg(f"{v:.2f}")
+        ok = len(cis) == 2 and all(side(c) for c in cis) and (cis[0][0] > 0) == (cis[1][0] > 0)
+        return f"\\textbf{{{txt}}}" if ok else txt
     L = [r"\begin{tabular}{llccc}", r"\toprule",
          r"Comparison (field $-$ control) & Quantity & Point & 95\% CI, patients & 95\% CI, patients + seeds \\", r"\midrule"]
     for ctrl in P["controls"]:
         lk = P["leakage"][ctrl]; u = P["utility_frozen"][ctrl]
-        L.append(f"{nm[ctrl]} & TPR@1\\% (points) & {f(lk['tpr1']['point'])} & {ci(lk['tpr1']['patient_ci'])} & {ci(lk['tpr1']['hier_ci'])} \\\\")
-        L.append(f" & AUC (points) & {f(lk['auc']['point'])} & {ci(lk['auc']['patient_ci'])} & {ci(lk['auc']['hier_ci'])} \\\\")
+        for q, lab in (("tpr1", "TPR@1\\% (points)"), ("auc", "AUC (points)")):
+            e = lk[q]
+            L.append(f"{nm[ctrl] if q == 'tpr1' else ''} & {lab} & {f(e['point'], (e['patient_ci'], e['hier_ci']))} & "
+                     f"{ci(e['patient_ci'])} & {ci(e['hier_ci'])} \\\\")
         L.append(f" & frozen macro AUC (points) & {f(u['point'])} & {ci(u['patient_ci'])} & -- \\\\")
         L.append(r"\midrule")
     L[-1] = r"\bottomrule"; L.append(r"\end{tabular}")
@@ -132,9 +144,11 @@ def rho_sensitivity(runs):
     best = max(raw.values()); best9 = max(v for k, v in raw.items() if not k.startswith("Reference"))
     L = [r"\begin{tabular}{lcccc}", r"\toprule",
          r"Configuration & raw TPR@1\% & $\rho$ (all 10) & $\rho$ (reference removed) \\", r"\midrule"]
+    # Bold: largest score in each column among eligible configurations.
+    b = lambda x, top: f"\\textbf{{{x:.2f}}}" if abs(x - top) < 1e-12 else f"{x:.2f}"
     for k, v in raw.items():
-        r9 = "--" if k.startswith("Reference") else f"{v / best9:.2f}"
-        L.append(f"{k} & {v:.2f} & {v / best:.2f} & {r9} \\\\")
+        r9 = "--" if k.startswith("Reference") else b(v / best9, 1.0)
+        L.append(f"{k} & {b(v, best)} & {b(v / best, 1.0)} & {r9} \\\\")
     L += [r"\midrule",
           f"Pass at 0.50 & & {sum(v / best >= 0.5 for v in raw.values())}/10 & "
           f"{sum(v / best9 >= 0.5 for k, v in raw.items() if not k.startswith('Reference'))}/9 \\\\",
