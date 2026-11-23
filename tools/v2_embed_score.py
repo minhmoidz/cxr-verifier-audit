@@ -114,6 +114,26 @@ def build_list():
                            "seed": int(r["seed"]), "source": "new", "ckpt": str(ck.relative_to(ROOT)),
                            "published_pred": str(Path(f.replace("_summary.json", "_preds.npz")).relative_to(ROOT)),
                            "arch": "resnet50_bce", "input_size": 256, "use_norm": True})
+    # V3-B: seeds 3 and 4 of the main arms (results/V3B/runs); same families as seeds 0-2.
+    for f in sorted(glob.glob(str(ROOT / "results" / "V3B" / "runs" / "*_summary.json"))):
+        r = json.load(open(f))
+        ck = Path(f.replace("_summary.json", "_best.pth"))
+        ver = os.path.basename(f).split("__")[1]
+        if ck.exists():
+            models.append({"model_id": f"{ver}__{r['sanitizer']}__s{r['seed']}", "family": ver, "sanitizer": r["sanitizer"],
+                           "seed": int(r["seed"]), "source": "v3b", "ckpt": str(ck.relative_to(ROOT)),
+                           "published_pred": str(Path(f.replace("_summary.json", "_preds.npz")).relative_to(ROOT)),
+                           "arch": r["arch"], "input_size": int(r["input_size"]), "use_norm": bool(r["use_imagenet_norm"])})
+    # V3-C: verifiers trained on the retrained generators (results/V3C/runs); family v3c_<verifier>.
+    for f in sorted(glob.glob(str(ROOT / "results" / "V3C" / "runs" / "*_summary.json"))):
+        r = json.load(open(f))
+        ck = Path(f.replace("_summary.json", "_best.pth"))
+        ver = os.path.basename(f).split("__")[1]
+        if ck.exists():
+            models.append({"model_id": f"v3c_{ver}__{r['sanitizer']}__s{r['seed']}", "family": f"v3c_{ver}",
+                           "sanitizer": r["sanitizer"], "seed": int(r["seed"]), "source": "v3c", "ckpt": str(ck.relative_to(ROOT)),
+                           "published_pred": str(Path(f.replace("_summary.json", "_preds.npz")).relative_to(ROOT)),
+                           "arch": r["arch"], "input_size": int(r["input_size"]), "use_norm": bool(r["use_imagenet_norm"])})
     OUTD.mkdir(parents=True, exist_ok=True)
     json.dump(models, open(OUTD / "models.json", "w"), indent=1)
     from collections import Counter

@@ -316,6 +316,21 @@ def preval(generator, validation_loader, gauss_filter, grid_identity, mu, mse_lo
     return mean(list_rec_loss)
 
 
+# Revision v3 (V3-C): pairing of the adversary. 'SR' (released): the generator is trained against, and the
+# adversary is updated on, (G(x1), x2). 'SS': (G(x1), G(x2)). Set by agents/Agent.py from the config key
+# 'adversary_pairing'; the default keeps the released behaviour.
+ADVERSARY_PAIRING = 'SR'
+
+
+def _sanitize(generator, x, grid_identity, mu, gauss_filter):
+    """Apply the generator as train() and validate() do (flow field, or Privacy-Net output)."""
+    if grid_identity is None:
+        return generator(x)
+    grids = grid_identity - mu * generator(x)
+    grids = gauss_filter(grids).permute(0, 2, 3, 1)
+    return torch.nn.functional.grid_sample(x, grids, padding_mode='border', align_corners=True)
+
+
 def train(generator, training_loader, gauss_filter, grid_identity, mu, ac_loss, verification_loss, ac_loss_weight, 
           ver_loss_weight, optimizer_g, optimizer_ac, optimizer_ver, criterion_ac, criterion_ver, epoch, n_epochs, 
           show_every_n_epochs, show_every_n_iters, save_path):
@@ -404,8 +419,9 @@ def train(generator, training_loader, gauss_filter, grid_identity, mu, ac_loss, 
         # Compute AC loss
         ac_loss_value = ac_loss(fakes_1, labels)
 
-        # Compute verification loss
-        ver_loss = verification_loss(fakes_1, inputs2)
+        # Compute verification loss (partner image: raw for the released SR adversary, sanitized for SS)
+        partner = _sanitize(generator, inputs2, grid_identity, mu, gauss_filter) if ADVERSARY_PAIRING == 'SS' else inputs2
+        ver_loss = verification_loss(fakes_1, partner)
         log_likelihood_ver_loss = - torch.log(1 - ver_loss)
         ver_loss = ver_loss.mean()
         log_likelihood_ver_loss = log_likelihood_ver_loss.mean()
@@ -429,7 +445,7 @@ def train(generator, training_loader, gauss_filter, grid_identity, mu, ac_loss, 
         ac_loss.ac_model.train()
 
         inputs1_snn = fakes_1.detach().expand(-1, 3, -1, -1)
-        inputs2_snn = inputs2.expand(-1, 3, -1, -1)
+        inputs2_snn = partner.detach().expand(-1, 3, -1, -1)
 
         # Apply the ImageNet transform
         resize = transforms.Resize((224, 224))
@@ -546,7 +562,8 @@ def validate(generator, validation_loader, gauss_filter, grid_identity, mu, ac_l
             ac_loss_value = ac_loss(fakes_1, labels)
 
             # Compute verification loss
-            ver_loss = verification_loss(fakes_1, inputs2)
+            partner = _sanitize(generator, inputs2, grid_identity, mu, gauss_filter) if ADVERSARY_PAIRING == 'SS' else inputs2
+            ver_loss = verification_loss(fakes_1, partner)
             log_likelihood_ver_loss = - torch.log(1 - ver_loss)
             ver_loss = ver_loss.mean()
             log_likelihood_ver_loss = log_likelihood_ver_loss.mean()
@@ -870,7 +887,8 @@ def make_zip(output_filename, source_dir, config_file):
 
     rel_root = os.path.abspath(os.path.join(source_dir, os.pardir))
     # exclude specific folders from .zip file generation
-    exclude_dirs = {'.git', '.idea', '__pycache__', 'images', 'networks', 'cache'}
+    exclude_dirs = {'.git', '.idea', '__pycache__', 'images', 'networks', 'cache',
+                    'images_256_extra', 'results', 'outputs', 'artifacts', 'extensions'}  # v3: code only
     # exclude specific files from .zip file generation
     exclude_files = {output_filename, '.gitignore'}
     with zipfile.ZipFile(output_filename, "w", zipfile.ZIP_DEFLATED) as zip_f:

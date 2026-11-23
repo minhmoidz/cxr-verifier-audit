@@ -30,7 +30,11 @@ class Agent:
         self.IMAGE_PATH = self.config['image_path']
 
         # Reproducibility
-        utils.seed_all(42)
+        utils.seed_all(self.config.get('seed', 42))
+        # Revision v3 (V3-C): adversary pairing, 'SR' (released) or 'SS'.
+        utils.ADVERSARY_PAIRING = self.config.get('adversary_pairing', 'SR')
+        assert utils.ADVERSARY_PAIRING in ('SR', 'SS')
+        print('Adversary pairing: ' + utils.ADVERSARY_PAIRING + ', seed: ' + str(self.config.get('seed', 42)))
 
         # Set all the important variables
         self.ac_loss_weight = self.config['ac_loss_weight']
@@ -93,7 +97,7 @@ class Agent:
         }
 
         # Define the auxiliary classifier (self.ac_model is already on GPU)
-        self.ac_model = torch.load('./networks/pretrained_classifier.pth')['model']
+        self.ac_model = torch.load('./networks/pretrained_classifier.pth', weights_only=False)['model']  # released file, SHA-256 checked
         self.ac_loss = ACLoss(ac_model=self.ac_model).cuda()
 
         # Define the verification model and the verification loss

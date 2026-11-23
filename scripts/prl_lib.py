@@ -296,6 +296,12 @@ def build_sanitizer(name: str, device: torch.device, seed: int = 0) -> BaseSanit
         mu_str = name[len("ff_mu"):]
         ckpt = ROOT / "networks" / f"generator_lowest_total_loss_mu_{mu_str}.pth"
         return FlowFieldSanitizer(float(mu_str), ckpt, device)
+    if name.startswith("ffv3c_"):
+        # V3-C retrained generators (docs/PREREGISTRATION_v3.md), mu = 0.01: ffv3c_<SR|SS>_s<seed>
+        assert re.fullmatch(r"ffv3c_(SR|SS)_s\d+", name), name
+        san = FlowFieldSanitizer(0.01, ROOT / "results" / "V3C" / "gen" / name / "generator_lowest_total_loss.pth", device)
+        san.name = name
+        return san
     if name == "privacy_net":
         return PrivacyNetSanitizer(ROOT / "networks" / "generator_lowest_total_loss_privacy_net.pth", device)
     if name.startswith("blur_s"):
