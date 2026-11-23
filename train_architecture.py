@@ -14,6 +14,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser('Train Anonymization Model')
     parser.add_argument('--config_path', default='./config_files/')
     parser.add_argument('--config', default='config_anonymization.json')
+    parser.add_argument('--resume', action='store_true', help='revision v3 (amendment A5): continue an interrupted run')
     args = parser.parse_args()
     print('Arguments:\n' + '--config_path: ' + args.config_path + '\n--config: ' + args.config + '\n')
 
@@ -25,9 +26,13 @@ if __name__ == "__main__":
     config = json.loads(config)
 
     # Create folder to save experiment-related files
-    os.mkdir('./archive/' + config['experiment_description'])
     SAVINGS_PATH = './archive/' + config['experiment_description'] + '/'
-    utils.make_zip(SAVINGS_PATH + config['experiment_description'] + '.zip', './', args.config)
+    if args.resume:
+        assert os.path.isfile(SAVINGS_PATH + 'resume_state.pth'), 'nothing to resume'
+        config['resume'] = True
+    else:
+        os.mkdir('./archive/' + config['experiment_description'])
+        utils.make_zip(SAVINGS_PATH + config['experiment_description'] + '.zip', './', args.config)
 
     # Call agent and run experiment
     experiment = Agent(config)

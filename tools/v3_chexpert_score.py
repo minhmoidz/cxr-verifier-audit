@@ -60,12 +60,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--chexpert-dir", required=True, help="output directory of tools/v3_remote_zip.py pairs")
     ap.add_argument("--only", default="")
+    ap.add_argument("--device", default="cuda", help="cuda, or cpu when the shared GPU is full")
     a = ap.parse_args()
     pairs = json.load(open(OUTD / "chexpert_pairs.json"))["pairs"]
     refs = [p["reference"] for p in pairs]
     qrys = [p["query"] for p in pairs]
     (OUTD / "scores").mkdir(parents=True, exist_ok=True)
-    device = torch.device("cuda")
+    device = torch.device(a.device)
+    if a.device == "cpu":
+        torch.set_num_threads(40)
     store = CheXpertStore(Path(a.chexpert_dir))
     store.preload(refs + qrys)
     for m in model_list():
@@ -91,7 +94,8 @@ def main():
         (OUTD / "scores" / f"{m['model_id']}.json").write_text(json.dumps(meta, indent=1))
         print(f"{m['model_id']}: done [{meta['seconds']}s]", flush=True)
         del net
-        torch.cuda.empty_cache()
+        if a.device == "cuda":
+            torch.cuda.empty_cache()
 
 
 if __name__ == "__main__":

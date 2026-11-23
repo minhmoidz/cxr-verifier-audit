@@ -184,8 +184,51 @@ class Agent:
                 torch.save(self.ac_loss.ac_model.state_dict(), self.SAVINGS_PATH + 'ac_model_trained_lowest_total_loss.pth')
                 torch.save(self.verification_loss.verification_model.state_dict(), self.SAVINGS_PATH + 'ver_model_trained_lowest_total_loss.pth')
 
+            # Revision v3 (amendment A5): full training state after every epoch, so that a run interrupted on the
+            # shared GPU resumes at the next epoch (python3 train_architecture.py --config ... --resume)
+            self.save_resume_state(epoch + 1)
+
         print('Finished Training!')
 
+    RESUME_FILE = 'resume_state.pth'
+
+    def save_resume_state(self, next_epoch):
+        import random
+        import numpy as np
+        state = {'next_epoch': next_epoch, 'lowest': [self.lowest_ac_loss, self.lowest_ver_loss, self.lowest_total_loss],
+                 'loss_dict': self.loss_dict, 'generator': self.generator.state_dict(),
+                 'ac_model': self.ac_loss.ac_model.state_dict(),
+                 'ver_model': self.verification_loss.verification_model.state_dict(),
+                 'optimizer_g': self.optimizer_g.state_dict(), 'optimizer_ac': self.optimizer_ac.state_dict(),
+                 'optimizer_ver': self.optimizer_ver.state_dict(),
+                 'rng': {'torch': torch.get_rng_state(), 'cuda': torch.cuda.get_rng_state_all(),
+                         'numpy': np.random.get_state(), 'python': random.getstate()}}
+        tmp = self.SAVINGS_PATH + self.RESUME_FILE + '.tmp'
+        torch.save(state, tmp)
+        import os
+        os.replace(tmp, self.SAVINGS_PATH + self.RESUME_FILE)
+
+    def load_resume_state(self):
+        import random
+        import numpy as np
+        s = torch.load(self.SAVINGS_PATH + self.RESUME_FILE, map_location='cpu', weights_only=False)
+        self.generator.load_state_dict(s['generator'])
+        self.ac_loss.ac_model.load_state_dict(s['ac_model'])
+        self.verification_loss.verification_model.load_state_dict(s['ver_model'])
+        self.optimizer_g.load_state_dict(s['optimizer_g'])
+        self.optimizer_ac.load_state_dict(s['optimizer_ac'])
+        self.optimizer_ver.load_state_dict(s['optimizer_ver'])
+        self.lowest_ac_loss, self.lowest_ver_loss, self.lowest_total_loss = s['lowest']
+        self.loss_dict = s['loss_dict']
+        self.start_epoch = s['next_epoch']
+        torch.set_rng_state(s['rng']['torch'])
+        torch.cuda.set_rng_state_all(s['rng']['cuda'])
+        np.random.set_state(s['rng']['numpy'])
+        random.setstate(s['rng']['python'])
+        print('Resumed from ' + self.SAVINGS_PATH + self.RESUME_FILE + ' at epoch ' + str(self.start_epoch))
+
     def run(self):
+        if self.config.get('resume', False):
+            self.load_resume_state()
         # Call training/validation loop
         self.training_validation()

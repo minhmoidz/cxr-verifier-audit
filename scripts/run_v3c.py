@@ -2,7 +2,7 @@
 
 Steps (each skips finished work):
   gen SR|SS   train the generator with config_files/v3c_<v>_s42.json (released trainer, adversary_pairing option;
-              batch 32 per amendment A2) and copy the lowest-validation-total-loss generator, as released, to
+              batch 16 per amendment A4; resumes an interrupted run, amendment A5) and copy the lowest-validation-total-loss generator, as released, to
               results/V3C/gen/ffv3c_<v>_s42/generator_lowest_total_loss.pth (with its SHA-256 and loss curves)
   verifiers   for each retrained generator: reference and independent (E5) initialization, released recipe,
               SR pairs, seeds 0-2 (results/V3C/runs/v3c__<verifier>__<sanitizer>__s<seed>)
@@ -38,11 +38,14 @@ def gen(v):
     if (dst / "generator_lowest_total_loss.pth").is_file():
         print(f"{name}: done"); return
     exp = ROOT / "archive" / f"v3c_{v}_s42"
-    if exp.exists():                      # an interrupted attempt of this script (e.g. out of GPU memory): restart
+    cmd = [sys.executable, "-u", "train_architecture.py", "--config", f"v3c_{v}_s42.json"]
+    if (exp / "resume_state.pth").is_file():  # interrupted (out of GPU memory, or paused): continue (amendment A5)
+        print(f"resuming {exp}", flush=True)
+        cmd.append("--resume")
+    elif exp.exists():                        # interrupted before the first epoch ended: restart
         print(f"removing interrupted attempt {exp}", flush=True)
         shutil.rmtree(exp)
-    t0 = time.time()
-    subprocess.run([sys.executable, "-u", "train_architecture.py", "--config", f"v3c_{v}_s42.json"], cwd=ROOT, check=True)
+    subprocess.run(cmd, cwd=ROOT, check=True)
     dst.mkdir(parents=True, exist_ok=True)
     for f in ("generator_lowest_total_loss.pth", "generator_latest.pth"):
         shutil.copy2(exp / f, dst / f)
@@ -51,9 +54,10 @@ def gen(v):
     for f in exp.glob("*.png"):
         shutil.copy2(f, dst / f.name)
     meta = {"name": name, "config": json.load(open(ROOT / "config_files" / f"v3c_{v}_s42.json")),
-            "generator_sha256": sha(dst / "generator_lowest_total_loss.pth"), "hours": round((time.time() - t0) / 3600, 2)}
+            "generator_sha256": sha(dst / "generator_lowest_total_loss.pth"),
+            "wall_hours_incl_pauses": round((time.time() - (exp / f"v3c_{v}_s42.zip").stat().st_mtime) / 3600, 2)}
     (dst / "meta.json").write_text(json.dumps(meta, indent=1))
-    print(f"{name}: trained in {meta['hours']} h")
+    print(f"{name}: trained, {meta['wall_hours_incl_pauses']} h wall time")
 
 
 def verifiers():

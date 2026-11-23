@@ -131,3 +131,12 @@ about 0.69 GiB per image, so batch 64 needs about 34 and 45 GiB, and batch 32 wi
 (learning rate, epochs and every other setting as released). This replaces the batch 32 of A2. The comparison
 of SR-adv and SS-adv is unaffected because both use the same settings; the replication check against the
 released generator (batch 64) is descriptive only.
+
+**A5 (2026-11-23, before any sanitizer training started).** Execution only; no analysis changes. On the
+shared GPU a long run can be killed by another user's job growing (out of memory), and the GPU is ours only in
+part. (i) The sanitizer trainer saves its full state after every epoch (networks, the three optimizers, the
+best-loss values, the loss curves and the random-number states) and, after an interruption, resumes at the next
+epoch (`train_architecture.py --resume`) instead of restarting; the selected generator is still the one with
+the lowest validation total loss over all 250 epochs. (ii) Until 06:00 on 2026-11-24 two of our jobs may share the
+GPU (the V3-B queue and the SR-adversary generator); afterwards one at a time. If V3-B has not finished by
+then, the generator is stopped and resumed after V3-B (`tools/v3_overnight.py`). Settings are unchanged.
