@@ -117,3 +117,9 @@ the downsampled ones. The SHA-256 of `train.csv` and of every image read is reco
 memory because other users' jobs occupied about 18.9 of the 24 GB GPU. If the released batch size of 64
 cannot run, both variants are trained with the same smaller batch (32), as the plan allows, and this is
 stated.
+
+**A3 (2026-11-23, before any CheXpert file was read).** The `CheXpert-v1.0.zip` link returned
+BlobNotFound. The AIMI container instead holds `CheXpert-v1.0 batch 1 (validate & csv).zip` and three
+training batches (`batch 2 (train 1)`, `batch 3 (train 2)`, `batch 4 (train 3)`). `train.csv` is read from
+batch 1 and each selected image from the batch that contains it, with range requests as in A1. Nothing
+else changes.
