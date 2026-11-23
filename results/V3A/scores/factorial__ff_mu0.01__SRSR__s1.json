@@ -1,0 +1,15 @@
+{
+ "model_id": "factorial__ff_mu0.01__SRSR__s1",
+ "family": "factorial_ref",
+ "sanitizer": "ff_mu0.01",
+ "train_pairing": "SR",
+ "val_pairing": "SR",
+ "seed": 1,
+ "ckpt": "archive/p1_ff_mu0.01_sanitized_raw_pretrained_ver_seed1/p1_ff_mu0.01_sanitized_raw_pretrained_ver_seed1_best_network.pth",
+ "published_pred": "archive/p1_ff_mu0.01_sanitized_raw_pretrained_ver_seed1/p1_ff_mu0.01_sanitized_raw_pretrained_ver_seed1_labels_predictions.txt",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 24.7,
+ "mean_pos_logit_SR": -0.1369763890902374
+}

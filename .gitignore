@@ -11,3 +11,6 @@ artifacts/pairing_audit/
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# V3-A: embeddings of CheXpert images are not redistributed (Stanford research use agreement); regenerate with tools/v3_chexpert_score.py
+results/V3A/scores/*.npz

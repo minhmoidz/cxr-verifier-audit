@@ -1,0 +1,14 @@
+{
+ "model_id": "e5__ff_mu0.005__s2",
+ "family": "e5",
+ "sanitizer": "ff_mu0.005",
+ "seed": 2,
+ "source": "new",
+ "ckpt": "results/E5/runs/e5__resnet50_bce__e5_init__ff_mu0.005__att_train_clean__pat5__lr0.0001__s2_best.pth",
+ "published_pred": "results/E5/runs/e5__resnet50_bce__e5_init__ff_mu0.005__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 30.4,
+ "mean_pos_logit_SR": 1.8189231053241282
+}

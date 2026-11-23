@@ -1,0 +1,14 @@
+{
+ "model_id": "imagenet_full__ff_mu0.005__s2",
+ "family": "imagenet_full",
+ "sanitizer": "ff_mu0.005",
+ "seed": 2,
+ "source": "retrained",
+ "ckpt": "results/R_retrain/runs/retrain__frontier_metric__resnet50_metric_l1__imagenet__ff_mu0.005__att_train_clean__pat5__lr0.0001__s2_best.pth",
+ "published_pred": "results/R_retrain/runs/retrain__frontier_metric__resnet50_metric_l1__imagenet__ff_mu0.005__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+ "arch": "resnet50_metric_l1",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 22.9,
+ "mean_pos_logit_SR": 2.5790371535981236
+}

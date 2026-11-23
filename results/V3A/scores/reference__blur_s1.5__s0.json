@@ -1,0 +1,14 @@
+{
+ "model_id": "reference__blur_s1.5__s0",
+ "family": "reference",
+ "sanitizer": "blur_s1.5",
+ "seed": 0,
+ "source": "retrained",
+ "ckpt": "results/R_retrain/runs/retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s1.5__att_train_clean__pat5__lr0.0001__s0_best.pth",
+ "published_pred": "results/R_retrain/runs/retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s1.5__att_train_clean__pat5__lr0.0001__s0_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 9.4,
+ "mean_pos_logit_SR": 1.3785490706546506
+}

@@ -1,0 +1,14 @@
+{
+ "model_id": "imagenet_full__none__s0",
+ "family": "imagenet_full",
+ "sanitizer": "none",
+ "seed": 0,
+ "source": "retrained",
+ "ckpt": "results/R_retrain/runs/retrain__metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s0_best.pth",
+ "published_pred": "results/R_retrain/runs/retrain__metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s0_preds.npz",
+ "arch": "resnet50_metric_l1",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 10.2,
+ "mean_pos_logit_SR": 1.3531785407634593
+}

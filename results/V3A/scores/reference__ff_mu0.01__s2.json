@@ -1,0 +1,14 @@
+{
+ "model_id": "reference__ff_mu0.01__s2",
+ "family": "reference",
+ "sanitizer": "ff_mu0.01",
+ "seed": 2,
+ "source": "retrained",
+ "ckpt": "results/R_retrain/runs/retrain__init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2_best.pth",
+ "published_pred": "results/R_retrain/runs/retrain__init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 21.6,
+ "mean_pos_logit_SR": -0.708568844591899
+}
