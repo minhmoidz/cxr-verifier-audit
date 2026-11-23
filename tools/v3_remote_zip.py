@@ -1,11 +1,12 @@
 """Read selected members of a remote zip (Azure Blob SAS URL) with HTTP range requests (amendment A1).
 
-Only the zip's central directory and the requested members are transferred. The URL carries a temporary
-access token: pass it through the environment variable CHEXPERT_ZIP_URL, never on the command line or in a
-file under version control.
+Only the zips' central directories and the requested members are transferred. The container URL carries
+a temporary access token: pass it through the environment variable CHEXPERT_CONTAINER (read/list SAS),
+never on the command line or in a file under version control. CheXpert is split into batch zips
+(amendment A3): batch 1 holds train.csv; batches 2-4 hold the training images.
 
-  python3 tools/v3_remote_zip.py csv  OUT_DIR              # extract train.csv (and valid.csv)
-  python3 tools/v3_remote_zip.py pairs OUT_DIR             # extract the images listed in results/V3A/chexpert_pairs.json
+  python3 tools/v3_remote_zip.py csv  OUT_DIR    # extract train.csv and valid.csv from batch 1
+  python3 tools/v3_remote_zip.py pairs OUT_DIR   # extract the images of results/V3A/chexpert_pairs.json
 Writes OUT_DIR/<member path> and results/V3A/remote_files.json (member, size, CRC-32, SHA-256).
 """
 from __future__ import annotations
@@ -94,9 +95,15 @@ class HTTPRangeFile(io.RawIOBase):
         return len(d)
 
 
-def open_zip():
-    url = os.environ["CHEXPERT_ZIP_URL"]
-    return zipfile.ZipFile(HTTPRangeFile(url))
+BATCHES = ["CheXpert-v1.0 batch 1 (validate & csv).zip", "CheXpert-v1.0 batch 2 (train 1).zip",
+           "CheXpert-v1.0 batch 3 (train 2).zip", "CheXpert-v1.0 batch 4 (train 3).zip"]
+
+
+def open_zip(blob):
+    from urllib.parse import quote
+    c = os.environ["CHEXPERT_CONTAINER"]
+    base, sas = c.split("?", 1)
+    return zipfile.ZipFile(HTTPRangeFile(f"{base}/{quote(blob)}?{sas}"))
 
 
 def extract(z: zipfile.ZipFile, names, out: Path, workers=1):
@@ -115,28 +122,72 @@ def extract(z: zipfile.ZipFile, names, out: Path, workers=1):
     return rec
 
 
+def preprocess_256(data: bytes):
+    """Pre-specified V3-A preprocessing: grayscale, center square crop, bilinear resize to 256 x 256."""
+    from PIL import Image
+    from torchvision import transforms
+    with Image.open(io.BytesIO(data)) as im:
+        g = im.convert("L")
+        w, h = g.size
+        s = min(w, h)
+        g = g.crop(((w - s) // 2, (h - s) // 2, (w - s) // 2 + s, (h - s) // 2 + s))
+        return transforms.Resize((256, 256))(g), (w, h)
+
+
+def fetch_256(z: zipfile.ZipFile, names, out: Path):
+    """Read each member (CRC-checked), record its SHA-256, and store only the preprocessed 256 x 256 PNG at
+    OUT/<patient>/<study>/<view>.png (the full-resolution file is not kept)."""
+    rec = []
+    for nm in names:
+        dst = out / (tail_key(nm)[:-4] + ".png")
+        meta = dst.with_suffix(".json")
+        if dst.is_file() and meta.is_file():
+            rec.append(json.loads(meta.read_text())); continue
+        data = z.read(nm)
+        img, (w, h) = preprocess_256(data)
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        img.save(dst)
+        r = {"member": nm, "size": len(data), "crc32": f"{z.getinfo(nm).CRC:08x}",
+             "sha256": hashlib.sha256(data).hexdigest(), "width": w, "height": h}
+        meta.write_text(json.dumps(r))
+        rec.append(r)
+    return rec
+
+
+def tail_key(name):
+    """patientNNNNN/studyN/viewN_frontal.jpg: the part of a member path that identifies an image."""
+    m = __import__("re").search(r"(patient\d+/study\d+/view\d+_\w+\.jpg)$", name)
+    return m.group(1) if m else None
+
+
 def main():
     mode, out = sys.argv[1], Path(sys.argv[2])
-    z = open_zip()
-    names = z.namelist()
-    print(f"remote zip: {len(names)} members", flush=True)
-    if mode == "csv":
-        want = [n for n in names if n.endswith("/train.csv") or n.endswith("/valid.csv")]
-        prefix = want[0].rsplit("/", 1)[0]
-        print("csv members:", want, "prefix:", prefix)
-    else:
-        pairs = json.load(open(D / "chexpert_pairs.json"))["pairs"]
-        root = json.load(open(D / "chexpert_pairs.json")).get("zip_prefix", "")
-        want = []
-        for p in pairs:
-            for k in ("reference", "query"):
-                nm = p[k] if p[k] in set(names) else f"{root}/{p[k].split('/', 1)[1]}"
-                want.append(nm)
-        missing = [n for n in want if n not in set(names)]
-        assert not missing, f"{len(missing)} members not in zip, e.g. {missing[:3]}"
-    rec = extract(z, want, out)
     f = D / "remote_files.json"
     old = json.load(open(f)) if f.is_file() else []
+    rec = []
+    if mode == "csv":
+        z = open_zip(BATCHES[0])
+        names = z.namelist()
+        want = [n for n in names if n.endswith("train.csv") or n.endswith("valid.csv")]
+        print(f"batch 1: {len(names)} members; csv members: {want}", flush=True)
+        rec = [dict(r, batch=BATCHES[0]) for r in extract(z, want, out)]
+    else:
+        pairs = json.load(open(D / "chexpert_pairs.json"))["pairs"]
+        need = {tail_key(p[k]) for p in pairs for k in ("reference", "query")}
+        found = {}
+        for blob in BATCHES[1:]:
+            names = open_zip(blob).namelist()
+            hit = {tail_key(n): n for n in names if tail_key(n) in need}
+            print(f"{blob}: {len(names)} members, {len(hit)} needed", flush=True)
+            found.update({k: (blob, v) for k, v in hit.items()})
+            todo = sorted(hit.values())
+            chunks = [todo[i::8] for i in range(8)]                # 8 threads, one remote handle each
+            with ThreadPoolExecutor(8) as ex:
+                for part in ex.map(lambda c: fetch_256(open_zip(blob), c, out) if c else [], chunks):
+                    rec += [dict(r, batch=blob) for r in part]
+        missing = need - set(found)
+        assert not missing, f"{len(missing)} images not found, e.g. {sorted(missing)[:3]}"
+        json.dump({k: v[1] for k, v in found.items()}, open(D / "chexpert_member_map.json", "w"), indent=0)
     seen = {r["member"] for r in rec}
     json.dump([r for r in old if r["member"] not in seen] + rec, open(f, "w"), indent=1)
     print(f"extracted {len(rec)} members to {out}")

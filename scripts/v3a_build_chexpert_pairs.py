@@ -42,7 +42,7 @@ def main():
         v = sorted(first[p])
         rows.append({"patient": p, "reference": v[0][1], "query": v[1][1],
                      "reference_study": int(v[0][0]), "query_study": int(v[1][0])})
-    out = {"source": "CheXpert-v1.0-small/train.csv", "train_csv_sha256": hashlib.sha256(csv.read_bytes()).hexdigest(),
+    out = {"source": "CheXpert-v1.0 batch 1 (validate & csv)/train.csv (AIMI container, amendment A3)", "train_csv_sha256": hashlib.sha256(csv.read_bytes()).hexdigest(),
            "seed": SEED, "n_frontal_images": int(len(df)), "n_patients_frontal": int(df["patient"].nunique()),
            "n_eligible": len(eligible), "n_chosen": N, "n_negatives": N * (N - 1), "pairs": rows}
     d = ROOT / "results" / "V3A"

@@ -7,12 +7,13 @@ raw and sanitized. results/V3A/scores/<model_id>.npz stores the float32 embeddin
 Preprocessing (pre-specified): grayscale, center crop to a square of side min(width, height), bilinear
 resize to 256 x 256; then the NIH pipeline unchanged. Elastic fields are keyed on the CheXpert path.
 
-Usage: python3 tools/v3_chexpert_score.py --chexpert-dir /path/containing/CheXpert-v1.0-small [--only S]
+Usage: python3 tools/v3_chexpert_score.py --chexpert-dir /path/to/data_chexpert [--only S]
 """
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -36,7 +37,10 @@ class CheXpertStore(P.RAMImageStore):
         super().__init__(image_dir=base, use_cache=False)
 
     def _load_pil_uint8(self, filename: str) -> np.ndarray:
-        with Image.open(self.image_dir / filename) as im:
+        # tools/v3_remote_zip.py stores each selected image already preprocessed (256 x 256 PNG) at
+        # <dir>/patientN/studyN/viewN_frontal.png; the crop and resize below are then the identity.
+        rel = re.search(r"(patient\d+/study\d+/view\d+_\w+)\.jpg$", filename).group(1) + ".png"
+        with Image.open(self.image_dir / rel) as im:
             g = im.convert("L")
             w, h = g.size
             s = min(w, h)
@@ -54,7 +58,7 @@ def model_list():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--chexpert-dir", required=True, help="directory that contains CheXpert-v1.0-small/")
+    ap.add_argument("--chexpert-dir", required=True, help="output directory of tools/v3_remote_zip.py pairs")
     ap.add_argument("--only", default="")
     a = ap.parse_args()
     pairs = json.load(open(OUTD / "chexpert_pairs.json"))["pairs"]
