@@ -618,6 +618,66 @@ def part_legacy():
     print("legacy: ok")
 
 
+def part_v3a():
+    """V3-A (docs/PREREGISTRATION_v3.md): CheXpert external confirmation, results/V3A/chexpert_ci_seeds012.json
+    (tools/v3_chexpert_ci.py). Macros v3a-*; supplement table supp_v3a.tex."""
+    f = R("V3A", "chexpert_ci_seeds012.json")
+    if not os.path.isfile(f):
+        print("V3-A: not run"); return
+    j = json.load(open(f))
+    pj = json.load(open(R("V3A", "chexpert_pairs.json")))
+    put("v3a-pts", int(j["n_patients"])); put("v3a-neg", int(j["n_negatives"]))
+    put("v3a-elig", int(pj["n_eligible"])); put("v3a-frontal-pts", int(pj["n_patients_frontal"]))
+    put("v3a-nboot", int(j["n_boot"]))
+    V = {"reference": "ref", "e5": "e5", "imagenet_full": "inf"}
+    S = {"none": "raw", "ff_mu0.01": "ff", "blur_s2": "b2", "elastic_m0.045_keyed": "e045", "elastic_m0.04_keyed": "e04"}
+    M = {"tpr1": "tpr1", "auc": "auc", "tpr01": "tpr01"}
+    for k, a in j["arms"].items():
+        fam, san, pr = k.split("/") if k.count("/") == 2 else (None, None, None)
+        if fam in V and san in S:
+            for m in M:
+                put(f"v3a-{V[fam]}-{S[san]}-{pr.lower()}-{m}", a[m])
+        if k.startswith("factorial_ref/ff_mu0.01/") and k.endswith("/SR"):
+            put(f"v3a-fr-{k.split('/')[2].lower()}-auc", a["auc"])
+    for k, c in j["contrasts"].items():
+        parts = k.split("/")
+        if parts[0] == "H1":
+            stem = f"v3a-h1-{V[parts[2]]}-{S[parts[3].split('_minus_')[1]]}-{parts[1].lower()}"
+        elif parts[0] == "H2":
+            stem = f"v3a-h2-{V[parts[1]]}-{S[parts[2].split('_minus_')[1]]}"
+        elif parts[0] == "SSminusSR":
+            stem = f"v3a-ssmsr-{V[parts[1]]}-{S[parts[2]]}"
+        elif parts[0] == "H3":
+            stem = "v3a-h3"
+        else:
+            continue
+        for m in M:
+            e = c[m]
+            put(f"{stem}-{m}", e["point"])
+            put(f"{stem}-{m}-lo", e["patient+seed"][0]); put(f"{stem}-{m}-hi", e["patient+seed"][1])
+            put(f"{stem}-{m}-plo", e["patient"][0]); put(f"{stem}-{m}-phi", e["patient"][1])
+    ent = lambda e: (bold_if_excludes_zero(e["point"], (e["patient"], e["patient+seed"])) + " " + ci_txt(e["patient+seed"]))
+    L = ["\\begin{tabular}{llcccc}", "\\toprule",
+         " & & \\multicolumn{2}{c}{Field $-$ control, TPR@1\\%} & H2: increase of field & \\\\",
+         "\\cmidrule(lr){3-4}",
+         "Verifier & Control & SR attack (H1) & SS attack & minus control (SR$\\to$SS) & H2 AUC \\\\", "\\midrule"]
+    C = j["contrasts"]
+    for fam, lab in (("reference", "Reference"), ("e5", "Independent"), ("imagenet_full", "ImageNet, full recipe")):
+        first = True
+        for san in ("blur_s2", "elastic_m0.045_keyed", "elastic_m0.04_keyed"):
+            k1 = f"H1/SR/{fam}/ff_mu0.01_minus_{san}"
+            if k1 not in C:
+                continue
+            row = [lab if first else "", SANLAB[san], ent(C[k1]["tpr1"]), ent(C[f"H1/SS/{fam}/ff_mu0.01_minus_{san}"]["tpr1"]),
+                   ent(C[f"H2/{fam}/ff_mu0.01_minus_{san}"]["tpr1"]), ent(C[f"H2/{fam}/ff_mu0.01_minus_{san}"]["auc"])]
+            L.append(NEG(" & ".join(row)) + " \\\\")
+            first = False
+        L.append("\\addlinespace")
+    L = L[:-1] + ["\\bottomrule", "\\end{tabular}"]
+    write("supp_v3a.tex", L)
+    print("V3-A: ok")
+
+
 # ----------------------------------------------------------------------------- numbers file
 def write_numbers():
     ints = {k for k, v in N.items() if isinstance(v, (int, np.integer)) and not isinstance(v, bool)}
@@ -648,7 +708,7 @@ def main():
     write_numbers()
 
 
-PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy]
+PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy, part_v3a]
 
 if __name__ == "__main__":
     main()
