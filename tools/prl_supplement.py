@@ -98,6 +98,8 @@ def exposure():
          ("Calibration (disjoint)", "image_pairs/image_pairs_validation_disjoint_700.txt"),
          ("Test (released)", "image_pairs/image_pairs_testing_5000.txt"),
          ("Factorial training (released)", "image_pairs/image_pairs_training_10000.txt")]
+    if os.path.isfile(os.path.join(T.ROOT, "results", "E5", "splits", "e5_pretrain_pairs.txt")):   # revision (E5)
+        S.append(("Independent-verifier pretraining", "results/E5/splits/e5_pretrain_pairs.txt"))
     P = {n: pts(os.path.join(T.ROOT, p)) for n, p in S}
     names = [n for n, _ in S]
     L = [r"\begin{tabular}{l r " + "r" * len(names) + " r}", r"\toprule",

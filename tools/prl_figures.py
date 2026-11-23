@@ -26,7 +26,7 @@ OUT = os.path.join(ROOT, "outputs", "figures", "fig_frontier.pdf")
 FAM = {"ff": ("Learned field", "o"), "blur": ("Gaussian blur", "s"), "elastic": ("Random elastic", "^")}
 VER = {"reference": ("Reference verifier", "-", "black"),
        "imagenet_full_recipe": ("ImageNet verifier, full recipe", "--", "white"),
-       "e5": ("Independent verifier, 28,008 patients", ":", "0.6")}
+       "e5": ("Independent verifier", ":", "0.6")}
 INK = "black"
 
 

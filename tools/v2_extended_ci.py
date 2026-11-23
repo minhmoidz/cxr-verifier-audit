@@ -166,7 +166,10 @@ def main():
         ms = sorted(ms, key=lambda m: m["seed"])
         ent = {"seeds": [m["seed"] for m in ms], "models": [m["model_id"] for m in ms],
                "sources": sorted({m.get("source", "published") for m in ms})}
-        draws = seed_draws(cfg, len(ms), a.n_boot, a.seed)
+        # Factorial cells share the seed draw within a sanitizer (seeds paired by index across the four cells,
+        # as in tools/analyze_factorial.py); other configurations draw independently.
+        draw_key = cfg.rsplit("/", 1)[0] if ms[0]["family"] in ("factorial_ref", "factorial_imagenet") else cfg
+        draws = seed_draws(draw_key, len(ms), a.n_boot, a.seed)
         arrays = {}
         for st in SETS:
             for pairing in PAIRINGS:
@@ -224,14 +227,29 @@ def main():
                         [(f("SRSR"), 1), (f("SRSS"), -1), (f("SSSR"), -1), (f("SSSS"), 1)], st, pairing)
         for pairing in PAIRINGS:
             for ver, ctrls in (("reference", ("blur_s2", "elastic_m0.045_keyed", "elastic_m0.04_keyed")),
-                               ("imagenet_full", ("blur_s2", "elastic_m0.04_keyed"))):
+                               ("imagenet_full", ("blur_s2", "elastic_m0.04_keyed")),
+                               ("e5", ("blur_s2", "elastic_m0.045_keyed", "elastic_m0.04_keyed"))):
                 for c in ctrls:
                     C[f"{st}/{pairing}/{ver}/ff_mu0.01_minus_{c}"] = contrast(f"{ver}/ff_mu0.01", f"{ver}/{c}", st, pairing)
+            # Between verifiers: (field - control under v1) - (field - control under v2); seeds independent across arms.
+            for v1, v2 in (("reference", "e5"), ("reference", "imagenet_full")):
+                for c in ("blur_s2", "elastic_m0.04_keyed"):
+                    cfgs = [f"{v1}/ff_mu0.01", f"{v1}/{c}", f"{v2}/ff_mu0.01", f"{v2}/{c}"]
+                    if all(x in cfg_arrays for x in cfgs):
+                        C[f"{st}/{pairing}/btw/{v1}_minus_{v2}/ff_mu0.01_minus_{c}"] = lincomb(
+                            list(zip(cfgs, (1, -1, -1, 1))), st, pairing)
             for fam in ("factorial_ref", "factorial_imagenet"):
                 for san in ("ff_mu0.01", "blur_s2", "elastic_m0.04_keyed"):
                     for vp in ("SS", "SR"):
                         C[f"{st}/{pairing}/{fam}/{san}/train_SR_minus_SS_at_val{vp}"] = contrast(
                             f"{fam}/{san}/SR{vp}", f"{fam}/{san}/SS{vp}", st, pairing)
+        # Between sanitizers inside the factorial (same training protocol), for each cell and test pairing.
+        for pairing in PAIRINGS:
+            for fam in ("factorial_ref",):
+                for cell in ("SSSS", "SSSR", "SRSS", "SRSR"):
+                    for ctrl in ("blur_s2", "elastic_m0.04_keyed"):
+                        C[f"{st}/{pairing}/{fam}/ff_mu0.01_minus_{ctrl}/{cell}"] = contrast(
+                            f"{fam}/ff_mu0.01/{cell}", f"{fam}/{ctrl}/{cell}", st, pairing)
         # E2: SS test minus SR test, same models.
         for cfg in cfg_arrays:
             C[f"{st}/SS_minus_SR/{cfg}"] = contrast(cfg, cfg, st, "SS", "SR")
