@@ -123,3 +123,11 @@ BlobNotFound. The AIMI container instead holds `CheXpert-v1.0 batch 1 (validate 
 training batches (`batch 2 (train 1)`, `batch 3 (train 2)`, `batch 4 (train 3)`). `train.csv` is read from
 batch 1 and each selected image from the batch that contains it, with range requests as in A1. Nothing
 else changes.
+
+**A4 (2026-11-23, before any sanitizer training finished).** Peak GPU memory measured on this card
+(two training steps, batch 2 and 4, extrapolated linearly): SR adversary about 0.53 GiB per image, SS adversary
+about 0.69 GiB per image, so batch 64 needs about 34 and 45 GiB, and batch 32 with the SS adversary about
+22.7 GiB, more than the 23 GiB a free 24 GB card offers. Both variants are therefore trained with batch 16
+(learning rate, epochs and every other setting as released). This replaces the batch 32 of A2. The comparison
+of SR-adv and SS-adv is unaffected because both use the same settings; the replication check against the
+released generator (batch 64) is descriptive only.

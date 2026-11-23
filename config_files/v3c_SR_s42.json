@@ -6,7 +6,7 @@
 	"generator_type": "flow_field",
 	"mu": 0.01,
 	"image_size": 256,
-	"batch_size": 32,
+	"batch_size": 16,
 	"learning_rate": 0.0001,
 	"max_epochs": 250,
 	"show_every_n_epochs": 10,
