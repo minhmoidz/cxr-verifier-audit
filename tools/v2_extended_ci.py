@@ -15,7 +15,10 @@ shared by every model, so contrasts between configurations are paired. Per confi
 
 Outputs: results/E1E2/extended_ci.json (points, intervals, contrasts) and
          results/E1E2/boot/<config>.npz (per-replicate arm values, for contrasts).
-Usage:   python3 tools/v2_extended_ci.py [--n_boot 2000] [--seed 20261123] [--workers 24]
+Usage:   python3 tools/v2_extended_ci.py [--n_boot 2000] [--seed 20261123] [--workers 24] [--seeds 0,1,2]
+--seeds restricts the non-factorial arms to those verifier seeds (revision v3: the three-seed values kept in the
+supplement next to the five-seed ones); outputs then go to extended_ci_seeds<...>.json and boot_seeds<...>/.
+Also reported (revision v3, V3-B): H2 on NIH, [field SS - field SR] - [control SS - control SR], per verifier.
 """
 from __future__ import annotations
 
@@ -143,8 +146,15 @@ def main():
     ap.add_argument("--n_boot", type=int, default=2000)
     ap.add_argument("--seed", type=int, default=20261123)
     ap.add_argument("--workers", type=int, default=24)
+    ap.add_argument("--seeds", default="", help="restrict non-factorial arms to these verifier seeds, e.g. 0,1,2")
     a = ap.parse_args()
     models = [m for m in json.load(open(D / "models.json")) if (D / "scores" / f"{m['model_id']}.npz").exists()]
+    tag = ""
+    if a.seeds:
+        keep = {int(x) for x in a.seeds.split(",")}
+        models = [m for m in models if m["family"] in ("factorial_ref", "factorial_imagenet") or int(m["seed"]) in keep]
+        tag = "_seeds" + a.seeds.replace(",", "")
+    boot_dir = D / f"boot{tag}"
     _, _, y, pid_a, pid_b = B.load_pairs(B.TEST_PAIRS)
     pats = sorted(set(pid_a) | set(pid_b))
     pid_codes = {p: i for i, p in enumerate(pats)}
@@ -158,8 +168,8 @@ def main():
     by_cfg = defaultdict(list)
     for m in models:
         by_cfg[config_of(m)].append(m)
-    (D / "boot").mkdir(exist_ok=True)
-    out = {"n_boot": a.n_boot, "seed": a.seed, "n_test_patients": len(pats),
+    boot_dir.mkdir(exist_ok=True)
+    out = {"n_boot": a.n_boot, "seed": a.seed, "seeds_filter": a.seeds or "all", "n_test_patients": len(pats),
            "n_ext_negatives": None, "configs": {}}
     cfg_arrays = {}
     for cfg, ms in sorted(by_cfg.items()):
@@ -185,7 +195,7 @@ def main():
                                                   "per_seed": [float(x) for x in pts[:, i]],
                                                   "patient": ci_p, "patient+seed": ci_h, "n_valid": [n_p, n_h]}
         cfg_arrays[cfg] = arrays
-        np.savez_compressed(D / "boot" / f"{cfg.replace('/', '__')}.npz", **arrays)
+        np.savez_compressed(boot_dir / f"{cfg.replace('/', '__')}.npz", **arrays)
         out["configs"][cfg] = ent
 
     # Contrasts (difference of seed means, paired patient draws; arms resampled independently for seeds).
@@ -253,10 +263,26 @@ def main():
         # E2: SS test minus SR test, same models.
         for cfg in cfg_arrays:
             C[f"{st}/SS_minus_SR/{cfg}"] = contrast(cfg, cfg, st, "SS", "SR")
+        # Revision v3 (V3-B), H2 on NIH: [field SS - field SR] - [control SS - control SR] (same models per arm).
+        for ver in ("reference", "e5", "imagenet_full"):
+            for c in ("blur_s2", "elastic_m0.045_keyed", "elastic_m0.04_keyed"):
+                f_, k_ = f"{ver}/ff_mu0.01", f"{ver}/{c}"
+                if f_ in cfg_arrays and k_ in cfg_arrays:
+                    e = {}
+                    for i, k in enumerate(METRICS):
+                        pt = sum(coef * out["configs"][cf][f"{st}/{pp}/{k}"]["point"]
+                                 for cf, pp, coef in ((f_, "SS", 1), (f_, "SR", -1), (k_, "SS", -1), (k_, "SR", 1)))
+                        dd = {}
+                        for lev in ("patient", "hier"):
+                            dd[lev] = sum(coef * cfg_arrays[cf][f"{st}_{pp}_{lev}"][:, i]
+                                          for cf, pp, coef in ((f_, "SS", 1), (f_, "SR", -1), (k_, "SS", -1), (k_, "SR", 1)))
+                        e[k] = {"point": pt, "patient": summarize(dd["patient"])[0], "patient+seed": summarize(dd["hier"])[0]}
+                    C[f"{st}/H2/{ver}/ff_mu0.01_minus_{c}"] = e
     out["contrasts"] = {k: v for k, v in C.items() if v is not None}
     out["n_ext_negatives"] = 1073 * 1072
-    json.dump(out, open(D / "extended_ci.json", "w"), indent=1)
-    print(f"wrote {D / 'extended_ci.json'}: {len(out['configs'])} configurations, {len(out['contrasts'])} contrasts")
+    name = f"extended_ci{tag}.json"
+    json.dump(out, open(D / name, "w"), indent=1)
+    print(f"wrote {D / name}: {len(out['configs'])} configurations, {len(out['contrasts'])} contrasts")
 
 
 if __name__ == "__main__":
