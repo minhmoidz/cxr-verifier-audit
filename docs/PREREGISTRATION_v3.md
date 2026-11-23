@@ -106,4 +106,14 @@ seeds are resampled with the verifier seeds nested within them.
 
 ## Amendments
 
-(none)
+**A1 (2026-11-23, before any CheXpert file was read).** Stanford AIMI now distributes only the
+full-resolution `CheXpert-v1.0.zip` (471 GB), not CheXpert-v1.0-small, and the analysis machine has about
+22 GB free. `train.csv` and the selected JPEG files are therefore read from the remote zip with HTTP range
+requests (no other member is read). The pair-selection rule, the seed and the preprocessing are unchanged;
+the center crop and the bilinear resize to 256 x 256 are applied to the full-resolution images instead of
+the downsampled ones. The SHA-256 of `train.csv` and of every image read is recorded.
+
+**A2 (2026-11-23, before any sanitizer training finished).** The first timing epoch of V3-C ran out of GPU
+memory because other users' jobs occupied about 18.9 of the 24 GB GPU. If the released batch size of 64
+cannot run, both variants are trained with the same smaller batch (32), as the plan allows, and this is
+stated.
