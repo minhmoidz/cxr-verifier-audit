@@ -1,0 +1,6 @@
+{
+ "published_run_id": "frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s0",
+ "published_test_auc": 98.1448,
+ "published_test_tpr1": 62.56,
+ "published_selected_epoch": 3
+}

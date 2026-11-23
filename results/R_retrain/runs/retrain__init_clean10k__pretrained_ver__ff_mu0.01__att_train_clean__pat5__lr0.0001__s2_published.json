@@ -1,0 +1,6 @@
+{
+ "published_run_id": "init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2",
+ "published_test_auc": 95.0012,
+ "published_test_tpr1": 30.08,
+ "published_selected_epoch": 10
+}

@@ -1,0 +1,24 @@
+train/val images: 86524; on disk: 21573; to fetch: 64951
+  part 9: 2000 members, 822 MB, 15.2 MB/s, saved 1201
+  part 9: 4000 members, 1645 MB, 15.9 MB/s, saved 2398
+  part 9: 6000 members, 2467 MB, 16.1 MB/s, saved 3587
+  part 9: 8000 members, 3290 MB, 15.7 MB/s, saved 4764
+  part 9: 10000 members, 4109 MB, 14.7 MB/s, saved 5894
+part 9 done: {"part": 9, "url": "https://nihcc.box.com/shared/static/upyy3ml7qdumlgk2rfcvlb9k6gvqq2pj.gz", "members": 10000, "saved": 5894, "skipped_existing": 0, "verified_identical": 4106, "bytes": 4108933524, "minutes": 4.7}
+  part 10: 2000 members, 838 MB, 15.8 MB/s, saved 1227
+  part 10: 4000 members, 1673 MB, 16.2 MB/s, saved 2435
+  part 10: 6000 members, 2508 MB, 16.3 MB/s, saved 3641
+  part 10: 8000 members, 3345 MB, 16.3 MB/s, saved 4879
+  part 10: 10000 members, 4179 MB, 15.5 MB/s, saved 6094
+part 10 done: {"part": 10, "url": "https://nihcc.box.com/shared/static/l6nilvfa9cg3s28tqv1qc1olm3gnz54p.gz", "members": 10000, "saved": 6094, "skipped_existing": 0, "verified_identical": 3906, "bytes": 4179144121, "minutes": 4.5}
+  part 11: 2000 members, 838 MB, 17.3 MB/s, saved 1114
+  part 11: 4000 members, 1673 MB, 18.4 MB/s, saved 2227
+  part 11: 6000 members, 2510 MB, 18.3 MB/s, saved 3348
+  part 11: 8000 members, 3347 MB, 18.2 MB/s, saved 4448
+  part 11: 10000 members, 4185 MB, 18.1 MB/s, saved 5583
+part 11 done: {"part": 11, "url": "https://nihcc.box.com/shared/static/hhq8fkdgvcari67vfhs7ppg2w6ni4jze.gz", "members": 10000, "saved": 5583, "skipped_existing": 0, "verified_identical": 4417, "bytes": 4184608844, "minutes": 3.8}
+  part 12: 2000 members, 817 MB, 15.3 MB/s, saved 665
+  part 12: 4000 members, 1636 MB, 15.1 MB/s, saved 1320
+  part 12: 6000 members, 2453 MB, 14.5 MB/s, saved 1991
+part 12 done: {"part": 12, "url": "https://nihcc.box.com/shared/static/ioqwiy20ihqwyr8pf4c24eazhh281pbu.gz", "members": 7121, "saved": 2362, "skipped_existing": 0, "verified_identical": 4759, "bytes": 2912543044, "minutes": 3.7}
+finished: 55560 of 64951 fetched; missing 9391

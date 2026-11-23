@@ -1,0 +1,304 @@
+published checkpoint kept: ('reference', 'ff_mu0.01', 0) -> results/e1/runs/init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0_best.pth
+published checkpoint kept: ('reference', 'none', 0) -> results/e1/runs/init_clean10k__pretrained_ver__none__att_train_clean__pat5__lr0.0001__s0_best.pth
+43 runs to train
+[1/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__blur_s2__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=14/19 (1660.28s) AUC=92.67% (published 92.64%) TPR@1%=22.04% (published 20.68%)
+[2/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__blur_s2__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=10/15 (1373.06s) AUC=93.96% (published 93.65%) TPR@1%=28.84% (published 20.52%)
+[3/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__blur_s2__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=5/10 (722.54s) AUC=93.33% (published 91.97%) TPR@1%=27.40% (published 21.88%)
+[4/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=7/12 (1022.25s) AUC=92.30% (published 91.13%) TPR@1%=21.64% (published 23.12%)
+[5/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=8/13 (562.23s) AUC=93.38% (published 93.91%) TPR@1%=22.96% (published 24.60%)
+[6/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=10/15 (1118.91s) AUC=93.27% (published 93.79%) TPR@1%=26.68% (published 24.12%)
+[7/43] RUN retrain__metric_l1_diag__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=7/12 (603.66s) AUC=91.59% (published 90.14%) TPR@1%=16.44% (published 17.76%)
+[8/43] RUN retrain__metric_l1_diag__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=2/7 (310.68s) AUC=87.59% (published 91.50%) TPR@1%=14.00% (published 16.84%)
+[9/43] RUN retrain__metric_l1_diag__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=8/13 (919.59s) AUC=93.05% (published 91.22%) TPR@1%=28.60% (published 17.16%)
+[10/43] RUN retrain__metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=8/13 (480.55s) AUC=94.33% (published 94.71%) TPR@1%=29.88% (published 25.32%)
+[11/43] RUN retrain__metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=15/20 (1366.23s) AUC=95.91% (published 95.25%) TPR@1%=42.04% (published 36.28%)
+[12/43] RUN retrain__metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=11/16 (673.85s) AUC=95.77% (published 95.17%) TPR@1%=39.16% (published 29.28%)
+[13/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s2__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=7/12 (885.82s) AUC=97.37% (published 97.27%) TPR@1%=58.80% (published 55.60%)
+[14/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s2__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=17/22 (1062.43s) AUC=97.65% (published 97.57%) TPR@1%=52.36% (published 56.04%)
+[15/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s2__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=7/12 (905.0s) AUC=97.34% (published 97.33%) TPR@1%=58.52% (published 53.32%)
+[16/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=3/8 (364.89s) AUC=98.15% (published 98.14%) TPR@1%=63.44% (published 62.56%)
+[17/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (389.38s) AUC=98.14% (published 98.17%) TPR@1%=60.32% (published 60.52%)
+[18/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (704.01s) AUC=98.13% (published 98.11%) TPR@1%=62.40% (published 61.68%)
+[19/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=3/8 (454.16s) AUC=98.50% (published 98.48%) TPR@1%=68.56% (published 68.20%)
+[20/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (344.68s) AUC=98.47% (published 98.47%) TPR@1%=66.36% (published 65.92%)
+[21/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (663.12s) AUC=98.44% (published 98.44%) TPR@1%=67.20% (published 67.36%)
+[22/43] RUN retrain__init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=8/13 (779.8s) AUC=95.22% (published 95.19%) TPR@1%=26.44% (published 28.44%)
+[23/43] RUN retrain__init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=10/15 (775.2s) AUC=95.04% (published 95.00%) TPR@1%=28.96% (published 30.08%)
+[24/43] RUN retrain__init_clean10k__pretrained_ver__none__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (527.6s) AUC=99.43% (published 99.43%) TPR@1%=86.88% (published 87.36%)
+[25/43] RUN retrain__init_clean10k__pretrained_ver__none__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (337.56s) AUC=99.47% (published 99.46%) TPR@1%=86.68% (published 85.44%)
+[26/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__ff_mu0.005__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=16/21 (1449.14s) AUC=94.68% (published 93.59%) TPR@1%=32.24% (published 20.80%)
+[27/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__ff_mu0.005__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=12/17 (766.25s) AUC=93.71% (published 92.90%) TPR@1%=24.68% (published 21.20%)
+[28/43] RUN retrain__frontier_metric__resnet50_metric_l1__imagenet__ff_mu0.005__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=20/25 (1248.19s) AUC=94.46% (published 93.61%) TPR@1%=26.12% (published 23.00%)
+[29/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s1.5__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=9/14 (1036.18s) AUC=97.73% (published 97.45%) TPR@1%=64.84% (published 57.36%)
+[30/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s1.5__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=10/15 (558.8s) AUC=97.86% (published 97.84%) TPR@1%=58.60% (published 62.20%)
+[31/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s1.5__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (681.09s) AUC=97.64% (published 97.64%) TPR@1%=61.72% (published 64.76%)
+[32/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s2.5__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=6/11 (633.26s) AUC=96.77% (published 96.41%) TPR@1%=49.68% (published 45.00%)
+[33/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s2.5__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=10/15 (1216.84s) AUC=96.88% (published 96.89%) TPR@1%=40.16% (published 50.24%)
+[34/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__blur_s2.5__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=9/14 (1132.32s) AUC=96.99% (published 96.86%) TPR@1%=49.00% (published 48.92%)
+[35/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.035_keyed__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (795.51s) AUC=98.76% (published 98.80%) TPR@1%=73.12% (published 71.32%)
+[36/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.035_keyed__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (746.53s) AUC=98.75% (published 98.74%) TPR@1%=72.00% (published 71.68%)
+[37/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.035_keyed__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (743.37s) AUC=98.77% (published 98.75%) TPR@1%=72.12% (published 72.28%)
+[38/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.001__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (802.46s) AUC=99.41% (published 99.42%) TPR@1%=86.08% (published 85.80%)
+[39/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.001__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (596.32s) AUC=99.43% (published 99.44%) TPR@1%=86.32% (published 85.56%)
+[40/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.001__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (749.73s) AUC=99.41% (published 99.40%) TPR@1%=85.08% (published 83.68%)
+[41/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.005__att_train_clean__pat5__lr0.0001__s0
+[ Using Seed :  0  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=6/11 (959.08s) AUC=97.49% (published 97.48%) TPR@1%=42.84% (published 43.08%)
+[42/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.005__att_train_clean__pat5__lr0.0001__s1
+[ Using Seed :  1  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=8/13 (1066.64s) AUC=97.30% (published 97.35%) TPR@1%=47.20% (published 49.92%)
+[43/43] RUN retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.005__att_train_clean__pat5__lr0.0001__s2
+[ Using Seed :  2  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=3/8 (676.28s) AUC=97.52% (published 97.52%) TPR@1%=48.60% (published 48.76%)

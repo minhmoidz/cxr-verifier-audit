@@ -1,0 +1,114 @@
+[
+ {
+  "run_id": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed0",
+  "status": "completed",
+  "minutes": 28.4,
+  "peak_gpu_gib": 7.27,
+  "epochs_trained": 6,
+  "results_txt": "AUC: 0.6431524799999999\nAccuracy: 0.5846\nF1-Score: 0.5179856115107914\nPrecision: 0.6169154228855721\nRecall: 0.4464\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.57      0.72      0.64      2500\n         1.0       0.62      0.45      0.52      2500\n\n    accuracy                           0.58      5000\n   macro avg       0.59      0.58      0.58      5000\nweighted avg       0.59      0.58      0.58      5000\n\nConfusion matrix: [[1807  693]\n [1384 1116]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed0",
+  "status": "completed",
+  "minutes": 27.9,
+  "peak_gpu_gib": 7.25,
+  "epochs_trained": 8,
+  "results_txt": "AUC: 0.6793324000000001\nAccuracy: 0.5768\nF1-Score: 0.4610290371879776\nPrecision: 0.6346423562412342\nRecall: 0.362\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.55      0.79      0.65      2500\n         1.0       0.63      0.36      0.46      2500\n\n    accuracy                           0.58      5000\n   macro avg       0.59      0.58      0.56      5000\nweighted avg       0.59      0.58      0.56      5000\n\nConfusion matrix: [[1979  521]\n [1595  905]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed1",
+  "status": "completed",
+  "minutes": 33.73,
+  "peak_gpu_gib": 7.27,
+  "epochs_trained": 10,
+  "results_txt": "AUC: 0.68286544\nAccuracy: 0.6208\nF1-Score: 0.5673208580556823\nPrecision: 0.6604675876726886\nRecall: 0.4972\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.60      0.74      0.66      2500\n         1.0       0.66      0.50      0.57      2500\n\n    accuracy                           0.62      5000\n   macro avg       0.63      0.62      0.61      5000\nweighted avg       0.63      0.62      0.61      5000\n\nConfusion matrix: [[1861  639]\n [1257 1243]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed1",
+  "status": "completed",
+  "minutes": 24.09,
+  "peak_gpu_gib": 7.25,
+  "epochs_trained": 8,
+  "results_txt": "AUC: 0.77104432\nAccuracy: 0.6564\nF1-Score: 0.576221016280217\nPrecision: 0.7516087516087516\nRecall: 0.4672\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.61      0.85      0.71      2500\n         1.0       0.75      0.47      0.58      2500\n\n    accuracy                           0.66      5000\n   macro avg       0.68      0.66      0.64      5000\nweighted avg       0.68      0.66      0.64      5000\n\nConfusion matrix: [[2114  386]\n [1332 1168]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed2",
+  "status": "completed",
+  "minutes": 29.08,
+  "peak_gpu_gib": 7.27,
+  "epochs_trained": 9,
+  "results_txt": "AUC: 0.6782772800000001\nAccuracy: 0.6176\nF1-Score: 0.5875754961173425\nPrecision: 0.6376404494382022\nRecall: 0.5448\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.60      0.69      0.64      2500\n         1.0       0.64      0.54      0.59      2500\n\n    accuracy                           0.62      5000\n   macro avg       0.62      0.62      0.62      5000\nweighted avg       0.62      0.62      0.62      5000\n\nConfusion matrix: [[1726  774]\n [1138 1362]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed2",
+  "status": "completed",
+  "minutes": 26.05,
+  "peak_gpu_gib": 7.25,
+  "epochs_trained": 9,
+  "results_txt": "AUC: 0.6996472\nAccuracy: 0.6396\nF1-Score: 0.6427438540840603\nPrecision: 0.637185534591195\nRecall: 0.6484\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.64      0.63      0.64      2500\n         1.0       0.64      0.65      0.64      2500\n\n    accuracy                           0.64      5000\n   macro avg       0.64      0.64      0.64      5000\nweighted avg       0.64      0.64      0.64      5000\n\nConfusion matrix: [[1577  923]\n [ 879 1621]]\n"
+ },
+ {
+  "run_id": "p1_ff_mu0.01_sanitized_sanitized_imagenet_seed3",
+  "status": "completed",
+  "minutes": 33.32,
+  "peak_gpu_gib": 7.27,
+  "epochs_trained": 11,
+  "results_txt": "AUC: 0.64318104\nAccuracy: 0.5764\nF1-Score: 0.4961941008563273\nPrecision: 0.6120892018779343\nRecall: 0.4172\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.56      0.74      0.63      2500\n         1.0       0.61      0.42      0.50      2500\n\n    accuracy                           0.58      5000\n   macro avg       0.59      0.58      0.57      5000\nweighted avg       0.59      0.58      0.57      5000\n\nConfusion matrix: [[1839  661]\n [1457 1043]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed3",
+  "status": "completed",
+  "minutes": 25.86,
+  "peak_gpu_gib": 7.27,
+  "epochs_trained": 8,
+  "results_txt": "AUC: 0.73006856\nAccuracy: 0.6376\nF1-Score: 0.5718336483931947\nPrecision: 0.6986143187066974\nRecall: 0.484\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.61      0.79      0.69      2500\n         1.0       0.70      0.48      0.57      2500\n\n    accuracy                           0.64      5000\n   macro avg       0.65      0.64      0.63      5000\nweighted avg       0.65      0.64      0.63      5000\n\nConfusion matrix: [[1978  522]\n [1290 1210]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed3",
+  "status": "completed",
+  "minutes": 28.07,
+  "peak_gpu_gib": 7.25,
+  "epochs_trained": 10,
+  "results_txt": "AUC: 0.7303640800000001\nAccuracy: 0.6568\nF1-Score: 0.6235190873189995\nPrecision: 0.6904761904761905\nRecall: 0.5684\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.63      0.75      0.68      2500\n         1.0       0.69      0.57      0.62      2500\n\n    accuracy                           0.66      5000\n   macro avg       0.66      0.66      0.65      5000\nweighted avg       0.66      0.66      0.65      5000\n\nConfusion matrix: [[1863  637]\n [1079 1421]]\n"
+ },
+ {
+  "run_id": "p1_ff_mu0.01_sanitized_raw_imagenet_seed3",
+  "status": "completed",
+  "minutes": 21.88,
+  "peak_gpu_gib": 7.25,
+  "epochs_trained": 7,
+  "results_txt": "AUC: 0.68774176\nAccuracy: 0.6464\nF1-Score: 0.6565656565656566\nPrecision: 0.6382175226586103\nRecall: 0.676\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.66      0.62      0.64      2500\n         1.0       0.64      0.68      0.66      2500\n\n    accuracy                           0.65      5000\n   macro avg       0.65      0.65      0.65      5000\nweighted avg       0.65      0.65      0.65      5000\n\nConfusion matrix: [[1542  958]\n [ 810 1690]]\n"
+ },
+ {
+  "run_id": "p1_ff_mu0.01_sanitized_sanitized_imagenet_seed4",
+  "status": "completed",
+  "minutes": 29.68,
+  "peak_gpu_gib": 7.27,
+  "epochs_trained": 9,
+  "results_txt": "AUC: 0.71891504\nAccuracy: 0.6198\nF1-Score: 0.5344109723242714\nPrecision: 0.6891977258370183\nRecall: 0.4364\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.59      0.80      0.68      2500\n         1.0       0.69      0.44      0.53      2500\n\n    accuracy                           0.62      5000\n   macro avg       0.64      0.62      0.61      5000\nweighted avg       0.64      0.62      0.61      5000\n\nConfusion matrix: [[2008  492]\n [1409 1091]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4",
+  "status": "completed",
+  "minutes": 22.09,
+  "peak_gpu_gib": 7.27,
+  "epochs_trained": 6,
+  "results_txt": "AUC: 0.6880485599999999\nAccuracy: 0.5952\nF1-Score: 0.47319104633003645\nPrecision: 0.6773472429210134\nRecall: 0.3636\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.57      0.83      0.67      2500\n         1.0       0.68      0.36      0.47      2500\n\n    accuracy                           0.60      5000\n   macro avg       0.62      0.60      0.57      5000\nweighted avg       0.62      0.60      0.57      5000\n\nConfusion matrix: [[2067  433]\n [1591  909]]\n"
+ },
+ {
+  "run_id": "p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed4",
+  "status": "completed",
+  "minutes": 27.88,
+  "peak_gpu_gib": 7.25,
+  "epochs_trained": 10,
+  "results_txt": "AUC: 0.7543744\nAccuracy: 0.623\nF1-Score: 0.5014546416291986\nPrecision: 0.7400468384074942\nRecall: 0.3792\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.58      0.87      0.70      2500\n         1.0       0.74      0.38      0.50      2500\n\n    accuracy                           0.62      5000\n   macro avg       0.66      0.62      0.60      5000\nweighted avg       0.66      0.62      0.60      5000\n\nConfusion matrix: [[2167  333]\n [1552  948]]\n"
+ },
+ {
+  "run_id": "p1_ff_mu0.01_sanitized_raw_imagenet_seed4",
+  "status": "completed",
+  "minutes": 23.54,
+  "peak_gpu_gib": 7.25,
+  "epochs_trained": 8,
+  "results_txt": "AUC: 0.7618412800000002\nAccuracy: 0.6576\nF1-Score: 0.6011183597390494\nPrecision: 0.7198660714285714\nRecall: 0.516\nClassification report:               precision    recall  f1-score   support\n\n         0.0       0.62      0.80      0.70      2500\n         1.0       0.72      0.52      0.60      2500\n\n    accuracy                           0.66      5000\n   macro avg       0.67      0.66      0.65      5000\nweighted avg       0.67      0.66      0.65      5000\n\nConfusion matrix: [[1998  502]\n [1210 1290]]\n"
+ }
+]

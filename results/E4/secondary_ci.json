@@ -1,0 +1,393 @@
+{
+ "n_boot": 2000,
+ "seed": 20261122,
+ "dropped_replicates": {
+  "patient": 0,
+  "patient+seed": 0
+ },
+ "scheme": "patient-clustered dyadic weights (positive m_p, negative m_a*m_b), same draw for all arms",
+ "run_ids": {
+  "reference/none": [
+   "init_clean10k__pretrained_ver__none__att_train_clean__pat5__lr0.0001__s0",
+   "init_clean10k__pretrained_ver__none__att_train_clean__pat5__lr0.0001__s1",
+   "init_clean10k__pretrained_ver__none__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "reference/ff_mu0.01": [
+   "init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0",
+   "init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1",
+   "init_clean10k__pretrained_ver__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "reference/blur_s2": [
+   "frontier_ver__resnet50_bce__pretrained_ver__blur_s2__att_train_clean__pat5__lr0.0001__s0",
+   "frontier_ver__resnet50_bce__pretrained_ver__blur_s2__att_train_clean__pat5__lr0.0001__s1",
+   "frontier_ver__resnet50_bce__pretrained_ver__blur_s2__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "reference/elastic_m0.045_keyed": [
+   "frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s0",
+   "frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s1",
+   "frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "reference/elastic_m0.04_keyed": [
+   "frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s0",
+   "frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s1",
+   "frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "imagenet_full/none": [
+   "metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s0",
+   "metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s1",
+   "metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "imagenet_full/ff_mu0.01": [
+   "metric_l1_diag__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s0",
+   "metric_l1_diag__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s1",
+   "metric_l1_diag__imagenet__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "imagenet_full/blur_s2": [
+   "frontier_metric__resnet50_metric_l1__imagenet__blur_s2__att_train_clean__pat5__lr0.0001__s0",
+   "frontier_metric__resnet50_metric_l1__imagenet__blur_s2__att_train_clean__pat5__lr0.0001__s1",
+   "frontier_metric__resnet50_metric_l1__imagenet__blur_s2__att_train_clean__pat5__lr0.0001__s2"
+  ],
+  "imagenet_full/elastic_m0.04_keyed": [
+   "frontier_metric__resnet50_metric_l1__imagenet__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s0",
+   "frontier_metric__resnet50_metric_l1__imagenet__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s1",
+   "frontier_metric__resnet50_metric_l1__imagenet__elastic_m0.04_keyed__att_train_clean__pat5__lr0.0001__s2"
+  ]
+ },
+ "arms_point": {
+  "reference/none": {
+   "tpr1": 85.86666666666667,
+   "auc": 99.42995733333333
+  },
+  "reference/ff_mu0.01": {
+   "tpr1": 30.733333333333334,
+   "auc": 95.27916266666666
+  },
+  "reference/blur_s2": {
+   "tpr1": 54.98666666666667,
+   "auc": 97.38887199999999
+  },
+  "reference/elastic_m0.045_keyed": {
+   "tpr1": 61.586666666666666,
+   "auc": 98.14007733333334
+  },
+  "reference/elastic_m0.04_keyed": {
+   "tpr1": 67.16000000000001,
+   "auc": 98.46696533333333
+  },
+  "imagenet_full/none": {
+   "tpr1": 30.293333333333333,
+   "auc": 95.04407200000001
+  },
+  "imagenet_full/ff_mu0.01": {
+   "tpr1": 17.253333333333334,
+   "auc": 90.95578133333333
+  },
+  "imagenet_full/blur_s2": {
+   "tpr1": 21.026666666666667,
+   "auc": 92.75162666666665
+  },
+  "imagenet_full/elastic_m0.04_keyed": {
+   "tpr1": 23.94666666666667,
+   "auc": 92.943384
+  }
+ },
+ "quantities": {
+  "reference/field_minus_e045/tpr1": {
+   "point": -30.85333333333333,
+   "patient": [
+    -42.344454312170974,
+    -16.893057546810155
+   ],
+   "patient+seed": [
+    -43.400894768143445,
+    -15.881735263296475
+   ]
+  },
+  "reference/field_minus_e045/auc": {
+   "point": -2.860914666666673,
+   "patient": [
+    -3.731402601907881,
+    -2.0229196212869853
+   ],
+   "patient+seed": [
+    -3.8076684974251465,
+    -1.9685461403904907
+   ]
+  },
+  "reference/field_over_e045/tpr1": {
+   "point": 0.4990257631521975,
+   "patient": [
+    0.3523791429107603,
+    0.6879157698888037
+   ],
+   "patient+seed": [
+    0.33634821950585037,
+    0.7026396694296979
+   ]
+  },
+  "reference/e045_over_raw/tpr1": {
+   "point": 0.7172360248447204,
+   "patient": [
+    0.5842543745777133,
+    0.8244481053044567
+   ],
+   "patient+seed": [
+    0.5767373461012313,
+    0.833586374964712
+   ]
+  },
+  "reference/field_minus_e04/tpr1": {
+   "point": -36.42666666666668,
+   "patient": [
+    -49.36014625228518,
+    -22.352661160658766
+   ],
+   "patient+seed": [
+    -50.431149580085744,
+    -21.52039342252126
+   ]
+  },
+  "reference/field_minus_e04/auc": {
+   "point": -3.18780266666667,
+   "patient": [
+    -4.089634494631957,
+    -2.3348285166761324
+   ],
+   "patient+seed": [
+    -4.173516045195278,
+    -2.280145314513908
+   ]
+  },
+  "reference/field_over_e04/tpr1": {
+   "point": 0.4576136589239626,
+   "patient": [
+    0.32093165590532857,
+    0.6261376680125355
+   ],
+   "patient+seed": [
+    0.3133131399407379,
+    0.6410207244167114
+   ]
+  },
+  "reference/e04_over_raw/tpr1": {
+   "point": 0.7821428571428573,
+   "patient": [
+    0.6265233931338127,
+    0.8973857150220939
+   ],
+   "patient+seed": [
+    0.6247124039871116,
+    0.9031992527320619
+   ]
+  },
+  "imagenet_full/field_minus_e04/tpr1": {
+   "point": -6.693333333333335,
+   "patient": [
+    -14.265410032547818,
+    0.18793642985450382
+   ],
+   "patient+seed": [
+    -16.569170989669207,
+    2.115377648011587
+   ]
+  },
+  "imagenet_full/field_minus_e04/auc": {
+   "point": -1.9876026666666604,
+   "patient": [
+    -2.7663147359100915,
+    -1.1946990467823746
+   ],
+   "patient+seed": [
+    -3.7157917675259213,
+    -0.12332159890957099
+   ]
+  },
+  "imagenet_full/field_over_e04/tpr1": {
+   "point": 0.720489977728285,
+   "patient": [
+    0.4905559118371756,
+    1.0102715157224456
+   ],
+   "patient+seed": [
+    0.4390492124885704,
+    1.1186501649441938
+   ]
+  },
+  "imagenet_full/e04_over_raw/tpr1": {
+   "point": 0.790492957746479,
+   "patient": [
+    0.5617547157045816,
+    1.1234017675356518
+   ],
+   "patient+seed": [
+    0.5031432115154364,
+    1.2775009962870085
+   ]
+  },
+  "reference/field_minus_b2/tpr1": {
+   "point": -24.253333333333337,
+   "patient": [
+    -36.28579792348142,
+    -9.32632973926513
+   ],
+   "patient+seed": [
+    -37.548692205922926,
+    -7.692119944212
+   ]
+  },
+  "reference/field_minus_b2/auc": {
+   "point": -2.1097093333333277,
+   "patient": [
+    -2.9821643531326094,
+    -1.2653579067684977
+   ],
+   "patient+seed": [
+    -3.063831561296743,
+    -1.19596871014897
+   ]
+  },
+  "reference/field_over_b2/tpr1": {
+   "point": 0.5589233753637245,
+   "patient": [
+    0.3968844614790381,
+    0.8063633426347849
+   ],
+   "patient+seed": [
+    0.38566443963572,
+    0.8257668847641756
+   ]
+  },
+  "reference/field_over_raw/tpr1": {
+   "point": 0.3579192546583851,
+   "patient": [
+    0.2511853258891719,
+    0.48425771792300926
+   ],
+   "patient+seed": [
+    0.2433027451052881,
+    0.48950601128395776
+   ]
+  },
+  "reference/b2_over_raw/tpr1": {
+   "point": 0.6403726708074534,
+   "patient": [
+    0.5029629024816031,
+    0.7495916042454809
+   ],
+   "patient+seed": [
+    0.47494588467897264,
+    0.7622342565200956
+   ]
+  },
+  "reference/field_minus_b2_over_raw/tpr1": {
+   "point": -0.2824534161490683,
+   "patient": [
+    -0.4190454430856988,
+    -0.11181751657436062
+   ],
+   "patient+seed": [
+    -0.4316100131195976,
+    -0.09459797547541605
+   ]
+  },
+  "imagenet_full/field_minus_b2/tpr1": {
+   "point": -3.7733333333333334,
+   "patient": [
+    -10.89730081881556,
+    3.0936502482440655
+   ],
+   "patient+seed": [
+    -12.916893240433113,
+    4.397961538778569
+   ]
+  },
+  "imagenet_full/field_minus_b2/auc": {
+   "point": -1.7958453333333182,
+   "patient": [
+    -2.7562489986487186,
+    -0.7895181990889503
+   ],
+   "patient+seed": [
+    -3.343981680466355,
+    -0.2556241983935903
+   ]
+  },
+  "imagenet_full/field_over_b2/tpr1": {
+   "point": 0.8205453392517438,
+   "patient": [
+    0.5563984925992517,
+    1.1772420254797415
+   ],
+   "patient+seed": [
+    0.4867770572967071,
+    1.2587971291042992
+   ]
+  },
+  "imagenet_full/field_over_raw/tpr1": {
+   "point": 0.5695422535211268,
+   "patient": [
+    0.374733694089289,
+    0.8098659917041844
+   ],
+   "patient+seed": [
+    0.336430905377808,
+    0.9088264526082365
+   ]
+  },
+  "imagenet_full/b2_over_raw/tpr1": {
+   "point": 0.6941021126760564,
+   "patient": [
+    0.482943216565446,
+    0.9876751145263776
+   ],
+   "patient+seed": [
+    0.44643274902042285,
+    1.1488383634370132
+   ]
+  },
+  "imagenet_full/field_minus_b2_over_raw/tpr1": {
+   "point": -0.12455985915492958,
+   "patient": [
+    -0.36948100186067884,
+    0.09877320645582602
+   ],
+   "patient+seed": [
+    -0.45887820630435583,
+    0.14797393768124503
+   ]
+  },
+  "between/field_over_b2/tpr1": {
+   "point": -0.2616219638880193,
+   "patient": [
+    -0.6303607516514445,
+    0.08321734329275983
+   ],
+   "patient+seed": [
+    -0.7095720990662915,
+    0.14891607283675992
+   ]
+  },
+  "between/field_minus_b2/tpr1": {
+   "point": -20.480000000000004,
+   "patient": [
+    -33.081878507251844,
+    -4.437503295073371
+   ],
+   "patient+seed": [
+    -34.790301624341105,
+    -2.476875826494269
+   ]
+  },
+  "between/field_minus_b2_over_raw/tpr1": {
+   "point": -0.15789355699413876,
+   "patient": [
+    -0.4014293990961683,
+    0.13181395264837104
+   ],
+   "patient+seed": [
+    -0.44557946596559617,
+    0.22991964851630586
+   ]
+  }
+ }
+}

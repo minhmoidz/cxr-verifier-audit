@@ -1,0 +1,16 @@
+{
+ "model_id": "zeroshot__reference__none__s0",
+ "family": "zeroshot_reference",
+ "sanitizer": "none",
+ "seed": 0,
+ "ckpt": "networks/pretrained_verification_model.pth",
+ "published_pred": null,
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "none",
+ "auc_SR_from_embeddings": 99.480208,
+ "auc_SR_published_pred": NaN,
+ "auc_abs_diff": null,
+ "seconds": 19.3
+}

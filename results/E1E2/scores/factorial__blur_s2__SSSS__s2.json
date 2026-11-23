@@ -1,0 +1,18 @@
+{
+ "model_id": "factorial__blur_s2__SSSS__s2",
+ "family": "factorial_ref",
+ "sanitizer": "blur_s2",
+ "train_pairing": "SS",
+ "val_pairing": "SS",
+ "seed": 2,
+ "ckpt": "archive/p1_blur_s2_sanitized_sanitized_pretrained_ver_seed2/p1_blur_s2_sanitized_sanitized_pretrained_ver_seed2_best_network.pth",
+ "published_pred": "archive/p1_blur_s2_sanitized_sanitized_pretrained_ver_seed2/p1_blur_s2_sanitized_sanitized_pretrained_ver_seed2_labels_predictions.txt",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "blur8_s2",
+ "auc_SR_from_embeddings": 94.24256,
+ "auc_SR_published_pred": 94.24235199999998,
+ "auc_abs_diff": 0.00020800000001486296,
+ "seconds": 28.6
+}

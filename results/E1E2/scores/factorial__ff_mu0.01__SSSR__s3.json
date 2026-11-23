@@ -1,0 +1,17 @@
+{
+ "model_id": "factorial__ff_mu0.01__SSSR__s3",
+ "family": "factorial_ref",
+ "sanitizer": "ff_mu0.01",
+ "train_pairing": "SS",
+ "val_pairing": "SR",
+ "seed": 3,
+ "ckpt": "archive/p1f_ff_mu0.01_SStrain_SRval_orig_pretrained_ver_seed3/p1f_ff_mu0.01_SStrain_SRval_orig_pretrained_ver_seed3_best_network.pth",
+ "published_pred": "archive/p1f_ff_mu0.01_SStrain_SRval_orig_pretrained_ver_seed3/p1f_ff_mu0.01_SStrain_SRval_orig_pretrained_ver_seed3_labels_predictions.txt",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "auc_SR_from_embeddings": 77.31891200000001,
+ "auc_SR_published_pred": 77.31883199999999,
+ "auc_abs_diff": 8.000000002539309e-05,
+ "seconds": 41.8
+}

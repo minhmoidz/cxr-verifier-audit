@@ -1,0 +1,17 @@
+{
+ "model_id": "e5__ff_mu0.01__s2",
+ "family": "e5",
+ "sanitizer": "ff_mu0.01",
+ "seed": 2,
+ "source": "new",
+ "ckpt": "results/E5/runs/e5__resnet50_bce__e5_init__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2_best.pth",
+ "published_pred": "results/E5/runs/e5__resnet50_bce__e5_init__ff_mu0.01__att_train_clean__pat5__lr0.0001__s2_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "ff_mu0.01",
+ "auc_SR_from_embeddings": 94.21953599999999,
+ "auc_SR_published_pred": 94.219904,
+ "auc_abs_diff": 0.00036800000000880573,
+ "seconds": 29.4
+}

@@ -1,0 +1,128 @@
+{
+ "run_id": "p1_ff_mu0.01_sanitized_raw_imagenet_seed2",
+ "command": "python3 artifacts/paper_upgrade/phase5_pairing_audit/run_pairing_audit.py --config ff_mu0.01 --seeds 1,2",
+ "resolved_run_spec": {
+  "run_id": "p1_ff_mu0.01_sanitized_raw_imagenet_seed2",
+  "config_name": "ff_mu0.01",
+  "base_config_file": "config_files/config_ver_ff_mu0.01.json",
+  "base_config_sha256": "ca89925b2c5742daeff0e0aac0a267b2e0c0d279a802381977d43f7e2652400b",
+  "resolved_config": {
+   "experiment_description": "p1_ff_mu0.01_sanitized_raw_imagenet_seed2",
+   "image_path": "images/",
+   "perturbation_type": "flow_field",
+   "perturbation_model_file": "./networks/generator_lowest_total_loss_mu_0.01.pth",
+   "mu": 0.01,
+   "b": null,
+   "m": null,
+   "eps": null,
+   "image_size": 256,
+   "batch_size": 32,
+   "learning_rate": 0.0001,
+   "max_epochs": 100,
+   "early_stopping": 5,
+   "snn_init": "imagenet",
+   "train_pairing": "sanitized_raw"
+  },
+  "snn_init": "imagenet",
+  "train_pairing": "sanitized_raw",
+  "test_pairing": "sanitized_raw",
+  "seed": 2,
+  "sanitizer_checkpoint_file": "networks/generator_lowest_total_loss_mu_0.01.pth",
+  "checkpoint_sha256": {
+   "sanitizer_checkpoint": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153"
+  },
+  "pair_list_sha256": {
+   "training": "3c535eed013305bacf231dea9c72fb047cc6b6cb15e3958ef7a308956394b268",
+   "validation": "9e33a081dfd5e4f28e658a9d13417f8a61f24cba60b2cb03272b20535b9fa9f7",
+   "testing": "87e528308507ada349d478d0c16e85f858dba8fb613abbca4857ffc437490fe2"
+  },
+  "env_overrides": {
+   "TRAIN_PAIRS_FILE": "(unset; default)",
+   "GRADIENT_ACCUMULATION_STEPS": "(unset; default '1')",
+   "ELASTIC_SALT": "(unset; default '0')"
+  },
+  "output_dir": "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2",
+  "results_file": "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_results.txt"
+ },
+ "git_provenance": {
+  "git_commit": "29245d1f71571898d9527417df4ae3f63a8695f6",
+  "git_worktree_dirty": true
+ },
+ "runtime_code_sha256": {
+  "artifacts/paper_upgrade/phase5_pairing_audit/run_pairing_audit.py": "7e83ad422e7989cfcece01ecc9db19bf91bfd1f59766d15a39a36ecbe4366fe6",
+  "artifacts/paper_upgrade/phase5_pairing_audit/pairing_resolver.py": "2d2fb6ad8cfc6d4e60dd851f20ee5b4589e6b5fb2e464639c9cd7c6a60cc9324",
+  "agents/AgentSiameseNetwork.py": "63c4a59b4a3d7c54d7872b806f86c5c9faaf1554270094e9cd7e92fcc61e32bc",
+  "datasets/SiameseDataset.py": "5cad9037d0f6d1121eead691b2fdf002b5810cfb6e5dee493e4414648a6925f1",
+  "utils/utils.py": "6df699abbe2692323cb1a205853154deb5c5ddf9cff81eea679a13ec19fa88d7",
+  "utils/EarlyStopping.py": "a8d4051239e773ae2f57d81a75cd484021a5a3d143977077b2a18d6ff2759df3",
+  "utils/GaussianSmoothing.py": "2ad3e30ee5bb47e90b25c77397d9755e541ff3b2f063649d0b666452ce52b6d3",
+  "networks/SiameseNetwork.py": "e023671bf5e7c0baf9e19cd76699a5c4aba01c13f1711809cdf1bf04ca47333e",
+  "networks/UNet_PriCheXyNet.py": "e01590d240c2e436ba546a6f48839dfdc6e9fe584bb9fa3bfa9a8973fcbd41c1",
+  "networks/UNet_PrivacyNet.py": "d7f2bf14d85a5a3af3ecf01b042df234d6586ff230968ab0f7273bd09048d06f"
+ },
+ "started_utc": "2026-09-05T15:23:02Z",
+ "selection_procedure": "early stopping on validation loss (patience from config, unmodified); the saved checkpoint is the best-validation network; test is read once from that checkpoint after training stops and never influences selection",
+ "status": "completed",
+ "software": {
+  "python": "3.13.5",
+  "torch": "2.9.1+cu128",
+  "cuda_runtime": "12.8",
+  "cudnn": 91002,
+  "gpu": "NVIDIA GeForce RTX 4090"
+ },
+ "pretraining_provenance": {
+  "imagenet_weights": "torchvision.models.resnet50(pretrained=True), the framework-bundled default weights for this torchvision version; used only when snn_init='imagenet'",
+  "verifier_checkpoint_sha256": null,
+  "sanitizer_checkpoint_sha256": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153",
+  "torchvision": "0.24.1+cu128",
+  "protocol_status": "planned (locked before this cell's run); not pre-registered in any timestamped external registry"
+ },
+ "preprocessing": {
+  "input_resize": [
+   256,
+   256
+  ],
+  "sanitizer": "flow_field",
+  "train_and_checkpoint_validation_pairing": "sanitized_raw",
+  "test_pairing": "sanitized_raw",
+  "siamese_input": "one-channel sanitizer output expanded to RGB then normalized with ImageNet mean/std; none uses the config's native RGB transform"
+ },
+ "finished_utc": "2026-09-05T15:38:37Z",
+ "minutes": 14.62,
+ "peak_gpu_gib": 7.25,
+ "epochs_trained": 8,
+ "selected_checkpoint": {
+  "path": "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_best_network.pth",
+  "sha256": "2f22c5036e3daec82f22b6832730263a814e681be9e94b7150e0bc19a31087fd",
+  "epoch": 3,
+  "criterion": "minimum validation loss"
+ },
+ "test_roc_metrics": {
+  "n_pairs": 5000,
+  "auc": 0.68915968,
+  "tpr_at_test_roc_1pct_fpr": 0.0324,
+  "semantics": "descriptive test ROC; not a validation-selected threshold"
+ },
+ "validation_threshold_metrics": {
+  "validation_selected_threshold": 0.8414960503578186,
+  "validation_fpr_percent": 1.0,
+  "validation_tpr_percent": 5.3,
+  "realized_test_fpr_percent": 0.8,
+  "realized_test_tpr_percent": 3.0,
+  "validation_scores_file": "artifacts/infpriv_2026_upgrade_20260905/p1_pairing_audit/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_validation.npz",
+  "validation_scores_sha256": "99d5ca0a8e7119a721e8d16d493e4ea003daf8e759bf1b2c07fe26c1d3a01256",
+  "semantics": "lowest observed validation threshold with empirical FPR<=1%, score>=threshold, under fixed deployment pairing (sanitized query / raw reference); distinct from the training-time validation LOSS used for checkpoint/early-stopping selection, and distinct from the descriptive test-ROC TPR@1%FPR reported elsewhere"
+ },
+ "output_sha256": {
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_AUC_bootstrapped.txt": "02dc1cc3f3960213ec37c095cc3d624c2c9ce046b58ec44c0ad70497c9a763dd",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_AUC_confidence.txt": "408cfc53e0415dda17a355a4061c85d1fd1815627d4f2dc7a8db18e217671b7c",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_ROC_curve.png": "acbc5a1fddf7e6e4beb26af9976a69fd89e0c5ed6063bb9fe174a52a5226d9c6",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_ROC_metrics.txt": "73151d7c5bca814bf2c1dbd5ec7040a7c571c33a2f774bbbbaadbc1479e4d6cf",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_best_network.pth": "2f22c5036e3daec82f22b6832730263a814e681be9e94b7150e0bc19a31087fd",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_labels_predictions.txt": "d69288630ba78a76e23e0b055d165e344d45c86b7ea838f5d1aefccbbee2fbae",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_loss_curves.png": "7671836c03327df4bc71ec411719f3efbe76c6bd60f7d097e86bd04097a93948",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_loss_values.txt": "8f0e6582eef19fd45a61e5ab31dda29944eea678068ec4a8b6a9dc4c77aa72d9",
+  "archive/p1_ff_mu0.01_sanitized_raw_imagenet_seed2/p1_ff_mu0.01_sanitized_raw_imagenet_seed2_results.txt": "cb466818fb86336e21972a54491f07c78c82a18c3ee306ab55abc4db03d40b7a"
+ },
+ "missing_required_metrics": "training-seed uncertainty requires seeds 1 and 2"
+}

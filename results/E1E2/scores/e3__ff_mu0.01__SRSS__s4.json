@@ -1,0 +1,18 @@
+{
+ "model_id": "e3__ff_mu0.01__SRSS__s4",
+ "family": "factorial_imagenet",
+ "sanitizer": "ff_mu0.01",
+ "train_pairing": "SR",
+ "val_pairing": "SS",
+ "seed": 4,
+ "ckpt": "results/E3/cells/p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed4/p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed4_best_network.pth",
+ "published_pred": "results/E3/cells/p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed4/p1f_ff_mu0.01_SRtrain_SSval_orig_imagenet_seed4_labels_predictions.txt",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "ff_mu0.01",
+ "auc_SR_from_embeddings": 75.437392,
+ "auc_SR_published_pred": 75.43744,
+ "auc_abs_diff": 4.799999999249849e-05,
+ "seconds": 43.4
+}

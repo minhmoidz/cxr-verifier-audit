@@ -1,0 +1,17 @@
+{
+ "model_id": "reference__elastic_m0.045_keyed__s1",
+ "family": "reference",
+ "sanitizer": "elastic_m0.045_keyed",
+ "seed": 1,
+ "source": "retrained",
+ "ckpt": "results/R_retrain/runs/retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s1_best.pth",
+ "published_pred": "results/R_retrain/runs/retrain__frontier_ver__resnet50_bce__pretrained_ver__elastic_m0.045_keyed__att_train_clean__pat5__lr0.0001__s1_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "elastic_m0.045_keyed",
+ "auc_SR_from_embeddings": 98.136672,
+ "auc_SR_published_pred": 98.13664,
+ "auc_abs_diff": 3.2000000004472895e-05,
+ "seconds": 37.6
+}

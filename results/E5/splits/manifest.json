@@ -1,0 +1,22 @@
+{
+ "seed": 20261122,
+ "cap_positives_per_patient": 8,
+ "n_pairs": 98344,
+ "n_pos": 49172,
+ "n_neg": 49172,
+ "n_patients": 21778,
+ "n_images": 70390,
+ "pool_patients": 26266,
+ "pool_images": 78495,
+ "sha256": "7936d0c2ca551bfa6eb824f0c023a4140e6c59be02ce13b71e3a82f798177456",
+ "patient_overlap": {
+  "released test (testing_5000)": 0,
+  "calibration (disjoint_700)": 0,
+  "released validation (validation_2000)": 0,
+  "verifier training (d_att_train_clean)": 2664,
+  "local-verifier pretraining (d_pretrain_clean)": 5405,
+  "factorial training (training_10000)": 8557,
+  "official test list (all 2,797 patients, incl. E6 candidates)": 0
+ },
+ "n_reference_list_patients": 28008
+}

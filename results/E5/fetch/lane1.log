@@ -1,0 +1,23 @@
+train/val images: 86524; on disk: 21573; to fetch: 64951
+  part 1: 2000 members, 804 MB, 10.4 MB/s, saved 1180
+  part 1: 4000 members, 1607 MB, 11.6 MB/s, saved 2373
+part 1 done: {"part": 1, "url": "https://nihcc.box.com/shared/static/vfk49d74nhbxq3nqjg0900w5nvkorp5c.gz", "members": 4999, "saved": 2983, "skipped_existing": 0, "verified_identical": 2016, "bytes": 2007961024, "minutes": 2.9}
+  part 2: 2000 members, 790 MB, 12.6 MB/s, saved 1258
+  part 2: 4000 members, 1581 MB, 12.1 MB/s, saved 2538
+  part 2: 6000 members, 2369 MB, 11.8 MB/s, saved 3784
+  part 2: 8000 members, 3160 MB, 11.8 MB/s, saved 5068
+  part 2: 10000 members, 3951 MB, 11.9 MB/s, saved 6314
+part 2 done: {"part": 2, "url": "https://nihcc.box.com/shared/static/i28rlmbvmfjbl8p2n3ril0pptcmcu9d1.gz", "members": 10000, "saved": 6314, "skipped_existing": 0, "verified_identical": 3686, "bytes": 3951069542, "minutes": 5.5}
+  part 3: 2000 members, 786 MB, 12.9 MB/s, saved 1253
+  part 3: 4000 members, 1572 MB, 11.6 MB/s, saved 2534
+  part 3: 6000 members, 2354 MB, 11.0 MB/s, saved 3793
+  part 3: 8000 members, 3140 MB, 10.5 MB/s, saved 5031
+  part 3: 10000 members, 3929 MB, 10.8 MB/s, saved 6288
+part 3 done: {"part": 3, "url": "https://nihcc.box.com/shared/static/f1t00wrtdk94satdfb9olcolqx20z2jp.gz", "members": 10000, "saved": 6288, "skipped_existing": 0, "verified_identical": 3712, "bytes": 3928657321, "minutes": 6.1}
+  part 4: 2000 members, 768 MB, 5.7 MB/s, saved 1269
+  part 4: 4000 members, 1533 MB, 7.8 MB/s, saved 2602
+  part 4: 6000 members, 2300 MB, 8.9 MB/s, saved 3853
+  part 4: 8000 members, 3070 MB, 9.5 MB/s, saved 5140
+  part 4: 10000 members, 3837 MB, 10.0 MB/s, saved 6417
+part 4 done: {"part": 4, "url": "https://nihcc.box.com/shared/static/0aowwzs5lhjrceb3qp67ahp0rd1l1etg.gz", "members": 10000, "saved": 6417, "skipped_existing": 0, "verified_identical": 3583, "bytes": 3837267398, "minutes": 6.4}
+finished: 64951 of 64951 fetched; missing 0

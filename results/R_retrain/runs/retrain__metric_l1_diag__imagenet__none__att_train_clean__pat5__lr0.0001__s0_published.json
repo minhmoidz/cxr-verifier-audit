@@ -1,0 +1,6 @@
+{
+ "published_run_id": "metric_l1_diag__imagenet__none__att_train_clean__pat5__lr0.0001__s0",
+ "published_test_auc": 94.708,
+ "published_test_tpr1": 25.32,
+ "published_selected_epoch": 19
+}

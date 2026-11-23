@@ -1,0 +1,135 @@
+{
+ "run_id": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4",
+ "command": "python3 artifacts/paper_upgrade/phase5_pairing_audit/run_pairing_audit.py --config ff_mu0.01 --design imagenet_factorial",
+ "resolved_run_spec": {
+  "run_id": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4",
+  "config_name": "ff_mu0.01",
+  "base_config_file": "config_files/config_ver_ff_mu0.01.json",
+  "base_config_sha256": "1d32ca9a2007a09fd2bd4a0a9aa1ee5c8cb3b03a163656820c5725435f232113",
+  "resolved_config": {
+   "experiment_description": "p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4",
+   "image_path": "images/",
+   "perturbation_type": "flow_field",
+   "perturbation_model_file": "./networks/generator_lowest_total_loss_mu_0.01.pth",
+   "mu": 0.01,
+   "b": null,
+   "m": null,
+   "eps": null,
+   "image_size": 256,
+   "batch_size": 32,
+   "learning_rate": 0.0001,
+   "max_epochs": 100,
+   "early_stopping": 5,
+   "val_pairing": "sanitized_raw",
+   "snn_init": "imagenet",
+   "train_pairing": "sanitized_sanitized"
+  },
+  "snn_init": "imagenet",
+  "train_pairing": "sanitized_sanitized",
+  "val_pairing": "sanitized_raw",
+  "val_list": "orig",
+  "val_list_file": "image_pairs/image_pairs_validation_2000.txt",
+  "train_pairing_equivalence": null,
+  "test_pairing": "sanitized_raw",
+  "seed": 4,
+  "sanitizer_checkpoint_file": "networks/generator_lowest_total_loss_mu_0.01.pth",
+  "checkpoint_sha256": {
+   "sanitizer_checkpoint": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153"
+  },
+  "pair_list_sha256": {
+   "training": "3c535eed013305bacf231dea9c72fb047cc6b6cb15e3958ef7a308956394b268",
+   "validation": "9e33a081dfd5e4f28e658a9d13417f8a61f24cba60b2cb03272b20535b9fa9f7",
+   "testing": "87e528308507ada349d478d0c16e85f858dba8fb613abbca4857ffc437490fe2"
+  },
+  "env_overrides": {
+   "TRAIN_PAIRS_FILE": "(unset; default)",
+   "GRADIENT_ACCUMULATION_STEPS": "(unset; default '1')",
+   "ELASTIC_SALT": "(unset; default '0')"
+  },
+  "output_dir": "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4",
+  "results_file": "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_results.txt"
+ },
+ "git_provenance": {
+  "git_commit": "25fce2389e498c19ce1eb688aff7993f9f1ed88e",
+  "git_worktree_dirty": true
+ },
+ "runtime_code_sha256": {
+  "artifacts/paper_upgrade/phase5_pairing_audit/run_pairing_audit.py": "dc525e8965f50cf8de1ff76999a18c180619ee8be614369c8b93647805bf5096",
+  "artifacts/paper_upgrade/phase5_pairing_audit/pairing_resolver.py": "39ae8d78461df75a531380ffb2cf2431ad7172a4cc6b4f003f1c9a3abd227ce2",
+  "agents/AgentSiameseNetwork.py": "13e18670e0a4cbbac65539bc68284b348e338ea5aab0659437e8d2ede52173de",
+  "datasets/SiameseDataset.py": "5eefca85727f35ba6b3f09c1155d785a521be1b3152f32ea8a5e3f434cd5dcc0",
+  "utils/utils.py": "6df699abbe2692323cb1a205853154deb5c5ddf9cff81eea679a13ec19fa88d7",
+  "utils/EarlyStopping.py": "a8d4051239e773ae2f57d81a75cd484021a5a3d143977077b2a18d6ff2759df3",
+  "utils/GaussianSmoothing.py": "2ad3e30ee5bb47e90b25c77397d9755e541ff3b2f063649d0b666452ce52b6d3",
+  "networks/SiameseNetwork.py": "e023671bf5e7c0baf9e19cd76699a5c4aba01c13f1711809cdf1bf04ca47333e",
+  "networks/UNet_PriCheXyNet.py": "e01590d240c2e436ba546a6f48839dfdc6e9fe584bb9fa3bfa9a8973fcbd41c1",
+  "networks/UNet_PrivacyNet.py": "d7f2bf14d85a5a3af3ecf01b042df234d6586ff230968ab0f7273bd09048d06f"
+ },
+ "started_utc": "2026-11-22T18:38:44Z",
+ "selection_procedure": "early stopping on validation loss (patience from config, unmodified); the saved checkpoint is the best-validation network; test is read once from that checkpoint after training stops and never influences selection",
+ "status": "completed",
+ "software": {
+  "python": "3.13.5",
+  "torch": "2.9.1+cu128",
+  "cuda_runtime": "12.8",
+  "cudnn": 91002,
+  "gpu": "NVIDIA GeForce RTX 4090"
+ },
+ "pretraining_provenance": {
+  "imagenet_weights": "torchvision.models.resnet50(pretrained=True), the framework-bundled default weights for this torchvision version; used only when snn_init='imagenet'",
+  "verifier_checkpoint_sha256": null,
+  "sanitizer_checkpoint_sha256": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153",
+  "torchvision": "0.24.1+cu128",
+  "protocol_status": "planned (locked before this cell's run); not pre-registered in any timestamped external registry"
+ },
+ "preprocessing": {
+  "input_resize": [
+   256,
+   256
+  ],
+  "sanitizer": "flow_field",
+  "train_and_checkpoint_validation_pairing": "sanitized_sanitized",
+  "checkpoint_validation_pairing": "sanitized_raw",
+  "validation_list": "image_pairs/image_pairs_validation_2000.txt",
+  "test_pairing": "sanitized_raw",
+  "siamese_input": "one-channel sanitizer output expanded to RGB then normalized with ImageNet mean/std; none uses the config's native RGB transform"
+ },
+ "finished_utc": "2026-11-22T19:01:58Z",
+ "minutes": 22.09,
+ "peak_gpu_gib": 7.27,
+ "epochs_trained": 6,
+ "selected_checkpoint": {
+  "path": "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_best_network.pth",
+  "sha256": "8b1df03a9606e2f9d1896c3446129107e44ebd3aa4ff91719111183e83701c9b",
+  "epoch": 1,
+  "criterion": "minimum validation loss"
+ },
+ "test_roc_metrics": {
+  "n_pairs": 5000,
+  "auc": 0.6880485599999999,
+  "tpr_at_test_roc_1pct_fpr": 0.0264,
+  "semantics": "descriptive test ROC; not a validation-selected threshold"
+ },
+ "validation_threshold_metrics": {
+  "validation_selected_threshold": 0.6261590719223022,
+  "validation_fpr_percent": 1.0,
+  "validation_tpr_percent": 1.9,
+  "realized_test_fpr_percent": 0.84,
+  "realized_test_tpr_percent": 2.32,
+  "validation_scores_file": "results/E3/manifests/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_validation.npz",
+  "validation_scores_sha256": "f0346394f2f5314f7f4e5f528f9b85c7fe33dace0f361befd28d75c46e31755b",
+  "semantics": "lowest observed validation threshold with empirical FPR<=1%, score>=threshold, under fixed deployment pairing (sanitized query / raw reference); distinct from the training-time validation LOSS used for checkpoint/early-stopping selection, and distinct from the descriptive test-ROC TPR@1%FPR reported elsewhere"
+ },
+ "output_sha256": {
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_AUC_bootstrapped.txt": "f94a954986404600eecf84a87aac484f35f8daf1a8ba1cc9d68f0d3b1cc6d3cc",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_AUC_confidence.txt": "3cc7571f87ef70661ebdb181bc50cc5510a13898d657f2e98434f15566ef0836",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_ROC_curve.png": "154f17a5d5eade8a468fd79037d18a702269df6ba921b4d120226ee9de09d5fb",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_ROC_metrics.txt": "0e41f43d59adb00d478f59616dde6f9b17e2b31cb11cf7cfbe6045ba7644f28b",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_best_network.pth": "8b1df03a9606e2f9d1896c3446129107e44ebd3aa4ff91719111183e83701c9b",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_labels_predictions.txt": "8a846b9435ca856dd5215c0ee2d3b70bce89d8499790e5d4a1d722aa93be8563",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_loss_curves.png": "807bab24a20dcde7b444c79349d1048dd8566d3b1f3f8b877795a633eebfd593",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_loss_values.txt": "9e069ba87f52067c5330f1eefe9a5bcfe7939b9c96fcc85bad76bc7e6b12e316",
+  "archive/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4/p1f_ff_mu0.01_SStrain_SRval_orig_imagenet_seed4_results.txt": "4dd6731e3af09998e820c0a024296d5948e34281f797419b16804e2ff9d1e8a7"
+ },
+ "missing_required_metrics": "training-seed uncertainty requires seeds 1 and 2"
+}

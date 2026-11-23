@@ -1,0 +1,17 @@
+{
+ "model_id": "reference__ff_mu0.001__s1",
+ "family": "reference",
+ "sanitizer": "ff_mu0.001",
+ "seed": 1,
+ "source": "retrained",
+ "ckpt": "results/R_retrain/runs/retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.001__att_train_clean__pat5__lr0.0001__s1_best.pth",
+ "published_pred": "results/R_retrain/runs/retrain__frontier_ver__resnet50_bce__pretrained_ver__ff_mu0.001__att_train_clean__pat5__lr0.0001__s1_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "ff_mu0.001",
+ "auc_SR_from_embeddings": 99.431728,
+ "auc_SR_published_pred": 99.431712,
+ "auc_abs_diff": 1.6000000002236447e-05,
+ "seconds": 42.5
+}

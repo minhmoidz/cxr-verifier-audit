@@ -1,0 +1,2 @@
+AUC_mean: 0.6998190659899535
+Confidence interval for the AUC score: 0.685431639826188 - 0.7141448658446028

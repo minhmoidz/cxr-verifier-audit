@@ -1,0 +1,6 @@
+{
+ "published_run_id": "frontier_metric__resnet50_metric_l1__imagenet__ff_mu0.005__att_train_clean__pat5__lr0.0001__s1",
+ "published_test_auc": 92.8965,
+ "published_test_tpr1": 21.2,
+ "published_selected_epoch": 10
+}

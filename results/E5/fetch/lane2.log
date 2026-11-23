@@ -1,0 +1,26 @@
+train/val images: 86524; on disk: 21573; to fetch: 64951
+  part 5: 2000 members, 787 MB, 11.9 MB/s, saved 1204
+  part 5: 4000 members, 1576 MB, 11.6 MB/s, saved 2405
+  part 5: 6000 members, 2362 MB, 12.3 MB/s, saved 3602
+  part 5: 8000 members, 3147 MB, 13.4 MB/s, saved 4814
+  part 5: 10000 members, 3933 MB, 14.1 MB/s, saved 6017
+part 5 done: {"part": 5, "url": "https://nihcc.box.com/shared/static/v5e3goj22zr6h8tzualxfsqlqaygfbsn.gz", "members": 10000, "saved": 6017, "skipped_existing": 0, "verified_identical": 3983, "bytes": 3933273109, "minutes": 4.7}
+  part 6: 2000 members, 795 MB, 12.9 MB/s, saved 1147
+  part 6: 4000 members, 1594 MB, 13.6 MB/s, saved 2279
+  part 6: 6000 members, 2392 MB, 13.0 MB/s, saved 3425
+  part 6: 8000 members, 3188 MB, 13.4 MB/s, saved 4548
+  part 6: 10000 members, 3984 MB, 14.2 MB/s, saved 5677
+part 6 done: {"part": 6, "url": "https://nihcc.box.com/shared/static/asi7ikud9jwnkrnkj99jnpfkjdes7l6l.gz", "members": 10000, "saved": 5677, "skipped_existing": 0, "verified_identical": 4323, "bytes": 3983895279, "minutes": 4.7}
+  part 7: 2000 members, 801 MB, 12.9 MB/s, saved 1092
+  part 7: 4000 members, 1605 MB, 13.3 MB/s, saved 2207
+  part 7: 6000 members, 2409 MB, 13.4 MB/s, saved 3299
+  part 7: 8000 members, 3211 MB, 13.3 MB/s, saved 4433
+  part 7: 10000 members, 4014 MB, 13.4 MB/s, saved 5560
+part 7 done: {"part": 7, "url": "https://nihcc.box.com/shared/static/jn1b4mw4n6lnh74ovmcjb8y48h8xj07n.gz", "members": 10000, "saved": 5560, "skipped_existing": 0, "verified_identical": 4440, "bytes": 4014137889, "minutes": 5.0}
+  part 8: 2000 members, 805 MB, 6.9 MB/s, saved 1150
+  part 8: 4000 members, 1607 MB, 8.8 MB/s, saved 2287
+  part 8: 6000 members, 2409 MB, 9.8 MB/s, saved 3445
+  part 8: 8000 members, 3212 MB, 10.4 MB/s, saved 4596
+  part 8: 10000 members, 4016 MB, 10.7 MB/s, saved 5762
+part 8 done: {"part": 8, "url": "https://nihcc.box.com/shared/static/tvpxmn7qyrgl0w8wfh9kqfjskv6nmm1j.gz", "members": 10000, "saved": 5762, "skipped_existing": 0, "verified_identical": 4238, "bytes": 4015949603, "minutes": 6.3}
+finished: 64540 of 64951 fetched; missing 411

@@ -1,0 +1,114 @@
+{
+ "run_id": "p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0",
+ "command": "python3 artifacts/paper_upgrade/phase5_pairing_audit/run_pairing_audit.py --config ff_mu0.01 --seeds 0",
+ "resolved_run_spec": {
+  "run_id": "p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0",
+  "config_name": "ff_mu0.01",
+  "base_config_file": "config_files/config_ver_ff_mu0.01.json",
+  "base_config_sha256": "ca89925b2c5742daeff0e0aac0a267b2e0c0d279a802381977d43f7e2652400b",
+  "resolved_config": {
+   "experiment_description": "p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0",
+   "image_path": "images/",
+   "perturbation_type": "flow_field",
+   "perturbation_model_file": "./networks/generator_lowest_total_loss_mu_0.01.pth",
+   "mu": 0.01,
+   "b": null,
+   "m": null,
+   "eps": null,
+   "image_size": 256,
+   "batch_size": 32,
+   "learning_rate": 0.0001,
+   "max_epochs": 100,
+   "early_stopping": 5,
+   "snn_init": "imagenet",
+   "train_pairing": "sanitized_sanitized"
+  },
+  "snn_init": "imagenet",
+  "train_pairing": "sanitized_sanitized",
+  "test_pairing": "sanitized_raw",
+  "seed": 0,
+  "sanitizer_checkpoint_file": "networks/generator_lowest_total_loss_mu_0.01.pth",
+  "checkpoint_sha256": {
+   "sanitizer_checkpoint": "4d82dcdd1c1b5856d6361fd08b7a6838b044ffc7db89e8bf953a6279cb3bf153"
+  },
+  "pair_list_sha256": {
+   "training": "3c535eed013305bacf231dea9c72fb047cc6b6cb15e3958ef7a308956394b268",
+   "validation": "9e33a081dfd5e4f28e658a9d13417f8a61f24cba60b2cb03272b20535b9fa9f7",
+   "testing": "87e528308507ada349d478d0c16e85f858dba8fb613abbca4857ffc437490fe2"
+  },
+  "output_dir": "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0",
+  "results_file": "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_results.txt"
+ },
+ "git_provenance": {
+  "git_commit": "29245d1f71571898d9527417df4ae3f63a8695f6",
+  "git_worktree_dirty": true
+ },
+ "software": {
+  "python": "3.13.5",
+  "torch": "2.9.1+cu128"
+ },
+ "started_utc": "2026-09-05T07:34:58Z",
+ "selection_procedure": "early stopping on validation loss (patience from config, unmodified); the saved checkpoint is the best-validation network; test is read once from that checkpoint after training stops and never influences selection",
+ "status": "completed",
+ "finished_utc": "2026-09-05T07:52:51Z",
+ "minutes": 17.89,
+ "peak_gpu_gib": 7.36,
+ "epochs_trained": 10,
+ "posthoc_provenance_verification": {
+  "verified_utc": "2026-09-05T09:51:21.950996+00:00",
+  "limitation": "output and dirty-source hashes were omitted by the runner at launch and are therefore recorded post hoc; source mtimes predate the runs, but this is not equivalent to a launch-time content hash",
+  "source_snapshot_dir": "artifacts/infpriv_2026_upgrade_20260905/p1_pairing_audit/source_snapshot",
+  "source_snapshot_sha256": {
+   "README.md": "9cc80b002f6e0d81ab78d2e927eef6f1b4ade07a1fe695beed7630df1ec7db79",
+   "agents/AgentSiameseNetwork.py": "63c4a59b4a3d7c54d7872b806f86c5c9faaf1554270094e9cd7e92fcc61e32bc",
+   "artifacts/paper_upgrade/phase5_pairing_audit/pairing_resolver.py": "323c0f378f11de41617c3413cea8ef65fb47d219f71e5524403427d84a966ff2",
+   "artifacts/paper_upgrade/phase5_pairing_audit/run_pairing_audit.py": "37bce24ed5d51a87a0179888ab9053fe6ddd6470d349fc1e104196c2abeb5733",
+   "config_files/config_ver_ff_mu0.01.json": "ca89925b2c5742daeff0e0aac0a267b2e0c0d279a802381977d43f7e2652400b",
+   "datasets/SiameseDataset.py": "5cad9037d0f6d1121eead691b2fdf002b5810cfb6e5dee493e4414648a6925f1",
+   "networks/SiameseNetwork.py": "6962269101928f68eb53061fada523b5dee75505fc4a7c5491bcf2f892d913dd",
+   "networks/UNet_PriCheXyNet.py": "e01590d240c2e436ba546a6f48839dfdc6e9fe584bb9fa3bfa9a8973fcbd41c1",
+   "networks/UNet_PrivacyNet.py": "d7f2bf14d85a5a3af3ecf01b042df234d6586ff230968ab0f7273bd09048d06f",
+   "utils/EarlyStopping.py": "a8d4051239e773ae2f57d81a75cd484021a5a3d143977077b2a18d6ff2759df3",
+   "utils/GaussianSmoothing.py": "2ad3e30ee5bb47e90b25c77397d9755e541ff3b2f063649d0b666452ce52b6d3",
+   "utils/utils.py": "6df699abbe2692323cb1a205853154deb5c5ddf9cff81eea679a13ec19fa88d7"
+  },
+  "output_sha256": {
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_AUC_bootstrapped.txt": "bae5749a737bf4ab06eab36a53ca4741bcf5581612be8641d0a4434d1c393942",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_AUC_confidence.txt": "f5bfe26646409c43deb454b0c2eca4aa6bbc592c1d746d50a14990f70d04b25f",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_ROC_curve.png": "5c3613de8b278208d4e1fe80be2087c20805f440d30c015dad1feb7313b94596",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_ROC_metrics.txt": "95e1eb62a52585accaed2ee6bc34cc47e804561d291feb1371a4e40fd8eedf2f",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_best_network.pth": "226f874bc7dcbb3b7497c04cc1ab244a4118dbf8808f42054d7b3bc1d50bdb88",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_labels_predictions.txt": "b81e892aab3cc32f5aedb501b5c1f63f0addb7ae671eef22175333b9d365746c",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_loss_curves.png": "675a4961c58e34db3da81d7aa9480eade526b9b8e2c1424d842e9bde5264b136",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_loss_values.txt": "2920e11ce147ca4fd1a745ec2904b8bcb8bee7dbdae7dc91ef499bee7a7dc701",
+   "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_results.txt": "65670b182a5729533c2189558c0c68dd3ede4f21780e5f4f3ed5e075e35a1107"
+  },
+  "selected_checkpoint": {
+   "path": "archive/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0/p1_ff_mu0.01_sanitized_sanitized_imagenet_seed0_best_network.pth",
+   "sha256": "226f874bc7dcbb3b7497c04cc1ab244a4118dbf8808f42054d7b3bc1d50bdb88",
+   "epoch": 5,
+   "criterion": "minimum saved validation loss"
+  },
+  "test_alignment": {
+   "n_pairs": 5000,
+   "labels_match_fixed_test_pair_list": true,
+   "patient_count": {
+    "training": 9053,
+    "validation": 1742,
+    "testing": 1307
+   },
+   "patient_overlap": {
+    "training_validation": 0,
+    "training_testing": 0,
+    "validation_testing": 0
+   },
+   "patient_id_rule": "filename prefix before first underscore"
+  },
+  "test_roc_metrics_recomputed": {
+   "auc": 0.5808252,
+   "tpr_at_test_roc_1pct_fpr": 0.0176,
+   "semantics": "descriptive test ROC; not a validation-selected threshold"
+  },
+  "missing_required_metrics": "validation-selected threshold and realised test FPR/TPR cannot be recovered because validation predictions were not saved; training-seed uncertainty requires seeds 1 and 2"
+ }
+}

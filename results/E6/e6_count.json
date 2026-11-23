@@ -1,0 +1,10 @@
+{
+ "official_test_patients": 2797,
+ "in_test_list": 1307,
+ "in_calibration_list": 776,
+ "held_out": 714,
+ "held_out_single_image": 713,
+ "held_out_two_or_more_images": 1,
+ "threshold_in_brief": 300,
+ "decision": "E6 not run: too few held-out patients can form positive pairs"
+}
