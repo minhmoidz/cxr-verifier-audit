@@ -427,15 +427,14 @@ def part_e6():
 
 
 # ----------------------------------------------------------------------------- main-text Table 3 (E1 + E2)
-def part_attack():
-    """Learned field minus controls under the SR and SS attacks, extended negative set (main-text Table 3)."""
-    p = R("E1E2", "extended_ci.json")
-    if not os.path.isfile(p):
-        print("attack table: missing", p); return
-    d = json.load(open(p)); C, X = d["contrasts"], d["configs"]
-    rows = (("reference", "Reference", ("blur_s2", "elastic_m0.045_keyed")),
-            ("imagenet_full", "ImageNet, full recipe", ("blur_s2", "elastic_m0.04_keyed")),
-            ("e5", "Independent", ("blur_s2", "elastic_m0.045_keyed")))
+ATTACK_ROWS = (("reference", "Reference", ("blur_s2", "elastic_m0.045_keyed")),
+               ("imagenet_full", "ImageNet, full recipe", ("blur_s2", "elastic_m0.04_keyed")),
+               ("e5", "Independent", ("blur_s2", "elastic_m0.045_keyed")))
+
+
+def attack_table(d):
+    """Learned field and field-minus-control rows under the SR and SS attacks (extended set)."""
+    C, X = d["contrasts"], d["configs"]
     fmt = lambda e: NEG(f"{e['point']:.2f}")
     def cell(e):
         lo, hi = e["patient+seed"]
@@ -446,7 +445,7 @@ def part_attack():
          r"\cmidrule(lr){3-4}\cmidrule(lr){5-6}",
          r"Verifier & Quantity & TPR@1\% & AUC & TPR@1\% & AUC \\", r"\midrule"]
     n = 0
-    for fam, lab, ctrls in rows:
+    for fam, lab, ctrls in ATTACK_ROWS:
         ff = f"{fam}/ff_mu0.01"
         if ff not in X or any(f"ext/SR/{fam}/ff_mu0.01_minus_{c}" not in C for c in ctrls):
             continue
@@ -458,8 +457,35 @@ def part_attack():
                      + " & ".join(cell(C[f"ext/{pr}/{fam}/ff_mu0.01_minus_{c}"][m]) for pr in ("SR", "SS") for m in ("tpr1", "auc")) + r" \\")
         n += 1
     L += [r"\bottomrule", r"\end{tabular}"]
+    return L, n
+
+
+def part_attack():
+    """Learned field minus controls under the SR and SS attacks, extended negative set (main-text table).
+    Revision v3 (V3-B, docs/PREREGISTRATION_v3.md): the main table uses every verifier seed in extended_ci.json
+    (seeds 0-4 after V3-B); the frozen three-seed analysis (extended_ci_3seed.json) goes to the supplement."""
+    p = R("E1E2", "extended_ci.json")
+    if not os.path.isfile(p):
+        print("attack table: missing", p); return
+    d = json.load(open(p)); C, X = d["contrasts"], d["configs"]
+    L, n = attack_table(d)
+    seeds = sorted({len(X[f"{fam}/{s}"]["seeds"]) for fam, _, cs in ATTACK_ROWS for s in ("ff_mu0.01",) + cs if f"{fam}/{s}" in X})
+    assert len(seeds) == 1, f"attack table arms have different seed counts: {seeds}"
+    put("att-nseeds", seeds[0])
+    p3 = R("E1E2", "extended_ci_3seed.json")
+    if os.path.isfile(p3) and seeds[0] != 3:
+        d3 = json.load(open(p3))
+        L3, _ = attack_table(d3)
+        write("supp_v3b_attack_3seed.tex", L3)
+        for fam, _, cs in ATTACK_ROWS:                  # three-seed contrasts for the text (c3-*)
+            for c in cs:
+                for pr in ("SR", "SS"):
+                    for m, e in d3["contrasts"][f"ext/{pr}/{fam}/ff_mu0.01_minus_{c}"].items():
+                        stem = f"c3-{FAM[fam]}-ffm{SAN[c]}-ext{pr.lower()}-{m}"
+                        put(stem, e["point"]); put(stem + "-hlo", e["patient+seed"][0]); put(stem + "-hhi", e["patient+seed"][1])
+        print("attack table: three-seed version written to the supplement")
     write("tab_attack.tex", L)
-    print(f"attack table: {n} verifiers")
+    print(f"attack table: {n} verifiers, {seeds[0]} seeds per arm")
     # Supplement: SS minus SR per Fig. 2 setting on the extended set (E2).
     L = [r"\begin{tabular}{llllll}", r"\toprule",
          r"Verifier & Sanitizer & TPR@1\%, SR & TPR@1\%, SS & SS $-$ SR, TPR@1\% & SS $-$ SR, AUC \\", r"\midrule"]
@@ -675,7 +701,62 @@ def part_v3a():
         L.append("\\addlinespace")
     L = L[:-1] + ["\\bottomrule", "\\end{tabular}"]
     write("supp_v3a.tex", L)
+    # Descriptive only (not part of the pre-specified test): the same contrasts with seeds 3-4 of V3-B added
+    # (results/V3A/chexpert_ci.json, all seeds); the plan fixed V3-A to seeds 0-2 because they were not trained yet.
+    fa = R("V3A", "chexpert_ci.json")
+    if os.path.isfile(fa):
+        ja = json.load(open(fa))
+        used = {"ff_mu0.01"} | {k.split("_minus_")[1] for k in ja["contrasts"] if k.startswith(("H1/", "H2/")) and "_minus_" in k}
+        ns = {len(a["seeds"]) for k, a in ja["arms"].items()
+              if k.count("/") == 2 and k.split("/")[0] in ("reference", "e5") and k.split("/")[1] in used}
+        assert len(ns) == 1, ns
+        put("v3a5-nseeds", ns.pop())
+        for k, c in ja["contrasts"].items():
+            parts = k.split("/")
+            if parts[0] == "H1" and parts[2] in ("reference", "e5"):
+                stem = f"v3a5-h1-{V[parts[2]]}-{S[parts[3].split('_minus_')[1]]}-{parts[1].lower()}"
+            elif parts[0] == "H2" and parts[1] in ("reference", "e5"):
+                stem = f"v3a5-h2-{V[parts[1]]}-{S[parts[2].split('_minus_')[1]]}"
+            else:
+                continue
+            e = c["tpr1"]
+            put(f"{stem}-tpr1", e["point"]); put(f"{stem}-tpr1-lo", e["patient+seed"][0]); put(f"{stem}-tpr1-hi", e["patient+seed"][1])
     print("V3-A: ok")
+
+
+def part_v3b():
+    """V3-B (docs/PREREGISTRATION_v3.md): H1 and H2 on the NIH extended set with every verifier seed (seeds 0-4),
+    in the layout of the CheXpert table (supp_v3b_nih.tex); macros come from part_e1e2 (c-*-exth2-*)."""
+    p = R("E1E2", "extended_ci.json")
+    if not os.path.isfile(p):
+        print("V3-B: missing", p); return
+    d = json.load(open(p)); C, X = d["contrasts"], d["configs"]
+    ent = lambda e: (bold_if_excludes_zero(e["point"], (e["patient"], e["patient+seed"])) + " " + ci_txt(e["patient+seed"]))
+    L = ["\\begin{tabular}{llcccc}", "\\toprule",
+         " & & \\multicolumn{2}{c}{Field $-$ control, TPR@1\\%} & H2: increase of field & \\\\",
+         "\\cmidrule(lr){3-4}",
+         "Verifier & Control & SR attack (H1) & SS attack & minus control (SR$\\to$SS) & H2 AUC \\\\", "\\midrule"]
+    nseeds = set()
+    for fam, lab in (("reference", "Reference"), ("e5", "Independent"), ("imagenet_full", "ImageNet, full recipe")):
+        first = True
+        for san in ("blur_s2", "elastic_m0.045_keyed", "elastic_m0.04_keyed"):
+            k2 = f"ext/H2/{fam}/ff_mu0.01_minus_{san}"
+            if k2 not in C:
+                continue
+            nseeds |= {len(X[f"{fam}/ff_mu0.01"]["seeds"]), len(X[f"{fam}/{san}"]["seeds"])}
+            row = [lab if first else "", SANLAB[san], ent(C[f"ext/SR/{fam}/ff_mu0.01_minus_{san}"]["tpr1"]),
+                   ent(C[f"ext/SS/{fam}/ff_mu0.01_minus_{san}"]["tpr1"]), ent(C[k2]["tpr1"]), ent(C[k2]["auc"])]
+            L.append(NEG(" & ".join(row)) + " \\\\")
+            first = False
+        L.append("\\addlinespace")
+    if len(L) == 6:
+        print("V3-B: no H2 contrasts in", p); return
+    assert len(nseeds) == 1, f"H2 arms have different seed counts: {nseeds}"
+    put("v3b-nih-nseeds", nseeds.pop())
+    put("v3b-nruns", len(glob.glob(R("V3B", "runs", "*_summary.json"))))
+    L = L[:-1] + ["\\bottomrule", "\\end{tabular}"]
+    write("supp_v3b_nih.tex", L)
+    print("V3-B: ok")
 
 
 # ----------------------------------------------------------------------------- numbers file
@@ -708,7 +789,7 @@ def main():
     write_numbers()
 
 
-PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy, part_v3a]
+PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy, part_v3a, part_v3b]
 
 if __name__ == "__main__":
     main()

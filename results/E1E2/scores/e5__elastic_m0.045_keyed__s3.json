@@ -1,0 +1,17 @@
+{
+ "model_id": "e5__elastic_m0.045_keyed__s3",
+ "family": "e5",
+ "sanitizer": "elastic_m0.045_keyed",
+ "seed": 3,
+ "source": "v3b",
+ "ckpt": "results/V3B/runs/v3b__e5__elastic_m0.045_keyed__s3_best.pth",
+ "published_pred": "results/V3B/runs/v3b__e5__elastic_m0.045_keyed__s3_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "elastic_m0.045_keyed",
+ "auc_SR_from_embeddings": 96.96934399999999,
+ "auc_SR_published_pred": 96.96899200000001,
+ "auc_abs_diff": 0.00035199999997814757,
+ "seconds": 31.6
+}

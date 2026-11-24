@@ -1,0 +1,14 @@
+{
+ "model_id": "imagenet_full__none__s4",
+ "family": "imagenet_full",
+ "sanitizer": "none",
+ "seed": 4,
+ "source": "v3b",
+ "ckpt": "results/V3B/runs/v3b__imagenet_full__none__s4_best.pth",
+ "published_pred": "results/V3B/runs/v3b__imagenet_full__none__s4_preds.npz",
+ "arch": "resnet50_metric_l1",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 8.9,
+ "mean_pos_logit_SR": 1.404053582494046
+}

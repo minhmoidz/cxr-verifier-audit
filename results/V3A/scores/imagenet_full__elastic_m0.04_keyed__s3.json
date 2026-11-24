@@ -1,0 +1,14 @@
+{
+ "model_id": "imagenet_full__elastic_m0.04_keyed__s3",
+ "family": "imagenet_full",
+ "sanitizer": "elastic_m0.04_keyed",
+ "seed": 3,
+ "source": "v3b",
+ "ckpt": "results/V3B/runs/v3b__imagenet_full__elastic_m0.04_keyed__s3_best.pth",
+ "published_pred": "results/V3B/runs/v3b__imagenet_full__elastic_m0.04_keyed__s3_preds.npz",
+ "arch": "resnet50_metric_l1",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 14.3,
+ "mean_pos_logit_SR": 0.5870732609599705
+}

@@ -1,0 +1,17 @@
+{
+ "model_id": "reference__none__s4",
+ "family": "reference",
+ "sanitizer": "none",
+ "seed": 4,
+ "source": "v3b",
+ "ckpt": "results/V3B/runs/v3b__reference__none__s4_best.pth",
+ "published_pred": "results/V3B/runs/v3b__reference__none__s4_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "none",
+ "auc_SR_from_embeddings": 99.491136,
+ "auc_SR_published_pred": 99.491008,
+ "auc_abs_diff": 0.00012800000000368073,
+ "seconds": 26.6
+}

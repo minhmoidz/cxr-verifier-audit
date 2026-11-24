@@ -1,0 +1,536 @@
+28 runs
+[1/28] RUN v3b__reference__none__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "scripts/run_v3_seeds.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "scripts/run_v3_seeds.py", line 71, in main
+    rec = P.train_and_evaluate_pair_run(
+        run_id=run_id, out_dir=OUT, store=store, meta_lut=meta_lut, sanitizer_name=san,
+    ...<3 lines>...
+        disjoint_check_splits={"att_train": tp, "val_2k": VAL_2K, "cal_700": CAL_700, "test_5k": TEST_5K},
+        extra_evals={"test5k_SS": (TEST_5K, "SS")}, **kw)
+  File "scripts/prl_lib.py", line 974, in train_and_evaluate_pair_run
+    logits = net(x1, x2)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "networks/SiameseNetwork.py", line 35, in forward
+    output2 = self.forward_once(input2)
+  File "networks/SiameseNetwork.py", line 28, in forward_once
+    output = self.model(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+           ~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 273, in _forward_impl
+    x = self.layer1(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 154, in forward
+    out = self.conv3(out)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/conv.py", line 543, in _conv_forward
+    return F.conv2d(
+           ~~~~~~~~^
+        input, weight, bias, self.stride, self.padding, self.dilation, self.groups
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 128.00 MiB. GPU 0 has a total capacity of 23.52 GiB of which 70.00 MiB is free. Process 5108 has 448.00 MiB memory in use. Process 3624112 has 4.23 GiB memory in use. Process 532892 has 2.42 GiB memory in use. Process 751798 has 11.81 GiB memory in use. Including non-PyTorch memory, this process has 4.49 GiB memory in use. Of the allocated memory 4.02 GiB is allocated by PyTorch, and 20.57 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[W1123 15:10:10.385640076 AllocatorConfig.cpp:28] Warning: PYTORCH_CUDA_ALLOC_CONF is deprecated, use PYTORCH_ALLOC_CONF instead (function operator())
+
+=== attempt 1 at 2026-11-23 16:11:11, 12.9 GB free ===
+28 runs
+[1/28] RUN v3b__reference__none__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (824.96s) AUC=99.47% TPR@1%=87.56%
+[2/28] RUN v3b__reference__ff_mu0.01__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=11/16 (1645.44s) AUC=95.24% TPR@1%=31.68%
+[3/28] RUN v3b__reference__blur_s2__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=9/14 (1244.58s) AUC=97.57% TPR@1%=57.56%
+[4/28] RUN v3b__reference__elastic_m0.045_keyed__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "scripts/run_v3_seeds.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "scripts/run_v3_seeds.py", line 71, in main
+    rec = P.train_and_evaluate_pair_run(
+        run_id=run_id, out_dir=OUT, store=store, meta_lut=meta_lut, sanitizer_name=san,
+    ...<3 lines>...
+        disjoint_check_splits={"att_train": tp, "val_2k": VAL_2K, "cal_700": CAL_700, "test_5k": TEST_5K},
+        extra_evals={"test5k_SS": (TEST_5K, "SS")}, **kw)
+  File "scripts/prl_lib.py", line 974, in train_and_evaluate_pair_run
+    logits = net(x1, x2)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "networks/SiameseNetwork.py", line 35, in forward
+    output2 = self.forward_once(input2)
+  File "networks/SiameseNetwork.py", line 28, in forward_once
+    output = self.model(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+           ~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 273, in _forward_impl
+    x = self.layer1(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 155, in forward
+    out = self.bn3(out)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+           ~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<11 lines>...
+        self.eps,
+        ^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/functional.py", line 2813, in batch_norm
+    return torch.batch_norm(
+           ~~~~~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<7 lines>...
+        torch.backends.cudnn.enabled,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 128.00 MiB. GPU 0 has a total capacity of 23.52 GiB of which 80.00 MiB is free. Process 5108 has 448.00 MiB memory in use. Process 3624112 has 4.24 GiB memory in use. Process 751798 has 2.71 GiB memory in use. Including non-PyTorch memory, this process has 5.56 GiB memory in use. Process 2190998 has 10.43 GiB memory in use. Of the allocated memory 5.04 GiB is allocated by PyTorch, and 63.69 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+=== attempt 2 at 2026-11-23 19:51:00, 13.6 GB free ===
+28 runs
+[1/28] CACHED v3b__reference__none__s3
+[2/28] CACHED v3b__reference__ff_mu0.01__s3
+[3/28] CACHED v3b__reference__blur_s2__s3
+[4/28] RUN v3b__reference__elastic_m0.045_keyed__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (749.0s) AUC=98.35% TPR@1%=65.24%
+[5/28] RUN v3b__reference__elastic_m0.04_keyed__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (739.59s) AUC=98.62% TPR@1%=71.36%
+[6/28] RUN v3b__e5__none__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (711.77s) AUC=98.89% TPR@1%=77.68%
+[7/28] RUN v3b__e5__ff_mu0.01__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=15/20 (1508.85s) AUC=93.77% TPR@1%=16.88%
+[8/28] RUN v3b__e5__blur_s2__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (536.97s) AUC=95.96% TPR@1%=33.92%
+[9/28] RUN v3b__e5__elastic_m0.045_keyed__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "scripts/run_v3_seeds.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "scripts/run_v3_seeds.py", line 71, in main
+    rec = P.train_and_evaluate_pair_run(
+        run_id=run_id, out_dir=OUT, store=store, meta_lut=meta_lut, sanitizer_name=san,
+    ...<3 lines>...
+        disjoint_check_splits={"att_train": tp, "val_2k": VAL_2K, "cal_700": CAL_700, "test_5k": TEST_5K},
+        extra_evals={"test5k_SS": (TEST_5K, "SS")}, **kw)
+  File "scripts/prl_lib.py", line 974, in train_and_evaluate_pair_run
+    logits = net(x1, x2)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "networks/SiameseNetwork.py", line 35, in forward
+    output2 = self.forward_once(input2)
+  File "networks/SiameseNetwork.py", line 28, in forward_once
+    output = self.model(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+           ~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 274, in _forward_impl
+    x = self.layer2(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 154, in forward
+    out = self.conv3(out)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/conv.py", line 543, in _conv_forward
+    return F.conv2d(
+           ~~~~~~~~^
+        input, weight, bias, self.stride, self.padding, self.dilation, self.groups
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 64.00 MiB. GPU 0 has a total capacity of 23.52 GiB of which 55.50 MiB is free. Process 5108 has 448.00 MiB memory in use. Process 3624112 has 4.17 GiB memory in use. Process 2974838 has 2.71 GiB memory in use. Including non-PyTorch memory, this process has 6.29 GiB memory in use. Process 347944 has 536.00 MiB memory in use. Process 346903 has 536.00 MiB memory in use. Process 355132 has 403.44 MiB memory in use. Process 355942 has 403.44 MiB memory in use. Process 356074 has 7.93 GiB memory in use. Of the allocated memory 5.76 GiB is allocated by PyTorch, and 72.67 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+=== attempt 3 at 2026-11-23 21:52:57, 19.7 GB free ===
+28 runs
+[1/28] CACHED v3b__reference__none__s3
+[2/28] CACHED v3b__reference__ff_mu0.01__s3
+[3/28] CACHED v3b__reference__blur_s2__s3
+[4/28] CACHED v3b__reference__elastic_m0.045_keyed__s3
+[5/28] CACHED v3b__reference__elastic_m0.04_keyed__s3
+[6/28] CACHED v3b__e5__none__s3
+[7/28] CACHED v3b__e5__ff_mu0.01__s3
+[8/28] CACHED v3b__e5__blur_s2__s3
+[9/28] RUN v3b__e5__elastic_m0.045_keyed__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=26/31 (1692.87s) AUC=96.97% TPR@1%=44.96%
+[10/28] RUN v3b__e5__elastic_m0.04_keyed__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=20/25 (1868.61s) AUC=97.45% TPR@1%=53.04%
+[11/28] RUN v3b__imagenet_full__none__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=9/14 (955.08s) AUC=95.21% TPR@1%=35.24%
+[12/28] RUN v3b__imagenet_full__ff_mu0.01__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=7/12 (1259.08s) AUC=88.83% TPR@1%=13.20%
+[13/28] RUN v3b__imagenet_full__blur_s2__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=15/20 (1807.52s) AUC=93.32% TPR@1%=23.28%
+[14/28] RUN v3b__imagenet_full__elastic_m0.04_keyed__s3
+[ Using Seed :  3  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=4/9 (791.85s) AUC=90.10% TPR@1%=18.88%
+[15/28] RUN v3b__reference__none__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=1/6 (415.81s) AUC=99.49% TPR@1%=89.40%
+[16/28] RUN v3b__reference__ff_mu0.01__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=6/11 (753.48s) AUC=95.65% TPR@1%=39.16%
+[17/28] RUN v3b__reference__blur_s2__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=3/8 (605.8s) AUC=97.41% TPR@1%=54.96%
+[18/28] RUN v3b__reference__elastic_m0.045_keyed__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (741.25s) AUC=98.33% TPR@1%=67.40%
+[19/28] RUN v3b__reference__elastic_m0.04_keyed__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (590.9s) AUC=98.58% TPR@1%=70.28%
+[20/28] RUN v3b__e5__none__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=2/7 (487.3s) AUC=98.79% TPR@1%=74.72%
+[21/28] RUN v3b__e5__ff_mu0.01__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=6/11 (721.24s) AUC=93.44% TPR@1%=14.80%
+[22/28] RUN v3b__e5__blur_s2__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=22/27 (1973.67s) AUC=97.35% TPR@1%=51.72%
+[23/28] RUN v3b__e5__elastic_m0.045_keyed__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=9/14 (976.73s) AUC=96.71% TPR@1%=46.56%
+[24/28] RUN v3b__e5__elastic_m0.04_keyed__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+  -> ep=4/9 (747.45s) AUC=97.21% TPR@1%=55.08%
+[25/28] RUN v3b__imagenet_full__none__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=7/12 (954.29s) AUC=94.88% TPR@1%=37.36%
+[26/28] RUN v3b__imagenet_full__ff_mu0.01__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=7/12 (1011.35s) AUC=91.99% TPR@1%=23.08%
+[27/28] RUN v3b__imagenet_full__blur_s2__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=9/14 (1078.59s) AUC=93.98% TPR@1%=26.28%
+[28/28] RUN v3b__imagenet_full__elastic_m0.04_keyed__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "scripts/run_v3_seeds.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "scripts/run_v3_seeds.py", line 71, in main
+    rec = P.train_and_evaluate_pair_run(
+        run_id=run_id, out_dir=OUT, store=store, meta_lut=meta_lut, sanitizer_name=san,
+    ...<3 lines>...
+        disjoint_check_splits={"att_train": tp, "val_2k": VAL_2K, "cal_700": CAL_700, "test_5k": TEST_5K},
+        extra_evals={"test5k_SS": (TEST_5K, "SS")}, **kw)
+  File "scripts/prl_lib.py", line 974, in train_and_evaluate_pair_run
+    logits = net(x1, x2)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "networks/SiameseNetwork.py", line 35, in forward
+    output2 = self.forward_once(input2)
+  File "networks/SiameseNetwork.py", line 28, in forward_once
+    output = self.model(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+           ~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 273, in _forward_impl
+    x = self.layer1(x)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/resnet.py", line 155, in forward
+    out = self.bn3(out)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1775, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1786, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+           ~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<11 lines>...
+        self.eps,
+        ^^^^^^^^^
+    )
+    ^
+  File "/opt/anaconda3/lib/python3.13/site-packages/torch/nn/functional.py", line 2813, in batch_norm
+    return torch.batch_norm(
+           ~~~~~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<7 lines>...
+        torch.backends.cudnn.enabled,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 128.00 MiB. GPU 0 has a total capacity of 23.52 GiB of which 103.31 MiB is free. Process 5108 has 448.00 MiB memory in use. Including non-PyTorch memory, this process has 5.19 GiB memory in use. Process 826695 has 9.84 GiB memory in use. Process 1618184 has 7.88 GiB memory in use. Of the allocated memory 4.66 GiB is allocated by PyTorch, and 68.94 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+=== attempt 4 at 2026-11-24 04:24:50, 10.1 GB free ===
+28 runs
+[1/28] CACHED v3b__reference__none__s3
+[2/28] CACHED v3b__reference__ff_mu0.01__s3
+[3/28] CACHED v3b__reference__blur_s2__s3
+[4/28] CACHED v3b__reference__elastic_m0.045_keyed__s3
+[5/28] CACHED v3b__reference__elastic_m0.04_keyed__s3
+[6/28] CACHED v3b__e5__none__s3
+[7/28] CACHED v3b__e5__ff_mu0.01__s3
+[8/28] CACHED v3b__e5__blur_s2__s3
+[9/28] CACHED v3b__e5__elastic_m0.045_keyed__s3
+[10/28] CACHED v3b__e5__elastic_m0.04_keyed__s3
+[11/28] CACHED v3b__imagenet_full__none__s3
+[12/28] CACHED v3b__imagenet_full__ff_mu0.01__s3
+[13/28] CACHED v3b__imagenet_full__blur_s2__s3
+[14/28] CACHED v3b__imagenet_full__elastic_m0.04_keyed__s3
+[15/28] CACHED v3b__reference__none__s4
+[16/28] CACHED v3b__reference__ff_mu0.01__s4
+[17/28] CACHED v3b__reference__blur_s2__s4
+[18/28] CACHED v3b__reference__elastic_m0.045_keyed__s4
+[19/28] CACHED v3b__reference__elastic_m0.04_keyed__s4
+[20/28] CACHED v3b__e5__none__s4
+[21/28] CACHED v3b__e5__ff_mu0.01__s4
+[22/28] CACHED v3b__e5__blur_s2__s4
+[23/28] CACHED v3b__e5__elastic_m0.045_keyed__s4
+[24/28] CACHED v3b__e5__elastic_m0.04_keyed__s4
+[25/28] CACHED v3b__imagenet_full__none__s4
+[26/28] CACHED v3b__imagenet_full__ff_mu0.01__s4
+[27/28] CACHED v3b__imagenet_full__blur_s2__s4
+[28/28] RUN v3b__imagenet_full__elastic_m0.04_keyed__s4
+[ Using Seed :  4  ]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+  -> ep=9/14 (1526.14s) AUC=93.16% TPR@1%=30.32%

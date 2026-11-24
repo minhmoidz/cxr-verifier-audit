@@ -1,0 +1,17 @@
+{
+ "model_id": "e5__blur_s2__s3",
+ "family": "e5",
+ "sanitizer": "blur_s2",
+ "seed": 3,
+ "source": "v3b",
+ "ckpt": "results/V3B/runs/v3b__e5__blur_s2__s3_best.pth",
+ "published_pred": "results/V3B/runs/v3b__e5__blur_s2__s3_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "blur_s2",
+ "auc_SR_from_embeddings": 95.96347200000001,
+ "auc_SR_published_pred": 95.96344,
+ "auc_abs_diff": 3.2000000004472895e-05,
+ "seconds": 22.5
+}
