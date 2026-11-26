@@ -161,6 +161,9 @@ class Agent:
 
             # Save latest network components
             torch.save(self.generator.state_dict(), self.SAVINGS_PATH + 'generator_latest.pth')
+            # Revision v3 (V3-D): keep every epoch's generator for the utility-matched checkpoint selection
+            if self.config.get('save_every_epoch', False):
+                torch.save(self.generator.state_dict(), self.SAVINGS_PATH + 'generator_epoch%03d.pth' % (epoch + 1))
             torch.save(self.ac_loss.ac_model.state_dict(), self.SAVINGS_PATH + 'ac_model_trained_latest.pth')
             torch.save(self.verification_loss.verification_model.state_dict(), self.SAVINGS_PATH + 'ver_model_trained_latest.pth')
 

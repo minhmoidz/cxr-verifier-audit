@@ -140,3 +140,47 @@ epoch (`train_architecture.py --resume`) instead of restarting; the selected gen
 the lowest validation total loss over all 250 epochs. (ii) Until 06:00 on 2026-11-24 two of our jobs may share the
 GPU (the V3-B queue and the SR-adversary generator); afterwards one at a time. If V3-B has not finished by
 then, the generator is stopped and resumed after V3-B (`tools/v3_overnight.py`). Settings are unchanged.
+
+## V3-D (added 2026-11-26, after V3-C and before any V3-D training): a second learned sanitizer family
+
+Written after the V3-A to V3-C results were known (commit a8be662) and before any V3-D sanitizer was trained or
+evaluated; only a four-minute timing run of the trainer has been executed (no checkpoint kept). Every result of
+revision v2 and V3-A to V3-C concerns one learned sanitizer family, the learned deformation field. V3-D asks
+whether the audit's three central findings hold for a learned sanitizer that rewrites intensities instead of
+deforming the image.
+
+Sanitizer: the Privacy-Net generator (Kim et al. 2021) as implemented in the released PriCheXy-Net code
+(`generator_type: privacy_net`, `Unet2D_encoder(1, 1, 16)`, started from the released
+`pretrained_generator_privacy_net.pth`), trained with the released objective (auxiliary classifier plus an
+adversary updated on SR pairs) and the released starting networks, pairs and learning rate, batch 16 (as in
+V3-C), seed 42, 100 epochs (instead of 250, for computing time), saving the generator after every epoch. The
+released Privacy-Net weights (verification-loss weight 1) give a frozen test macro AUC of 57.55, far below the
+learned field (76.19), so a utility-matched operating point is defined as follows, using validation data only.
+
+- Target T: frozen-classifier macro AUC of the learned field (mu = 0.01) on the validation images of the
+  retrained-utility split (3,484 images, `load_e4_splits()["val"]`).
+- Verification-loss weight w: start with w = 0.1. If the validation utility of the generator after epoch 1 is
+  below T, the run is discarded and restarted with w divided by 10 (at most three attempts: 0.1, 0.01, 0.001).
+- Checkpoint: among the 100 epoch generators with validation utility >= T, the one with the lowest validation
+  verification term -log(1 - p) (the released loss term; p = the adversary's same-patient probability). If no
+  epoch reaches T, the epoch with the highest validation utility is used and this is reported.
+- Matched blur: the blur strength (sigma 1.5, 2 or 2.5) whose frozen validation utility is closest to that of
+  the selected checkpoint. Matched elastic deformation (secondary): strength 0.035, 0.04 or 0.045, chosen the
+  same way.
+
+Evaluation, as in V3-C: frozen test utility; verifiers with reference and with independent initialization,
+released recipe, trained and selected on SR pairs, seeds 0-2; in addition, reference-initialization verifiers
+trained and selected on SS pairs (the released protocol), seeds 0-2. SR and SS attacks on the NIH extended set
+and on the V3-A CheXpert set; bootstrap as above, with the sanitizer treated as fixed (one seed). Control arms
+are those already scored (all available verifier seeds).
+
+Hypotheses (PN = selected Privacy-Net checkpoint; TPR at 1% FPR unless stated):
+- **H6** (advantage against the SR attack). TPR(PN) - TPR(matched blur) < 0 under the SR attack (upper limit
+  below zero), on NIH and on CheXpert, under the reference and the independent verifier.
+- **H7** (attack dependence). [TPR_SS - TPR_SR](PN) - [TPR_SS - TPR_SR](matched blur) > 0 (lower limit above
+  zero), same data sets and verifiers.
+- **H8** (training pairs). Reference initialization, SR attack: AUC(SR-trained) - AUC(SS-trained) > 0 (lower
+  limit above zero), on NIH and on CheXpert.
+A hypothesis is confirmed only if it holds in every listed data set and verifier. Secondary, descriptive:
+the same contrasts against matched elastic deformation; TPR under the SR and SS attacks for the released
+Privacy-Net weights (reference and independent verifiers, SR pairs, seeds 0-2).
