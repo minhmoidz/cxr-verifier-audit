@@ -15,3 +15,5 @@ __pycache__/
 # V3-A: embeddings of CheXpert images are not redistributed (Stanford research use agreement); regenerate with tools/v3_chexpert_score.py
 results/V3A/scores/*.npz
 archive/v3c_*/
+# V3-C generator training log is large; the gzipped copy is committed
+results/V3C/run.log

@@ -278,6 +278,21 @@ def main():
                                           for cf, pp, coef in ((f_, "SS", 1), (f_, "SR", -1), (k_, "SS", -1), (k_, "SR", 1)))
                         e[k] = {"point": pt, "patient": summarize(dd["patient"])[0], "patient+seed": summarize(dd["hier"])[0]}
                     C[f"{st}/H2/{ver}/ff_mu0.01_minus_{c}"] = e
+        # Revision v3 (V3-C): PriCheXy-Net retrained against an SS or an SR adversary (one sanitizer seed each, so the
+        # sanitizer is fixed and only verifier seeds are resampled). H4: SS attack, H5: SR attack, SS-adv minus SR-adv.
+        # Replication check (descriptive): SR-adv retrain minus the released mu = 0.01 generator, same verifier recipe.
+        for ver in ("reference", "e5"):
+            a_, b_ = f"v3c_{ver}/ffv3c_SS_s42", f"v3c_{ver}/ffv3c_SR_s42"
+            C[f"{st}/H4/{ver}/SSadv_minus_SRadv"] = contrast(a_, b_, st, "SS")
+            C[f"{st}/H5/{ver}/SSadv_minus_SRadv"] = contrast(a_, b_, st, "SR")
+            for pairing in PAIRINGS:
+                C[f"{st}/{pairing}/repl/{ver}/SRadv_minus_released"] = contrast(b_, f"{ver}/ff_mu0.01", st, pairing)
+            # Exploratory (not in the plan): final-epoch generators (sanitizers *_last).
+            for a2, b2, xt in (("ffv3c_SS_s42_last", "ffv3c_SR_s42_last", "SSlast_minus_SRlast"),
+                                ("ffv3c_SS_s42_last", "ffv3c_SS_s42", "SSlast_minus_SS"),
+                                ("ffv3c_SR_s42_last", "ffv3c_SR_s42", "SRlast_minus_SR")):
+                for pairing in PAIRINGS:
+                    C[f"{st}/{pairing}/v3cx/{ver}/{xt}"] = contrast(f"v3c_{ver}/{a2}", f"v3c_{ver}/{b2}", st, pairing)
     out["contrasts"] = {k: v for k, v in C.items() if v is not None}
     out["n_ext_negatives"] = 1073 * 1072
     name = f"extended_ci{tag}.json"

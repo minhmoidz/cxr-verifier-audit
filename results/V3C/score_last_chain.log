@@ -1,0 +1,10 @@
+[2026-11-26 16:55:43] start
+192 models: {'factorial_ref': 44, 'factorial_imagenet': 20, 'imagenet_full': 23, 'reference': 40, 'zeroshot_reference': 1, 'e5': 40, 'v3c_e5': 12, 'v3c_reference': 12}
+done after 1 attempt(s)
+[2026-11-26 17:06:58] NIH scoring done
+done after 1 attempt(s)
+[2026-11-26 17:12:45] CheXpert scoring done
+[1]-  Done                    nice -n 10 $P tools/v2_extended_ci.py --n_boot 2000 --workers 14 > results/V3C/ci_last_nih.log 2>&1
+[2]+  Done                    nice -n 10 $P tools/v3_chexpert_ci.py --n_boot 2000 --workers 14 > results/V3C/ci_last_cx.log 2>&1
+[2026-11-26 20:21:05] CIs done
+EXIT 0

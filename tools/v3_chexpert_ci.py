@@ -150,6 +150,17 @@ def main():
         if (a_, "SR") in arms and (b_, "SR") in arms:
             C[f"H4/SS/{v}/SSadv_minus_SRadv"] = lincomb([((a_, "SS"), 1), ((b_, "SS"), -1)])
             C[f"H5/SR/{v}/SSadv_minus_SRadv"] = lincomb([((a_, "SR"), 1), ((b_, "SR"), -1)])
+            if (f"{v}/ff_mu0.01", "SR") in arms:      # replication check (descriptive): SR-adv minus released generator
+                for pr in ("SR", "SS"):
+                    C[f"repl/{pr}/{v}/SRadv_minus_released"] = lincomb([((b_, pr), 1), ((f"{v}/ff_mu0.01", pr), -1)])
+        # Exploratory (not in the plan): final-epoch generators (sanitizers *_last).
+        for a2, b2, tag in (("ffv3c_SS_s42_last", "ffv3c_SR_s42_last", "SSlast_minus_SRlast"),
+                            ("ffv3c_SS_s42_last", "ffv3c_SS_s42", "SSlast_minus_SS"),
+                            ("ffv3c_SR_s42_last", "ffv3c_SR_s42", "SRlast_minus_SR")):
+            A_, B_ = f"v3c_{v}/{a2}", f"v3c_{v}/{b2}"
+            if (A_, "SR") in arms and (B_, "SR") in arms:
+                for pr in ("SR", "SS"):
+                    C[f"V3Cx/{pr}/{v}/{tag}"] = lincomb([((A_, pr), 1), ((B_, pr), -1)])
     name = "chexpert_ci.json" if not a.seeds else f"chexpert_ci_seeds{a.seeds.replace(',', '')}.json"
     (D / name).write_text(json.dumps(out, indent=1))
     print(f"wrote {D / name}: {len(arms)} arms, {len(C)} contrasts")

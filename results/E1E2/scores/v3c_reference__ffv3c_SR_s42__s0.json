@@ -1,0 +1,17 @@
+{
+ "model_id": "v3c_reference__ffv3c_SR_s42__s0",
+ "family": "v3c_reference",
+ "sanitizer": "ffv3c_SR_s42",
+ "seed": 0,
+ "source": "v3c",
+ "ckpt": "results/V3C/runs/v3c__reference__ffv3c_SR_s42__s0_best.pth",
+ "published_pred": "results/V3C/runs/v3c__reference__ffv3c_SR_s42__s0_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "ffv3c_SR_s42",
+ "auc_SR_from_embeddings": 94.64451199999999,
+ "auc_SR_published_pred": 94.643968,
+ "auc_abs_diff": 0.0005439999999907741,
+ "seconds": 20.4
+}

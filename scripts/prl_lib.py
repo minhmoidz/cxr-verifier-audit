@@ -297,9 +297,12 @@ def build_sanitizer(name: str, device: torch.device, seed: int = 0) -> BaseSanit
         ckpt = ROOT / "networks" / f"generator_lowest_total_loss_mu_{mu_str}.pth"
         return FlowFieldSanitizer(float(mu_str), ckpt, device)
     if name.startswith("ffv3c_"):
-        # V3-C retrained generators (docs/PREREGISTRATION_v3.md), mu = 0.01: ffv3c_<SR|SS>_s<seed>
-        assert re.fullmatch(r"ffv3c_(SR|SS)_s\d+", name), name
-        san = FlowFieldSanitizer(0.01, ROOT / "results" / "V3C" / "gen" / name / "generator_lowest_total_loss.pth", device)
+        # V3-C retrained generators (docs/PREREGISTRATION_v3.md), mu = 0.01: ffv3c_<SR|SS>_s<seed> is the pre-specified
+        # checkpoint (lowest validation total loss); the suffix _last selects the final epoch (exploratory, not in the plan).
+        m = re.fullmatch(r"(ffv3c_(SR|SS)_s\d+)(_last)?", name)
+        assert m, name
+        ck = "generator_latest.pth" if m.group(3) else "generator_lowest_total_loss.pth"
+        san = FlowFieldSanitizer(0.01, ROOT / "results" / "V3C" / "gen" / m.group(1) / ck, device)
         san.name = name
         return san
     if name == "privacy_net":

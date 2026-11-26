@@ -1,0 +1,82 @@
+
+=== attempt 1 at 2026-11-26 13:16:30, 18.8 GB free ===
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_e5__ffv3c_SR_s42__s0: SR AUC 83.679 (stored predictions 83.680), SS AUC 89.746  [28.4s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_e5__ffv3c_SR_s42__s1: SR AUC 93.815 (stored predictions 93.815), SS AUC 97.739  [27.6s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_e5__ffv3c_SR_s42__s2: SR AUC 89.597 (stored predictions 89.596), SS AUC 97.286  [27.5s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_e5__ffv3c_SS_s42__s0: SR AUC 98.473 (stored predictions 98.473), SS AUC 98.264  [27.3s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_e5__ffv3c_SS_s42__s1: SR AUC 98.500 (stored predictions 98.500), SS AUC 98.247  [27.7s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_e5__ffv3c_SS_s42__s2: SR AUC 98.426 (stored predictions 98.427), SS AUC 98.271  [24.2s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_reference__ffv3c_SR_s42__s0: SR AUC 94.645 (stored predictions 94.644), SS AUC 97.786  [20.4s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_reference__ffv3c_SR_s42__s1: SR AUC 92.815 (stored predictions 92.815), SS AUC 96.394  [29.1s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_reference__ffv3c_SR_s42__s2: SR AUC 94.761 (stored predictions 94.761), SS AUC 97.567  [34.0s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_reference__ffv3c_SS_s42__s0: SR AUC 98.717 (stored predictions 98.718), SS AUC 98.588  [33.5s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_reference__ffv3c_SS_s42__s1: SR AUC 98.713 (stored predictions 98.714), SS AUC 98.632  [33.6s]
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_reference__ffv3c_SS_s42__s2: SR AUC 98.748 (stored predictions 98.748), SS AUC 98.674  [33.6s]
+
+=== attempt 1 at 2026-11-26 13:24:29, 15.3 GB free ===
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+v3c_e5__ffv3c_SR_s42__s0: done [15.0s]
+v3c_e5__ffv3c_SR_s42__s1: done [13.2s]
+v3c_e5__ffv3c_SR_s42__s2: done [13.5s]
+v3c_e5__ffv3c_SS_s42__s0: done [13.5s]
+v3c_e5__ffv3c_SS_s42__s1: done [13.2s]
+v3c_e5__ffv3c_SS_s42__s2: done [13.5s]
+v3c_reference__ffv3c_SR_s42__s0: done [13.6s]
+v3c_reference__ffv3c_SR_s42__s1: done [13.4s]
+v3c_reference__ffv3c_SR_s42__s2: done [13.3s]
+v3c_reference__ffv3c_SS_s42__s0: done [13.4s]
+v3c_reference__ffv3c_SS_s42__s1: done [13.2s]
+v3c_reference__ffv3c_SS_s42__s2: done [13.1s]
+wrote results/E1E2/extended_ciSRlast_minus_SR.json: 46 configurations, 284 contrasts
+wrote results/V3A/chexpert_ci.json: 66 arms, 44 contrasts

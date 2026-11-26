@@ -8,8 +8,10 @@ Steps (each skips finished work):
               SR pairs, seeds 0-2 (results/V3C/runs/v3c__<verifier>__<sanitizer>__s<seed>)
   utility     frozen-classifier macro AUC on the official test images for the released mu = 0.01 generator and
               both retrained generators (results/V3C/utility_frozen.json)
+  explore     exploratory, not in the plan (decided after the SS-adversary run selected its epoch-1 checkpoint):
+              the same verifiers and utility for the final-epoch generators (sanitizers ffv3c_<v>_s42_last)
 
-Usage: python3 -u scripts/run_v3c.py gen SR | gen SS | verifiers | utility
+Usage: python3 -u scripts/run_v3c.py gen SR | gen SS | verifiers | utility | explore
 """
 from __future__ import annotations
 
@@ -26,6 +28,7 @@ sys.path.insert(0, str(ROOT))
 
 OUT = ROOT / "results" / "V3C"
 SANS = ["ffv3c_SR_s42", "ffv3c_SS_s42"]
+SANS_LAST = [s + "_last" for s in SANS]
 
 
 def sha(p):
@@ -60,7 +63,7 @@ def gen(v):
     print(f"{name}: trained, {meta['wall_hours_incl_pauses']} h wall time")
 
 
-def verifiers():
+def verifiers(sans=SANS):
     from scripts import prl_lib as P
     from scripts.run_v2_retrain import CAL_700, TEST_5K, VAL_2K, VAL_SUB700, published_runs
     from scripts.run_e5 import ATT, CKPT
@@ -75,12 +78,12 @@ def verifiers():
     out.mkdir(parents=True, exist_ok=True)
     store = P.RAMImageStore(use_cache=True)
     meta_lut = P.load_nih_metadata_lut()
-    plan = [(ver, san, sd) for sd in (0, 1, 2) for san in SANS for ver in ("reference", "e5")]
+    plan = [(ver, san, sd) for sd in (0, 1, 2) for san in sans for ver in ("reference", "e5")]
     for i, (ver, san, sd) in enumerate(plan, 1):
         run_id = f"v3c__{ver}__{san}__s{sd}"
         if (out / f"{run_id}_summary.json").is_file():
             print(f"[{i}/{len(plan)}] CACHED {run_id}", flush=True); continue
-        if not (OUT / "gen" / san / "generator_lowest_total_loss.pth").is_file():
+        if not (OUT / "gen" / san.removesuffix("_last") / "generator_lowest_total_loss.pth").is_file():
             print(f"[{i}/{len(plan)}] SKIP {run_id}: generator not trained yet", flush=True); continue
         print(f"[{i}/{len(plan)}] RUN {run_id}", flush=True)
         kw = dict(specs[ver])
@@ -96,7 +99,7 @@ def verifiers():
         print(f"  -> ep={rec['selected_epoch']}/{rec['epochs_ran']} AUC={tm['auc']:.2f}% TPR@1%={tm['tpr_at_1pct']:.2f}%", flush=True)
 
 
-def utility():
+def utility(sans=SANS):
     import numpy as np
     import torch
     from scripts import prl_lib as P
@@ -104,7 +107,7 @@ def utility():
     dst = OUT / "utility_frozen.json"
     rows = json.load(open(dst)) if dst.is_file() else []
     done = {r["sanitizer"] for r in rows}
-    todo = [s for s in ["ff_mu0.01"] + SANS if s not in done and (s == "ff_mu0.01" or (OUT / "gen" / s).is_dir())]
+    todo = [s for s in ["ff_mu0.01"] + sans if s not in done and (s == "ff_mu0.01" or (OUT / "gen" / s.removesuffix("_last")).is_dir())]
     if not todo:
         print("utility: nothing to do"); return
     device = torch.device("cuda")
@@ -132,5 +135,8 @@ if __name__ == "__main__":
         verifiers()
     elif step == "utility":
         utility()
+    elif step == "explore":
+        verifiers(SANS_LAST)
+        utility(SANS_LAST)
     else:
         raise SystemExit(__doc__)

@@ -1,0 +1,14 @@
+{
+ "model_id": "v3c_reference__ffv3c_SR_s42_last__s1",
+ "family": "v3c_reference",
+ "sanitizer": "ffv3c_SR_s42_last",
+ "seed": 1,
+ "source": "v3c",
+ "ckpt": "results/V3C/runs/v3c__reference__ffv3c_SR_s42_last__s1_best.pth",
+ "published_pred": "results/V3C/runs/v3c__reference__ffv3c_SR_s42_last__s1_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 18.1,
+ "mean_pos_logit_SR": -0.181189946858701
+}

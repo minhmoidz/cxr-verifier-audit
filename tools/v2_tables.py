@@ -223,6 +223,8 @@ def part_e1e2():
     put("e1-nneg", int(d["n_ext_negatives"])); put("e1-nboot", int(d["n_boot"]))
     C, X = d["configs"], d["contrasts"]
     for cfg, ent in C.items():
+        if cfg.startswith("v3c_"):               # V3-C arms: part_v3c
+            continue
         code = cfg_code(cfg)
         put(f"x-{code}-nseeds", len(ent["seeds"]))
         for st in ("ext", "t5k"):
@@ -235,6 +237,8 @@ def part_e1e2():
                     put(stem + "-hlo", e["patient+seed"][0]); put(stem + "-hhi", e["patient+seed"][1])
     for key, ent in X.items():
         parts = key.split("/")
+        if parts[1] in ("H4", "H5") or parts[2] in ("repl", "v3cx") or parts[2].startswith("v3c_"):
+            continue                             # V3-C contrasts: part_v3c
         if parts[2] == "btw":                    # e.g. ext/SR/btw/reference_minus_e5/ff_mu0.01_minus_blur_s2
             v1, v2 = parts[3].split("_minus_"); a, b = parts[4].split("_minus_")
             stem = f"c-btw-{FAM[v1]}m{FAM[v2]}-{SAN[a]}m{SAN[b]}-{parts[0]}{parts[1].lower()}"
@@ -759,6 +763,128 @@ def part_v3b():
     print("V3-B: ok")
 
 
+def part_v3c():
+    """V3-C (docs/PREREGISTRATION_v3.md): PriCheXy-Net retrained against an SR or an SS adversary, one sanitizer seed
+    each (seed 42), three verifier seeds per arm. H4 (SS attack) and H5 (SR attack): SS-adv minus SR-adv in TPR at 1%
+    FPR, on the NIH extended set (results/E1E2/extended_ci.json) and on CheXpert (results/V3A/chexpert_ci.json).
+    Replication check and final-epoch generators (*_last) are descriptive. Macros v3c-*; tables supp_v3c*.tex."""
+    pn, pc = R("E1E2", "extended_ci.json"), R("V3A", "chexpert_ci.json")
+    if not (os.path.isfile(pn) and os.path.isfile(pc)):
+        print("V3-C: missing CI files"); return
+    dn, dc = json.load(open(pn)), json.load(open(pc))
+    if "v3c_reference/ffv3c_SR_s42" not in dn["configs"] or "v3c_reference/ffv3c_SR_s42/SR" not in dc["arms"]:
+        print("V3-C: not scored"); return
+    V = {"reference": "ref", "e5": "e5"}
+    SC = {"ffv3c_SR_s42": "sradv", "ffv3c_SS_s42": "ssadv", "ffv3c_SR_s42_last": "sradvlast", "ffv3c_SS_s42_last": "ssadvlast"}
+    for v in ("SR", "SS"):
+        h = json.load(open(R("V3C", "gen", f"ffv3c_{v}_s42", "loss_history.json")))
+        put(f"v3c-sel-{v.lower()}", h["selected_epoch"])
+        tl = h["validation"]["total_loss"]
+        put(f"v3c-vtl-first-{v.lower()}", tl[0]); put(f"v3c-vtl-last-{v.lower()}", tl[-1])
+        put(f"v3c-tver-last-{v.lower()}", h["training"]["ver_loss"][-1])
+        ll = h["training"]["log_likelihood_ver_loss"]     # generator's adversarial term -log(1 - p), training pairs
+        put(f"v3c-tll-first-{v.lower()}", ll[0]); put(f"v3c-tll-last-{v.lower()}", ll[-1])
+        put(f"v3c-vtl-sel-{v.lower()}", tl[h["selected_epoch"] - 1])
+    put("v3c-nepochs", h["n_epochs"])
+    u = {r["sanitizer"]: r for r in json.load(open(R("V3C", "utility_frozen.json")))}
+    for s_, c_ in (("ff_mu0.01", "rel"),) + tuple(SC.items()):
+        if s_ in u:
+            put(f"v3c-u-{c_}", u[s_]["test_macro_auc"])
+            put(f"v3c-u-{c_}-lo", u[s_]["test_ci95"][0]); put(f"v3c-u-{c_}-hi", u[s_]["test_ci95"][1])
+    nseeds = set()
+    have_last = "v3c_reference/ffv3c_SS_s42_last" in dn["configs"] and "v3c_reference/ffv3c_SS_s42_last/SR" in dc["arms"]
+    for ver in V:
+        for san in SC:
+            if san.endswith("_last") and not have_last:
+                continue
+            cn = dn["configs"][f"v3c_{ver}/{san}"]
+            nseeds.add(len(cn["seeds"]))
+            for pr in ("SR", "SS"):
+                ca = dc["arms"][f"v3c_{ver}/{san}/{pr}"]
+                nseeds.add(len(ca["seeds"]))
+                for m in ("auc", "tpr1"):
+                    put(f"v3c-nih-{V[ver]}-{SC[san]}-{pr.lower()}-{m}", cn[f"ext/{pr}/{m}"]["point"])
+                    put(f"v3c-cx-{V[ver]}-{SC[san]}-{pr.lower()}-{m}", ca[m])
+    assert len(nseeds) == 1, nseeds
+    put("v3c-nseeds", nseeds.pop())
+
+    def put_c(stem, e):
+        put(stem, e["point"]); put(stem + "-lo", e["patient+seed"][0]); put(stem + "-hi", e["patient+seed"][1])
+
+    rows, dec = {}, {}
+    for ver in V:
+        for h_, pr in (("h4", "SS"), ("h5", "SR")):
+            en = dn["contrasts"][f"ext/{h_.upper()}/{ver}/SSadv_minus_SRadv"]["tpr1"]
+            ec = dc["contrasts"][f"{h_.upper()}/{pr}/{ver}/SSadv_minus_SRadv"]["tpr1"]
+            put_c(f"v3c-{h_}-nih-{V[ver]}-tpr1", en); put_c(f"v3c-{h_}-cx-{V[ver]}-tpr1", ec)
+            rows[(ver, pr)] = (en, ec)
+            if h_ == "h4":
+                dec[ver] = en["patient+seed"][1] < 0 and ec["patient+seed"][1] < 0
+        for pr in ("SR", "SS"):
+            put_c(f"v3c-repl-nih-{V[ver]}-{pr.lower()}-tpr1", dn["contrasts"][f"ext/{pr}/repl/{ver}/SRadv_minus_released"]["tpr1"])
+            put_c(f"v3c-repl-cx-{V[ver]}-{pr.lower()}-tpr1", dc["contrasts"][f"repl/{pr}/{ver}/SRadv_minus_released"]["tpr1"])
+            if have_last:
+                for tag, code in (("SSlast_minus_SRlast", "lastssmsr"), ("SSlast_minus_SS", "ssadvlastmsel"),
+                                  ("SRlast_minus_SR", "sradvlastmsel")):
+                    put_c(f"v3c-x-nih-{V[ver]}-{code}-{pr.lower()}-tpr1", dn["contrasts"][f"ext/{pr}/v3cx/{ver}/{tag}"]["tpr1"])
+                    put_c(f"v3c-x-cx-{V[ver]}-{code}-{pr.lower()}-tpr1", dc["contrasts"][f"V3Cx/{pr}/{ver}/{tag}"]["tpr1"])
+    for h_, pr in (("h4", "SS"), ("h5", "SR")):      # range over data sets and verifiers, for the main text
+        pts = [e["point"] for k, (en, ec) in rows.items() if k[1] == pr for e in (en, ec)]
+        los = [e["patient+seed"][0] for k, (en, ec) in rows.items() if k[1] == pr for e in (en, ec)]
+        put(f"v3c-{h_}-min-tpr1", min(pts)); put(f"v3c-{h_}-max-tpr1", max(pts)); put(f"v3c-{h_}-minlo-tpr1", min(los))
+    if have_last:
+        for pr in ("SR", "SS"):
+            es = [d_["contrasts"][k_]["tpr1"] for ver in V for d_, k_ in
+                  ((dn, f"ext/{pr}/v3cx/{ver}/SSlast_minus_SRlast"), (dc, f"V3Cx/{pr}/{ver}/SSlast_minus_SRlast"))]
+            put(f"v3c-x-lastssmsr-{pr.lower()}-min-tpr1", min(e["point"] for e in es))
+            put(f"v3c-x-lastssmsr-{pr.lower()}-max-tpr1", max(e["point"] for e in es))
+            put(f"v3c-x-lastssmsr-{pr.lower()}-minlo-tpr1", min(e["patient+seed"][0] for e in es))
+            put(f"v3c-x-lastssmsr-{pr.lower()}-maxhi-tpr1", max(e["patient+seed"][1] for e in es))
+        for tag, code in (("SSlast_minus_SS", "ssadvlastmsel"), ("SRlast_minus_SR", "sradvlastmsel")):
+            es = [d_["contrasts"][k_]["tpr1"] for ver in V for pr in ("SR", "SS") for d_, k_ in
+                  ((dn, f"ext/{pr}/v3cx/{ver}/{tag}"), (dc, f"V3Cx/{pr}/{ver}/{tag}"))]   # both attacks, data sets
+            put(f"v3c-x-{code}-min-tpr1", min(e["point"] for e in es)); put(f"v3c-x-{code}-max-tpr1", max(e["point"] for e in es))
+            put(f"v3c-x-{code}-maxhi-tpr1", max(e["patient+seed"][1] for e in es))
+            put(f"v3c-x-{code}-minlo-tpr1", min(e["patient+seed"][0] for e in es))
+    print(f"V3-C: H4 confirmed = {all(dec.values())} ({dec})")
+
+    # Tables: TPR at 1% FPR of the two retrained generators and their difference (SS attack: H4; SR attack: H5).
+    # supp_v3c.tex uses the pre-specified checkpoints; supp_v3c_last.tex the final-epoch generators (exploratory).
+    f2 = lambda x: NEG(f"{x:.2f}")
+    ent = lambda e: bold_if_excludes_zero(e["point"], (e["patient"], e["patient+seed"])) + " " + ci_txt(e["patient+seed"])
+
+    def table(sr, ss, ckey_n, ckey_c, labels):
+        L = ["\\begin{tabular}{lllccc}", "\\toprule",
+             "Verifier & Data & Attack & SR-adv. & SS-adv. & SS-adv.\\ $-$ SR-adv. \\\\", "\\midrule"]
+        for ver in V:
+            first = True
+            for data in ("NIH", "CheXpert"):
+                for pr in ("SS", "SR"):
+                    if data == "NIH":
+                        e = dn["contrasts"][ckey_n(pr, ver)]["tpr1"]
+                        a1 = dn["configs"][f"v3c_{ver}/{sr}"][f"ext/{pr}/tpr1"]["point"]
+                        a2 = dn["configs"][f"v3c_{ver}/{ss}"][f"ext/{pr}/tpr1"]["point"]
+                    else:
+                        e = dc["contrasts"][ckey_c(pr, ver)]["tpr1"]
+                        a1 = dc["arms"][f"v3c_{ver}/{sr}/{pr}"]["tpr1"]
+                        a2 = dc["arms"][f"v3c_{ver}/{ss}/{pr}"]["tpr1"]
+                    L.append(" & ".join([VERLAB[ver] if first else "", data, labels[pr], f2(a1), f2(a2), ent(e)]) + " \\\\")
+                    first = False
+            L.append("\\addlinespace")
+        return L[:-1] + ["\\bottomrule", "\\end{tabular}"]
+
+    write("supp_v3c.tex", table("ffv3c_SR_s42", "ffv3c_SS_s42",
+                                lambda pr, ver: f"ext/{'H4' if pr == 'SS' else 'H5'}/{ver}/SSadv_minus_SRadv",
+                                lambda pr, ver: f"{'H4' if pr == 'SS' else 'H5'}/{pr}/{ver}/SSadv_minus_SRadv",
+                                {"SS": "SS (H4)", "SR": "SR (H5)"}))
+    if have_last:
+        write("supp_v3c_last.tex", table("ffv3c_SR_s42_last", "ffv3c_SS_s42_last",
+                                         lambda pr, ver: f"ext/{pr}/v3cx/{ver}/SSlast_minus_SRlast",
+                                         lambda pr, ver: f"V3Cx/{pr}/{ver}/SSlast_minus_SRlast",
+                                         {"SS": "SS", "SR": "SR"}))
+    print("V3-C: ok")
+
+
 # ----------------------------------------------------------------------------- numbers file
 def write_numbers():
     ints = {k for k, v in N.items() if isinstance(v, (int, np.integer)) and not isinstance(v, bool)}
@@ -789,7 +915,7 @@ def main():
     write_numbers()
 
 
-PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy, part_v3a, part_v3b]
+PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy, part_v3a, part_v3b, part_v3c]
 
 if __name__ == "__main__":
     main()
