@@ -1,0 +1,14 @@
+{
+ "model_id": "v3d_reference__pnv3d__s1",
+ "family": "v3d_reference",
+ "sanitizer": "pnv3d",
+ "seed": 1,
+ "source": "v3d",
+ "ckpt": "results/V3D/runs/v3d__reference__pnv3d__s1_best.pth",
+ "published_pred": "results/V3D/runs/v3d__reference__pnv3d__s1_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 16.0,
+ "mean_pos_logit_SR": -0.7152592419951896
+}

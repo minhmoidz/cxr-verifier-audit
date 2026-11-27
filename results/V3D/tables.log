@@ -1,0 +1,20 @@
+E4: ok
+T4: ok
+anchor: ok
+E6: ok
+E1/E2: ok
+attack table: three-seed version written to the supplement
+attack table: 3 verifiers, 5 seeds per arm
+replicates: 43
+E3: ok
+E5: ok (30 runs)
+tab_verifiers.tex: with independent-verifier row
+legacy: ok
+V3-A: ok
+V3-B: ok
+V3-C: H4 confirmed = False ({'reference': False, 'e5': False})
+V3-C: ok
+V3-D: H6 confirmed = True [True, True, True, True], H7 confirmed = False [True, False, True, False], H8 confirmed = True [True, True]
+V3-D: ok
+secondary: ok
+numbers_v2.tex: 8207 keys

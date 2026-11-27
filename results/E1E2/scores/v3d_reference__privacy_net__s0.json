@@ -1,0 +1,17 @@
+{
+ "model_id": "v3d_reference__privacy_net__s0",
+ "family": "v3d_reference",
+ "sanitizer": "privacy_net",
+ "seed": 0,
+ "source": "v3d",
+ "ckpt": "results/V3D/runs/v3d__reference__privacy_net__s0_best.pth",
+ "published_pred": "results/V3D/runs/v3d__reference__privacy_net__s0_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "privacy_net",
+ "auc_SR_from_embeddings": 57.44977600000001,
+ "auc_SR_published_pred": 57.450296,
+ "auc_abs_diff": 0.0005199999999945248,
+ "seconds": 30.6
+}

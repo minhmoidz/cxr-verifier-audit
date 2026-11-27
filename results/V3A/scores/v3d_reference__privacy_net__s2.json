@@ -1,0 +1,14 @@
+{
+ "model_id": "v3d_reference__privacy_net__s2",
+ "family": "v3d_reference",
+ "sanitizer": "privacy_net",
+ "seed": 2,
+ "source": "v3d",
+ "ckpt": "results/V3D/runs/v3d__reference__privacy_net__s2_best.pth",
+ "published_pred": "results/V3D/runs/v3d__reference__privacy_net__s2_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "seconds": 15.8,
+ "mean_pos_logit_SR": -2.091735109281511
+}

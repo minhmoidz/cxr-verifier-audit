@@ -1,0 +1,50 @@
+[
+ {
+  "sanitizer": "pnv3d",
+  "test_macro_auc": 76.01,
+  "test_ci95": [
+   75.17,
+   76.75
+  ],
+  "per_finding": {
+   "Atelectasis": 72.76,
+   "Cardiomegaly": 85.75,
+   "Effusion": 79.57,
+   "Infiltration": 67.45,
+   "Mass": 74.69,
+   "Nodule": 68.85,
+   "Pneumonia": 66.51,
+   "Pneumothorax": 78.12,
+   "Consolidation": 72.17,
+   "Edema": 81.01,
+   "Emphysema": 82.47,
+   "Fibrosis": 77.42,
+   "Pleural_Thickening": 72.88,
+   "Hernia": 84.48
+  }
+ },
+ {
+  "sanitizer": "privacy_net",
+  "test_macro_auc": 57.55,
+  "test_ci95": [
+   56.64,
+   58.52
+  ],
+  "per_finding": {
+   "Atelectasis": 53.14,
+   "Cardiomegaly": 60.54,
+   "Effusion": 65.65,
+   "Infiltration": 57.03,
+   "Mass": 55.04,
+   "Nodule": 48.95,
+   "Pneumonia": 56.65,
+   "Pneumothorax": 55.67,
+   "Consolidation": 62.96,
+   "Edema": 72.55,
+   "Emphysema": 58.91,
+   "Fibrosis": 51.26,
+   "Pleural_Thickening": 55.19,
+   "Hernia": 52.22
+  }
+ }
+]

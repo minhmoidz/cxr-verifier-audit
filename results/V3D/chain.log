@@ -1,0 +1,14 @@
+[2026-11-26 20:55:46] V3-D start
+done after 1 attempt(s)
+[2026-11-26 21:02:59] target done
+attempt 1: out of memory, waiting
+attempt 2: out of memory, waiting
+done after 3 attempt(s)
+[2026-11-27 08:35:19] gen done
+done after 1 attempt(s)
+[2026-11-27 08:53:53] select done
+done after 1 attempt(s)
+[2026-11-27 08:59:13] utility done
+done after 1 attempt(s)
+[2026-11-27 12:41:06] verifiers done
+EXIT 0

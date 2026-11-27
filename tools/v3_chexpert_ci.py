@@ -161,6 +161,27 @@ def main():
             if (A_, "SR") in arms and (B_, "SR") in arms:
                 for pr in ("SR", "SS"):
                     C[f"V3Cx/{pr}/{v}/{tag}"] = lincomb([((A_, pr), 1), ((B_, pr), -1)])
+    # V3-D: Privacy-Net at the utility-matched point (pnv3d); matched controls from results/V3D/selection.json.
+    sel_p = ROOT / "results" / "V3D" / "selection.json"
+    if sel_p.is_file():
+        sel = json.load(open(sel_p))
+        for v in ("reference", "e5"):
+            pn = f"v3d_{v}/pnv3d"
+            if (pn, "SR") not in arms:
+                continue
+            for fam_ in ("blur", "elastic"):
+                k = f"{v}/{sel['matched'][fam_]}"
+                if (k, "SR") not in arms:
+                    continue
+                for pr in ("SR", "SS"):
+                    C[f"V3D/{pr}/{v}/pn_minus_{fam_}"] = lincomb([((pn, pr), 1), ((k, pr), -1)])
+                C[f"H7/{v}/pn_minus_{fam_}"] = lincomb([((pn, "SS"), 1), ((pn, "SR"), -1), ((k, "SS"), -1), ((k, "SR"), 1)])
+                if fam_ == "blur":
+                    C[f"H6/SR/{v}/pn_minus_blur"] = lincomb([((pn, "SR"), 1), ((k, "SR"), -1)])
+        a_, b_ = "v3d_reference/pnv3d", "v3d_referenceSS/pnv3d"
+        if (a_, "SR") in arms and (b_, "SR") in arms:
+            for pr in ("SR", "SS"):
+                C[f"H8/{pr}/reference/SRtrain_minus_SStrain"] = lincomb([((a_, pr), 1), ((b_, pr), -1)])
     name = "chexpert_ci.json" if not a.seeds else f"chexpert_ci_seeds{a.seeds.replace(',', '')}.json"
     (D / name).write_text(json.dumps(out, indent=1))
     print(f"wrote {D / name}: {len(arms)} arms, {len(C)} contrasts")

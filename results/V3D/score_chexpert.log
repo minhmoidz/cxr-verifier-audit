@@ -1,0 +1,37 @@
+
+=== attempt 1 at 2026-11-27 16:54:12, 14.7 GB free ===
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/opt/anaconda3/lib/python3.13/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_e5__pnv3d__s0: done [17.2s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_e5__pnv3d__s1: done [15.3s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_e5__pnv3d__s2: done [15.9s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_e5__privacy_net__s0: done [14.8s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_e5__privacy_net__s1: done [14.4s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_e5__privacy_net__s2: done [15.0s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_referenceSS__pnv3d__s0: done [15.8s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_referenceSS__pnv3d__s1: done [15.6s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_referenceSS__pnv3d__s2: done [13.7s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_reference__pnv3d__s0: done [14.4s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_reference__pnv3d__s1: done [16.0s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_reference__pnv3d__s2: done [15.5s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_reference__privacy_net__s0: done [16.1s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_reference__privacy_net__s1: done [16.1s]
+|------Initiating Encryptor: 2D-U-Net ------|
+v3d_reference__privacy_net__s2: done [15.8s]
+compared 15 files; largest absolute difference 9.377e-04; mismatches 30 [('v3d_e5__pnv3d__s0.npz', 'q_san', 0.00012108683586120605), ('v3d_e5__pnv3d__s0.npz', 'r_san', 0.00012755393981933594), ('v3d_e5__pnv3d__s1.npz', 'q_san', 0.00011205673217773438), ('v3d_e5__pnv3d__s1.npz', 'r_san', 0.00011706352233886719), ('v3d_e5__pnv3d__s2.npz', 'q_san', 0.00016629695892333984), ('v3d_e5__pnv3d__s2.npz', 'r_san', 0.00017380714416503906), ('v3d_e5__privacy_net__s0.npz', 'q_san', 0.000152587890625), ('v3d_e5__privacy_net__s0.npz', 'r_san', 0.0001239776611328125), ('v3d_e5__privacy_net__s1.npz', 'q_san', 0.00014984607696533203), ('v3d_e5__privacy_net__s1.npz', 'r_san', 0.00013312697410583496)]

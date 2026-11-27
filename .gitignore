@@ -17,3 +17,6 @@ results/V3A/scores/*.npz
 archive/v3c_*/
 # V3-C generator training log is large; the gzipped copy is committed
 results/V3C/run.log
+# V3-D: sanitizer checkpoints are not committed; the training log is committed gzipped
+archive/v3d_*/
+results/V3D/run.log

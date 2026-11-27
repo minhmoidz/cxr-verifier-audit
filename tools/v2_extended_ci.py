@@ -293,6 +293,38 @@ def main():
                                 ("ffv3c_SR_s42_last", "ffv3c_SR_s42", "SRlast_minus_SR")):
                 for pairing in PAIRINGS:
                     C[f"{st}/{pairing}/v3cx/{ver}/{xt}"] = contrast(f"v3c_{ver}/{a2}", f"v3c_{ver}/{b2}", st, pairing)
+    # Revision v3 (V3-D): second learned sanitizer family (Privacy-Net at the utility-matched point, sanitizer pnv3d,
+    # one sanitizer seed). Matched controls from results/V3D/selection.json (chosen on validation utility).
+    sel_p = D.parent / "V3D" / "selection.json"
+    if sel_p.is_file():
+        sel = json.load(open(sel_p))
+
+        def interaction(f_, k_, st):
+            """[f SS - f SR] - [k SS - k SR] (same models per arm)."""
+            if f_ not in cfg_arrays or k_ not in cfg_arrays:
+                return None
+            terms = ((f_, "SS", 1), (f_, "SR", -1), (k_, "SS", -1), (k_, "SR", 1))
+            e = {}
+            for i, k in enumerate(METRICS):
+                pt = sum(coef * out["configs"][cf][f"{st}/{pp}/{k}"]["point"] for cf, pp, coef in terms)
+                dd = {lev: sum(coef * cfg_arrays[cf][f"{st}_{pp}_{lev}"][:, i] for cf, pp, coef in terms)
+                      for lev in ("patient", "hier")}
+                e[k] = {"point": pt, "patient": summarize(dd["patient"])[0], "patient+seed": summarize(dd["hier"])[0]}
+            return e
+
+        for st in SETS:
+            for ver in ("reference", "e5"):
+                pn = f"v3d_{ver}/pnv3d"
+                for fam_ in ("blur", "elastic"):
+                    ctl = f"{ver}/{sel['matched'][fam_]}"
+                    for pairing in PAIRINGS:
+                        C[f"{st}/{pairing}/v3d/{ver}/pn_minus_{fam_}"] = contrast(pn, ctl, st, pairing)
+                    C[f"{st}/H7/{ver}/pn_minus_{fam_}"] = interaction(pn, ctl, st)
+                    if fam_ == "blur":
+                        C[f"{st}/H6/{ver}/pn_minus_blur"] = contrast(pn, ctl, st, "SR")
+            for pairing in PAIRINGS:
+                C[f"{st}/{pairing}/H8/reference/SRtrain_minus_SStrain"] = contrast(
+                    "v3d_reference/pnv3d", "v3d_referenceSS/pnv3d", st, pairing)
     out["contrasts"] = {k: v for k, v in C.items() if v is not None}
     out["n_ext_negatives"] = 1073 * 1072
     name = f"extended_ci{tag}.json"

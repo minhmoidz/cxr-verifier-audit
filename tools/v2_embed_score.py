@@ -134,6 +134,17 @@ def build_list():
                            "sanitizer": r["sanitizer"], "seed": int(r["seed"]), "source": "v3c", "ckpt": str(ck.relative_to(ROOT)),
                            "published_pred": str(Path(f.replace("_summary.json", "_preds.npz")).relative_to(ROOT)),
                            "arch": r["arch"], "input_size": int(r["input_size"]), "use_norm": bool(r["use_imagenet_norm"])})
+    # V3-D: verifiers on the second learned sanitizer family (results/V3D/runs); family v3d_<verifier>, where
+    # referenceSS is the reference initialization trained and selected on SS pairs.
+    for f in sorted(glob.glob(str(ROOT / "results" / "V3D" / "runs" / "*_summary.json"))):
+        r = json.load(open(f))
+        ck = Path(f.replace("_summary.json", "_best.pth"))
+        ver = os.path.basename(f).split("__")[1]
+        if ck.exists():
+            models.append({"model_id": f"v3d_{ver}__{r['sanitizer']}__s{r['seed']}", "family": f"v3d_{ver}",
+                           "sanitizer": r["sanitizer"], "seed": int(r["seed"]), "source": "v3d", "ckpt": str(ck.relative_to(ROOT)),
+                           "published_pred": str(Path(f.replace("_summary.json", "_preds.npz")).relative_to(ROOT)),
+                           "arch": r["arch"], "input_size": int(r["input_size"]), "use_norm": bool(r["use_imagenet_norm"])})
     OUTD.mkdir(parents=True, exist_ok=True)
     json.dump(models, open(OUTD / "models.json", "w"), indent=1)
     from collections import Counter

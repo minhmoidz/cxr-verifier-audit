@@ -1,0 +1,4 @@
+[2026-11-27 17:06:53] official CheXpert CI start (24 workers, own v3d score files)
+wrote results/V3A/chexpert_ci.json: 84 arms, 72 contrasts
+EXIT 0
+[2026-11-27 19:41:56] end

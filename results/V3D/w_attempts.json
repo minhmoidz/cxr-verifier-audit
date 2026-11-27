@@ -1,0 +1,14 @@
+[
+ {
+  "w": 0.1,
+  "val_utility_epoch1": 62.3734,
+  "target": 76.7828,
+  "status": "rejected"
+ },
+ {
+  "w": 0.01,
+  "val_utility_epoch1": 79.406,
+  "target": 76.7828,
+  "status": "accepted"
+ }
+]

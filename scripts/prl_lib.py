@@ -307,6 +307,11 @@ def build_sanitizer(name: str, device: torch.device, seed: int = 0) -> BaseSanit
         return san
     if name == "privacy_net":
         return PrivacyNetSanitizer(ROOT / "networks" / "generator_lowest_total_loss_privacy_net.pth", device)
+    if name == "pnv3d":
+        # V3-D (docs/PREREGISTRATION_v3.md): Privacy-Net retrained at the utility-matched operating point
+        san = PrivacyNetSanitizer(ROOT / "results" / "V3D" / "gen" / "pnv3d" / "generator_selected.pth", device)
+        san.name = name
+        return san
     if name.startswith("blur_s"):
         return GaussianBlurSanitizer(float(name[len("blur_s"):]))
     if name.startswith("elastic_m"):

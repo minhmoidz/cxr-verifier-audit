@@ -1,0 +1,11 @@
+[2026-11-27 12:42:36] V3-D scoring start
+207 models: {'factorial_ref': 44, 'factorial_imagenet': 20, 'imagenet_full': 23, 'reference': 40, 'zeroshot_reference': 1, 'e5': 40, 'v3c_e5': 12, 'v3c_reference': 12, 'v3d_e5': 6, 'v3d_referenceSS': 3, 'v3d_reference': 6}
+done after 1 attempt(s)
+[2026-11-27 12:52:34] NIH scoring done
+done after 1 attempt(s)
+[2026-11-27 12:54:42] CheXpert scoring done
+[1]-  Done                    nice -n 10 $P tools/v2_extended_ci.py --n_boot 2000 --workers 14 > results/V3D/ci_nih.log 2>&1
+[2]+  Done                    nice -n 10 $P tools/v3_chexpert_ci.py --n_boot 2000 --workers 14 > results/V3D/ci_cx.log 2>&1
+[2026-11-27 15:53:10] CIs done
+[2026-11-27 15:53:11] tables done
+EXIT 0

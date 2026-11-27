@@ -50,9 +50,8 @@ class CheXpertStore(P.RAMImageStore):
 
 
 def model_list():
-    ms = []
-    ms = json.load(open(ROOT / "results" / "E1E2" / "models.json"))   # includes V3-B and V3-C models
-    keep = [m for m in ms if (m["family"] in FAMILIES or m["family"].startswith("v3c_")) and not (m["family"] == "factorial_ref" and m["sanitizer"] != "ff_mu0.01")]
+    ms = json.load(open(ROOT / "results" / "E1E2" / "models.json"))   # includes V3-B, V3-C and V3-D models
+    keep = [m for m in ms if (m["family"] in FAMILIES or m["family"].startswith(("v3c_", "v3d_"))) and not (m["family"] == "factorial_ref" and m["sanitizer"] != "ff_mu0.01")]
     return keep
 
 

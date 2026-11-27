@@ -1,0 +1,17 @@
+{
+ "model_id": "v3d_referenceSS__pnv3d__s0",
+ "family": "v3d_referenceSS",
+ "sanitizer": "pnv3d",
+ "seed": 0,
+ "source": "v3d",
+ "ckpt": "results/V3D/runs/v3d__referenceSS__pnv3d__s0_best.pth",
+ "published_pred": "results/V3D/runs/v3d__referenceSS__pnv3d__s0_preds.npz",
+ "arch": "resnet50_bce",
+ "input_size": 256,
+ "use_norm": true,
+ "scoring_sanitizer": "pnv3d",
+ "auc_SR_from_embeddings": 85.04755200000001,
+ "auc_SR_published_pred": 85.047848,
+ "auc_abs_diff": 0.0002959999999916363,
+ "seconds": 30.5
+}

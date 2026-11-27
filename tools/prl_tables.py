@@ -292,6 +292,9 @@ def numbers(runs, fact, out):
                 N[f"ci-{k}-{m}-red-lo"], N[f"ci-{k}-{m}-red-hi"] = -e["hier_ci"][1], -e["hier_ci"][0]
             u = P["utility_frozen"][ctrl]
             N[f"ci-{k}-u"] = u["point"]; N[f"ci-{k}-u-lo"], N[f"ci-{k}-u-hi"] = u["patient_ci"]
+            # observed differences from unrounded seed means (the point estimates of Table S5), not from rounded macros
+            N[f"d-obs-{k}-tpr"] = -P["leakage"][ctrl]["tpr1"]["point"]
+            N[f"du-obs-{k}"] = u["point"]
         N["ci-nboot"] = P["n_boot"]
     N["n-cells"] = len(runs)
     assert all(len(v) == 3 for v in runs.values()), "every clean-protocol cell should have three seeds"

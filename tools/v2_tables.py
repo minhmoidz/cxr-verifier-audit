@@ -223,7 +223,7 @@ def part_e1e2():
     put("e1-nneg", int(d["n_ext_negatives"])); put("e1-nboot", int(d["n_boot"]))
     C, X = d["configs"], d["contrasts"]
     for cfg, ent in C.items():
-        if cfg.startswith("v3c_"):               # V3-C arms: part_v3c
+        if cfg.startswith(("v3c_", "v3d_")):     # V3-C and V3-D arms: part_v3c, part_v3d
             continue
         code = cfg_code(cfg)
         put(f"x-{code}-nseeds", len(ent["seeds"]))
@@ -237,8 +237,9 @@ def part_e1e2():
                     put(stem + "-hlo", e["patient+seed"][0]); put(stem + "-hhi", e["patient+seed"][1])
     for key, ent in X.items():
         parts = key.split("/")
-        if parts[1] in ("H4", "H5") or parts[2] in ("repl", "v3cx") or parts[2].startswith("v3c_"):
-            continue                             # V3-C contrasts: part_v3c
+        if (parts[1] in ("H4", "H5", "H6", "H7") or parts[2] in ("repl", "v3cx", "v3d", "H8")
+                or parts[2].startswith(("v3c_", "v3d_"))):
+            continue                             # V3-C and V3-D contrasts: part_v3c, part_v3d
         if parts[2] == "btw":                    # e.g. ext/SR/btw/reference_minus_e5/ff_mu0.01_minus_blur_s2
             v1, v2 = parts[3].split("_minus_"); a, b = parts[4].split("_minus_")
             stem = f"c-btw-{FAM[v1]}m{FAM[v2]}-{SAN[a]}m{SAN[b]}-{parts[0]}{parts[1].lower()}"
@@ -884,6 +885,247 @@ def part_v3c():
                                          {"SS": "SS", "SR": "SR"}))
     print("V3-C: ok")
 
+def part_v3d():
+    """V3-D (docs/PREREGISTRATION_v3.md): Privacy-Net retrained at a utility-matched point (sanitizer pnv3d, one
+    sanitizer seed), against the blur (and, secondary, elastic) strength matched on validation utility.
+    H6: SR attack, PN minus blur (TPR at 1% FPR); H7: [SS - SR](PN) - [SS - SR](blur); H8: reference
+    initialization, SR-trained minus SS-trained verifier AUC under the SR attack. NIH extended set and CheXpert.
+    Released Privacy-Net (privacy_net) arms are descriptive. Macros v3d-*; table supp_v3d.tex."""
+    sp = R("V3D", "selection.json")
+    pn_, pc = R("E1E2", "extended_ci.json"), R("V3A", "chexpert_ci.json")
+    if not (os.path.isfile(sp) and os.path.isfile(pn_) and os.path.isfile(pc)):
+        print("V3-D: not ready"); return
+    sel = json.load(open(sp))
+    dn, dc = json.load(open(pn_)), json.load(open(pc))
+    if "v3d_reference/pnv3d" not in dn["configs"] or "v3d_reference/pnv3d/SR" not in dc["arms"]:
+        print("V3-D: not scored"); return
+    V = {"reference": "ref", "e5": "e5"}
+    put("v3d-w", sel["w"]); put("v3d-sel", sel["selected_epoch"]); put("v3d-nok", sel["n_epochs_at_or_above_T"])
+    put("v3d-T", sel["target_T"]); put("v3d-uval-sel", sel["val_utility_selected"])
+    put("v3d-nepochs", len(sel["epoch_val_utility"]))
+    mb, me = sel["matched"]["blur"], sel["matched"]["elastic"]
+    put("v3d-mblur", float(mb[len("blur_s"):])); put("v3d-melastic", float(re.match(r"elastic_m([0-9.]+)_", me).group(1)))
+    put("v3d-uval-mblur", sel["val_utility_controls"][mb]); put("v3d-uval-melastic", sel["val_utility_controls"][me])
+    put("v3d-uval-raw", sel["val_utility_controls"]["none"])
+    att = json.load(open(R("V3D", "w_attempts.json")))
+    put("v3d-nattempts", len(att))
+    rej = [x for x in att if x["status"] == "rejected"]; acc = [x for x in att if x["status"] == "accepted"]
+    assert len(rej) == 1 and len(acc) == 1, att
+    put("v3d-w-rej", rej[0]["w"]); put("v3d-uval-rej", rej[0]["val_utility_epoch1"]); put("v3d-uval-acc", acc[0]["val_utility_epoch1"])
+    ev = {int(k): v for k, v in sel["epoch_val_utility"].items()}
+    ok = sorted(k for k, v in ev.items() if v >= sel["target_T"])
+    assert len(ok) == 2 == sel["n_epochs_at_or_above_T"] and sel["selected_epoch"] in ok, ok
+    put("v3d-ok-first", ok[0]); put("v3d-ok-second", ok[1]); put("v3d-uval-last", ev[max(ev)])
+    u = {r["sanitizer"]: r for r in json.load(open(R("V3D", "utility_frozen.json")))}
+    for s_, c_ in (("pnv3d", "pn"), ("privacy_net", "pnrel")):
+        put(f"v3d-u-{c_}", u[s_]["test_macro_auc"])
+        put(f"v3d-u-{c_}-lo", u[s_]["test_ci95"][0]); put(f"v3d-u-{c_}-hi", u[s_]["test_ci95"][1])
+    nseeds = set()
+    for ver in V:
+        for san, code in (("pnv3d", "pn"), ("privacy_net", "pnrel")):
+            cn = dn["configs"][f"v3d_{ver}/{san}"]
+            nseeds.add(len(cn["seeds"]))
+            for pr in ("SR", "SS"):
+                ca = dc["arms"][f"v3d_{ver}/{san}/{pr}"]
+                nseeds.add(len(ca["seeds"]))
+                for m in ("auc", "tpr1"):
+                    put(f"v3d-nih-{V[ver]}-{code}-{pr.lower()}-{m}", cn[f"ext/{pr}/{m}"]["point"])
+                    put(f"v3d-cx-{V[ver]}-{code}-{pr.lower()}-{m}", ca[m])
+    for pr in ("SR", "SS"):
+        for m in ("auc", "tpr1"):
+            put(f"v3d-nih-refss-pn-{pr.lower()}-{m}", dn["configs"]["v3d_referenceSS/pnv3d"][f"ext/{pr}/{m}"]["point"])
+            put(f"v3d-cx-refss-pn-{pr.lower()}-{m}", dc["arms"][f"v3d_referenceSS/pnv3d/{pr}"][m])
+    assert len(nseeds) == 1, nseeds
+    put("v3d-nseeds", nseeds.pop())
+
+    def put_c(stem, e):
+        put(stem, e["point"]); put(stem + "-lo", e["patient+seed"][0]); put(stem + "-hi", e["patient+seed"][1])
+
+    dec = {"H6": [], "H7": [], "H8": []}
+    rows = {}
+    for ver in V:
+        e6n = dn["contrasts"][f"ext/H6/{ver}/pn_minus_blur"]["tpr1"]; e6c = dc["contrasts"][f"H6/SR/{ver}/pn_minus_blur"]["tpr1"]
+        e7n = dn["contrasts"][f"ext/H7/{ver}/pn_minus_blur"]["tpr1"]; e7c = dc["contrasts"][f"H7/{ver}/pn_minus_blur"]["tpr1"]
+        put_c(f"v3d-h6-nih-{V[ver]}-tpr1", e6n); put_c(f"v3d-h6-cx-{V[ver]}-tpr1", e6c)
+        put_c(f"v3d-h7-nih-{V[ver]}-tpr1", e7n); put_c(f"v3d-h7-cx-{V[ver]}-tpr1", e7c)
+        dec["H6"] += [e6n["patient+seed"][1] < 0, e6c["patient+seed"][1] < 0]
+        dec["H7"] += [e7n["patient+seed"][0] > 0, e7c["patient+seed"][0] > 0]
+        rows[ver] = {"NIH": (e6n, e7n), "CheXpert": (e6c, e7c)}
+        for pr in ("SR", "SS"):     # secondary: elastic; SS-attack difference from blur
+            put_c(f"v3d-x-nih-{V[ver]}-pnme-{pr.lower()}-tpr1", dn["contrasts"][f"ext/{pr}/v3d/{ver}/pn_minus_elastic"]["tpr1"])
+            put_c(f"v3d-x-cx-{V[ver]}-pnme-{pr.lower()}-tpr1", dc["contrasts"][f"V3D/{pr}/{ver}/pn_minus_elastic"]["tpr1"])
+            if pr == "SS":
+                put_c(f"v3d-x-nih-{V[ver]}-pnmb-ss-tpr1", dn["contrasts"][f"ext/SS/v3d/{ver}/pn_minus_blur"]["tpr1"])
+                put_c(f"v3d-x-cx-{V[ver]}-pnmb-ss-tpr1", dc["contrasts"][f"V3D/SS/{ver}/pn_minus_blur"]["tpr1"])
+        put_c(f"v3d-h7e-nih-{V[ver]}-tpr1", dn["contrasts"][f"ext/H7/{ver}/pn_minus_elastic"]["tpr1"])
+        put_c(f"v3d-h7e-cx-{V[ver]}-tpr1", dc["contrasts"][f"H7/{ver}/pn_minus_elastic"]["tpr1"])
+        for st, d_, k_ in (("nih", dn, f"ext/SS_minus_SR/v3d_{ver}/privacy_net"),):
+            put_c(f"v3d-pnrel-{st}-{V[ver]}-ssmsr-tpr1", d_["contrasts"][k_]["tpr1"])
+    e8n = dn["contrasts"]["ext/SR/H8/reference/SRtrain_minus_SStrain"]["auc"]
+    e8c = dc["contrasts"]["H8/SR/reference/SRtrain_minus_SStrain"]["auc"]
+    put_c("v3d-h8-nih-auc", e8n); put_c("v3d-h8-cx-auc", e8c)
+    dec["H8"] = [e8n["patient+seed"][0] > 0, e8c["patient+seed"][0] > 0]
+    for h_ in ("h6", "h7"):
+        pts = [N[f"v3d-{h_}-{d_}-{v_}-tpr1"] for d_ in ("nih", "cx") for v_ in V.values()]
+        put(f"v3d-{h_}-min-tpr1", min(pts)); put(f"v3d-{h_}-max-tpr1", max(pts))
+    print("V3-D: " + ", ".join(f"{h} confirmed = {all(v)} {v}" for h, v in dec.items()))
+
+    # Magnitudes for running text. Each statement the text makes with them is checked here: PN below the control,
+    # every interval below zero, in all four cells (SR attack: H6 and elastic; SS attack: not pre-specified).
+    ssb = []
+    for ver in V:
+        for ctl, pr in (("blur", "SR"), ("blur", "SS"), ("elastic", "SR"), ("elastic", "SS")):
+            for e in (dn["contrasts"][f"ext/{pr}/v3d/{ver}/pn_minus_{ctl}"]["tpr1"],
+                      dc["contrasts"][f"V3D/{pr}/{ver}/pn_minus_{ctl}"]["tpr1"]):
+                assert e["patient+seed"][1] < 0, ("V3-D statement no longer holds", ver, ctl, pr, e)
+                if (ctl, pr) == ("blur", "SS"):
+                    ssb.append(-e["point"])
+    sr = [-N[f"v3d-h6-{d_}-{v_}-tpr1"] for d_ in ("nih", "cx") for v_ in V.values()]
+    put("v3d-advsr-lo-tpr1", min(sr)); put("v3d-advsr-hi-tpr1", max(sr))
+    put("v3d-advss-lo-tpr1", min(ssb)); put("v3d-advss-hi-tpr1", max(ssb))
+    rises = [N[f"v3d-{d_}-{v_}-pn-ss-tpr1"] / N[f"v3d-{d_}-{v_}-pn-sr-tpr1"] for d_ in ("nih", "cx") for v_ in V.values()]
+    assert min(rises) > 1, rises
+    put("v3d-pnrise-lo", min(rises)); put("v3d-pnrise-hi", max(rises))
+    for h_, expect in (("H6", [True] * 4), ("H7", [True, False, True, False]), ("H8", [True, True])):
+        assert dec[h_] == expect, ("V3-D decision changed; the text must be revised", h_, dec[h_])
+    for st, d_, key in (("nih", dn, "ext/SS/H8/reference/SRtrain_minus_SStrain"),
+                        ("cx", dc, "H8/SS/reference/SRtrain_minus_SStrain")):
+        put_c(f"v3d-x-{st}-h8ss-auc", d_["contrasts"][key]["auc"])     # SS attack, descriptive
+
+    f2 = lambda x: NEG(f"{x:.2f}")
+    ent = lambda e: bold_if_excludes_zero(e["point"], (e["patient"], e["patient+seed"])) + " " + ci_txt(e["patient+seed"])
+    L = ["\\begin{tabular}{llccc}", "\\toprule",
+         " & & \\multicolumn{2}{c}{PN $-$ blur} & Change, SS $-$ SR \\\\",
+         "\\cmidrule(lr){3-4}",
+         "Verifier & Data & SR attack (H6) & SS attack & (H7) \\\\", "\\midrule"]
+    for ver in V:
+        first = True
+        for data in ("NIH", "CheXpert"):
+            e6, e7 = rows[ver][data]
+            ess = (dn["contrasts"][f"ext/SS/v3d/{ver}/pn_minus_blur"] if data == "NIH"
+                   else dc["contrasts"][f"V3D/SS/{ver}/pn_minus_blur"])["tpr1"]
+            L.append(" & ".join([VERLAB[ver] if first else "", data, ent(e6), ent(ess), ent(e7)]) + " \\\\")
+            first = False
+        L.append("\\addlinespace")
+    L = L[:-1] + ["\\bottomrule", "\\end{tabular}"]
+    write("supp_v3d.tex", L)
+    sans = (("pnv3d", "PN"), (mb, "Blur"), (me, "Elastic"), ("privacy_net", "Released PN"))
+    L = ["\\begin{tabular}{ll" + "cc" * len(sans) + "}", "\\toprule",
+         " & & " + " & ".join(f"\\multicolumn{{2}}{{c}}{{{lab}}}" for _, lab in sans) + " \\\\",
+         "".join(f"\\cmidrule(lr){{{3 + 2 * i}-{4 + 2 * i}}}" for i in range(len(sans))),
+         "Verifier & Data" + " & SR & SS" * len(sans) + " \\\\", "\\midrule"]
+    for ver in V:
+        first = True
+        for data in ("NIH", "CheXpert"):
+            vals = []
+            for san, _ in sans:
+                cfg = f"v3d_{ver}/{san}" if san in ("pnv3d", "privacy_net") else f"{ver}/{san}"
+                for pr in ("SR", "SS"):
+                    vals.append(dn["configs"][cfg][f"ext/{pr}/tpr1"]["point"] if data == "NIH"
+                                else dc["arms"][f"{cfg}/{pr}"]["tpr1"])
+            L.append(" & ".join([VERLAB[ver] if first else "", data] + [f2(x) for x in vals]) + " \\\\")
+            first = False
+        L.append("\\addlinespace")
+    L = L[:-1] + ["\\bottomrule", "\\end{tabular}"]
+    write("supp_v3d_tpr.tex", L)
+    ns = {len(dn["configs"][f"{v}/{c}"]["seeds"]) for v in V for c in (mb, me)}
+    ns |= {len(dc["arms"][f"{v}/{c}/{p}"]["seeds"]) for v in V for c in (mb, me) for p in ("SR", "SS")}
+    assert len(ns) == 1, ns
+    put("v3d-nseeds-ctl", ns.pop())
+    print("V3-D: ok")
+
+
+def part_secondary():
+    """Secondary metrics of the pre-specified analyses (docs/PREREGISTRATION_v3.md, common definitions: primary TPR at
+    1% FPR, secondary AUC and TPR at 0.1% FPR; V3-A reports all three and raw-image linkage). Decisions use the
+    primary metric (H3 and H8: AUC). Tables supp_secondary_ab.tex (V3-A CheXpert, V3-B NIH) and
+    supp_secondary_cd.tex (V3-C, V3-D). Every statement the supplement makes about these metrics is asserted here."""
+    pa, pn_, pc = R("V3A", "chexpert_ci_seeds012.json"), R("E1E2", "extended_ci.json"), R("V3A", "chexpert_ci.json")
+    if not all(os.path.isfile(x) for x in (pa, pn_, pc)):
+        print("secondary: missing CI files"); return
+    a, dn, dc = (json.load(open(x)) for x in (pa, pn_, pc))
+    if "v3d_reference/pnv3d" not in dn["configs"] or "v3d_reference/pnv3d/SR" not in dc["arms"]:
+        print("secondary: V3-D not scored"); return
+    A, N_, C_ = a["contrasts"], dn["contrasts"], dc["contrasts"]
+    ent = lambda e: bold_if_excludes_zero(e["point"], (e["patient"], e["patient+seed"])) + " " + ci_txt(e["patient+seed"])
+
+    def side(e):
+        lo, hi = e["patient+seed"]
+        return -1 if hi < 0 else (1 if lo > 0 else 0)
+
+    def check(label, es, want):
+        got = [side(e) for e in es]
+        assert got == want, ("secondary-metric statement no longer holds", label, got, want)
+
+    # statements made in the supplement text
+    for v in ("reference", "e5"):
+        for c in ("blur_s2", "elastic_m0.045_keyed", "elastic_m0.04_keyed"):
+            check(f"H1 {v} {c}", [A[f"H1/SR/{v}/ff_mu0.01_minus_{c}"][m] for m in ("tpr1", "auc", "tpr01")], [-1] * 3)
+    check("H2 blur reference", [A["H2/reference/ff_mu0.01_minus_blur_s2"][m] for m in ("tpr1", "auc", "tpr01")], [0] * 3)
+    check("H2 blur e5", [A["H2/e5/ff_mu0.01_minus_blur_s2"][m] for m in ("tpr1", "auc", "tpr01")], [1] * 3)
+    check("H3", [A["H3/factorial_ref/ff_mu0.01/train_effect"][m] for m in ("tpr1", "auc", "tpr01")], [1] * 3)
+    vs = ("reference", "e5")
+    check("H4", [e for v in vs for m in ("auc", "tpr01") for e in
+                 (N_[f"ext/H4/{v}/SSadv_minus_SRadv"][m], C_[f"H4/SS/{v}/SSadv_minus_SRadv"][m])], [1] * 8)
+    h6 = {m: [e for v in vs for e in (N_[f"ext/H6/{v}/pn_minus_blur"][m], C_[f"H6/SR/{v}/pn_minus_blur"][m])] for m in ("auc", "tpr01")}
+    pnss = {m: [e for v in vs for e in (N_[f"ext/SS/v3d/{v}/pn_minus_blur"][m], C_[f"V3D/SS/{v}/pn_minus_blur"][m])] for m in ("auc", "tpr01")}
+    h7 = {m: [e for v in vs for e in (N_[f"ext/H7/{v}/pn_minus_blur"][m], C_[f"H7/{v}/pn_minus_blur"][m])] for m in ("auc", "tpr01")}
+    for m in ("auc", "tpr01"):
+        check(f"H6 {m}", h6[m], [-1] * 4); check(f"PN SS {m}", pnss[m], [-1] * 4)
+    check("H7 auc", h7["auc"], [1] * 4); check("H7 tpr01", h7["tpr01"], [0] * 4)
+    h8 = [N_["ext/SR/H8/reference/SRtrain_minus_SStrain"], C_["H8/SR/reference/SRtrain_minus_SStrain"]]
+    check("H8", [e[m] for e in h8 for m in ("auc", "tpr1", "tpr01")], [1] * 6)
+    for st, e in zip(("nih", "cx"), h8):
+        for m in ("tpr1", "tpr01"):
+            x = e[m]
+            put(f"sec-h8-{st}-{m}", x["point"]); put(f"sec-h8-{st}-{m}-lo", x["patient+seed"][0]); put(f"sec-h8-{st}-{m}-hi", x["patient+seed"][1])
+
+    L = ["\\begin{tabular}{lllcccc}", "\\toprule",
+         " & & & \\multicolumn{2}{c}{CheXpert, seeds 0--2} & \\multicolumn{2}{c}{NIH extended, five seeds} \\\\",
+         "\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}",
+         "Verifier & Control & Field $-$ control & AUC & TPR@0.1\\% & AUC & TPR@0.1\\% \\\\", "\\midrule"]
+    for fam, lab in (("reference", "Reference"), ("e5", "Independent"), ("imagenet_full", "ImageNet, full recipe")):
+        first = True
+        for san in ("blur_s2", "elastic_m0.045_keyed", "elastic_m0.04_keyed"):
+            if f"H1/SR/{fam}/ff_mu0.01_minus_{san}" not in A:
+                continue
+            fc = True
+            for q, ka, kn in (("SR attack (H1)", f"H1/SR/{fam}/ff_mu0.01_minus_{san}", f"ext/SR/{fam}/ff_mu0.01_minus_{san}"),
+                              ("SS attack", f"H1/SS/{fam}/ff_mu0.01_minus_{san}", f"ext/SS/{fam}/ff_mu0.01_minus_{san}"),
+                              ("SS $-$ SR (H2)", f"H2/{fam}/ff_mu0.01_minus_{san}", f"ext/H2/{fam}/ff_mu0.01_minus_{san}")):
+                row = [lab if first else "", SANLAB[san] if fc else "", q, ent(A[ka]["auc"]), ent(A[ka]["tpr01"]),
+                       ent(N_[kn]["auc"]), ent(N_[kn]["tpr01"])]
+                L.append(NEG(" & ".join(row)) + " \\\\")
+                first = fc = False
+        L.append("\\addlinespace")
+    L = L[:-1] + ["\\bottomrule", "\\end{tabular}"]
+    write("supp_secondary_ab.tex", L)
+
+    VL = {"reference": "Reference", "e5": "Independent"}
+    L = ["\\begin{tabular}{llllcc}", "\\toprule",
+         "Test & Quantity & Verifier & Data & AUC & TPR@0.1\\% \\\\", "\\midrule"]
+    blocks = (("H4", "SS-adv.\\ $-$ SR-adv., SS attack", "ext/H4/{v}/SSadv_minus_SRadv", "H4/SS/{v}/SSadv_minus_SRadv"),
+              ("H5", "SS-adv.\\ $-$ SR-adv., SR attack", "ext/H5/{v}/SSadv_minus_SRadv", "H5/SR/{v}/SSadv_minus_SRadv"),
+              ("H6", "PN $-$ blur, SR attack", "ext/H6/{v}/pn_minus_blur", "H6/SR/{v}/pn_minus_blur"),
+              ("--", "PN $-$ blur, SS attack", "ext/SS/v3d/{v}/pn_minus_blur", "V3D/SS/{v}/pn_minus_blur"),
+              ("H7", "PN $-$ blur, SS $-$ SR", "ext/H7/{v}/pn_minus_blur", "H7/{v}/pn_minus_blur"))
+    for h_, q, kn, kc in blocks:
+        first = True
+        for v in vs:
+            for data, d_, k_ in (("NIH", N_, kn), ("CheXpert", C_, kc)):
+                e = d_[k_.format(v=v)]
+                L.append(NEG(" & ".join([h_ if first else "", q if first else "", VL[v], data, ent(e["auc"]), ent(e["tpr01"])])) + " \\\\")
+                first = False
+        L.append("\\addlinespace")
+    first = True
+    for data, e in zip(("NIH", "CheXpert"), h8):
+        L.append(NEG(" & ".join(["H8" if first else "", "SR $-$ SS training, SR attack" if first else "", "Reference", data,
+                                 ent(e["auc"]), ent(e["tpr01"])])) + " \\\\")
+        first = False
+    L += ["\\bottomrule", "\\end{tabular}"]
+    write("supp_secondary_cd.tex", L)
+    print("secondary: ok")
+
 
 # ----------------------------------------------------------------------------- numbers file
 def write_numbers():
@@ -915,7 +1157,7 @@ def main():
     write_numbers()
 
 
-PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy, part_v3a, part_v3b, part_v3c]
+PARTS = [part_e4, part_t4, part_anchor, part_e6, part_e1e2, part_attack, part_replicates, part_e3, part_e5, part_verifiers, part_legacy, part_v3a, part_v3b, part_v3c, part_v3d, part_secondary]
 
 if __name__ == "__main__":
     main()
